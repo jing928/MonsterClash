@@ -47,7 +47,7 @@ public abstract class Cell {
     public int distance(int x, int y) {
         x -= this.x;
         y -= this.y;
-        return Math.abs(x + y);
+        return Math.abs(x) + Math.abs(y);
     }
 
     public int hashCode() {
