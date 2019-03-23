@@ -2,15 +2,17 @@ package grp.oozmakappa.monsterclash.model.abstracts;
 
 
 /**
+ * The element of {@link grp.oozmakappa.monsterclash.model.Board}
+ * NB: the concrete classes inherit from this must be Immutable.
+ *
  * @author Chenglong Ma
  */
 public abstract class Cell {
-    protected int x;
-    protected int y;
-
-    public Cell(Cell cell) {
-        this(cell.x, cell.y);
-    }
+    /**
+     * The coordinate of cell will not be changed once set.
+     */
+    protected final int x;
+    protected final int y;
 
     public Cell(int x, int y) {
         this.x = x;
@@ -25,14 +27,6 @@ public abstract class Cell {
         return this.y;
     }
 
-    public void setPosition(Cell cell) {
-        this.setPosition(cell.x, cell.y);
-    }
-
-    public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
 
     /**
      * @param other another {@link Cell}
