@@ -18,6 +18,6 @@ public class DiceListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        Dice.nextIcon(diceButton);
+        diceButton.setValue(Dice.next());
     }
 }
