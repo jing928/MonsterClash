@@ -3,8 +3,7 @@ package grp.oozmakappa.monsterclash.model;
 import grp.oozmakappa.monsterclash.view.DiceButton;
 
 import javax.swing.*;
-import java.net.URL;
-import java.util.*;
+import java.util.List;
 
 import static grp.oozmakappa.monsterclash.utils.FileUtil.getSubFiles;
 
@@ -54,7 +53,7 @@ public class Dice {
      * @return
      */
     public static Dice next() {
-        int next = (int) (Math.random() * MAX_DICE);
+        int next = (int) (Math.random() * MAX_DICE) + 1;
         return new Dice(next);
     }
 
@@ -84,6 +83,6 @@ public class Dice {
     }
 
     public ImageIcon getIcon() {
-        return new ImageIcon(DICE_ICON_SET.get(value));
+        return new ImageIcon(DICE_ICON_SET.get(value - 1));
     }
 }
