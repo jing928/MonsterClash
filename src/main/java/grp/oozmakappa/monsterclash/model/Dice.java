@@ -12,7 +12,7 @@ public final class Dice {
      *
      * @return the new dice value.
      */
-    public static int next() {
+    public static int roll() {
         return (int) (Math.random() * MAX_DICE) + 1;
     }
 }
