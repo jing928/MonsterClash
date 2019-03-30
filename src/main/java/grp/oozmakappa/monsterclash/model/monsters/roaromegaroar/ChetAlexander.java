@@ -8,11 +8,12 @@ import grp.oozmakappa.monsterclash.model.abstracts.Piece;
  */
 public class ChetAlexander extends Piece {
 
-    public ChetAlexander(String id, Cell startingPos) {
-        super(id, startingPos);
-        this.health = 100;
-        this.attackPower = 15;
-        this.attackRange = 8;
+    private static double DEFAULTHEALTH = 100;
+    private static int DEFAULTATTACKPOWER = 15;
+    private static int DEFAULTATTACKRANGE = 8;
+
+    public ChetAlexander(String id, Cell position, double health, double attackPower, int attackRange) {
+        super(id, position, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
     }
 
 }
