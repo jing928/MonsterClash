@@ -5,18 +5,15 @@ package grp.oozmakappa.monsterclash.model.abstracts;
  */
 public abstract class Piece {
 
-    private final String id;
-    private double health;
-    private Cell position;
-    private double attackPower;
-    private int attackRange;
+    protected final String id;
+    protected double health;
+    protected Cell position;
+    protected double attackPower;
+    protected int attackRange;
 
-    public Piece(String id, Cell position, double health, double attackPower, int attackRange) {
+    public Piece(String id, Cell position) {
         this.id = id;
         this.position = position;
-        this.health = health;
-        this.attackPower = attackPower;
-        this.attackRange = attackRange;
     }
 
     public void move(Cell newPos) {
