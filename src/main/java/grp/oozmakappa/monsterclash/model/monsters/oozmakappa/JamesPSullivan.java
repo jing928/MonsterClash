@@ -8,9 +8,9 @@ import grp.oozmakappa.monsterclash.model.abstracts.Piece;
  */
 public class JamesPSullivan extends Piece {
 
-    private static double DEFAULTHEALTH = 200;
-    private static int DEFAULTATTACKPOWER = 20;
-    private static int DEFAULTATTACKRANGE = 5;
+    private static final double DEFAULTHEALTH = 200;
+    private static final int DEFAULTATTACKPOWER = 20;
+    private static final int DEFAULTATTACKRANGE = 5;
 
     public JamesPSullivan(String id, Cell startingPos) {
         super(id, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
