@@ -9,11 +9,12 @@ import grp.oozmakappa.monsterclash.utils.IconUtil;
  */
 public class MikeWazowski extends Piece {
 
+    private static final double DEFAULTHEALTH = 100;
+    private static final int DEFAULTATTACKPOWER = 10;
+    private static final int DEFAULTATTACKRANGE = 3;
+
     public MikeWazowski(String id, Cell startingPos) {
-        super(id, startingPos);
-        this.health = 100;
-        this.attackPower = 10;
-        this.attackRange = 3;
+        super(id, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
         iconName = IconUtil.MIKE_WEZOWSKI;
     }
 
