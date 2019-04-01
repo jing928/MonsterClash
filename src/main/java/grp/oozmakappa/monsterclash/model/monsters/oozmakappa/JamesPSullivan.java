@@ -15,7 +15,7 @@ public class JamesPSullivan extends Piece {
 
     public JamesPSullivan(String id, Cell startingPos) {
         super(id, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
-        iconName = IconUtil.JAMES_P_SULLIVAN;
+        setIcon(IconUtil.JAMES_P_SULLIVAN);
     }
 
 }

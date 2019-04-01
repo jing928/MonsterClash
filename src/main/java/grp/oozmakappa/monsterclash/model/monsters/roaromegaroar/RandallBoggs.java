@@ -15,7 +15,7 @@ public class RandallBoggs extends Piece {
 
     public RandallBoggs(String id, Cell startingPos) {
         super(id, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
-        iconName = IconUtil.RANDALL_BOGGS;
+        setIcon(IconUtil.RANDALL_BOGGS);
     }
 
 }

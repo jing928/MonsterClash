@@ -15,7 +15,7 @@ public class JohnnyWorthington extends Piece {
 
     public JohnnyWorthington(String id, Cell startingPos) {
         super(id, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
-        iconName = IconUtil.JOHNNY_WORTHINGTON;
+        setIcon(IconUtil.JOHNNY_WORTHINGTON);
     }
 
 }

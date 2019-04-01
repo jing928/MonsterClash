@@ -15,7 +15,7 @@ public class Squishy extends Piece {
 
     public Squishy(String id, Cell startingPos) {
         super(id, startingPos,DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
-        iconName = IconUtil.SQUISHY;
+        setIcon(IconUtil.SQUISHY);
     }
 
 }

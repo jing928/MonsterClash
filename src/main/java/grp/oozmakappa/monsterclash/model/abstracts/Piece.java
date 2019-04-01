@@ -1,19 +1,26 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
+import grp.oozmakappa.monsterclash.utils.IconUtil;
+import grp.oozmakappa.monsterclash.view.interfaces.PieceObserver;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * @author Jing Li
  */
 public abstract class Piece {
 
     private final String id;
+    private String iconName;
     private double health;
     private Cell position;
     private double attackPower;
     private int attackRange;
-
     private int nextMove;
     private Collection<PieceObserver> observers;
-    private String iconName;
 
     public Piece(String id, Cell position, double health, double attackPower, int attackRange) {
         this.id = id;
@@ -23,8 +30,13 @@ public abstract class Piece {
         this.attackRange = attackRange;
         observers = new ArrayList<>();
     }
+
     public ImageIcon getIcon() {
         return IconUtil.getMonsterIcon(iconName);
+    }
+
+    protected void setIcon(String iconName) {
+        this.iconName = iconName;
     }
 
     public void move(Cell newPos) {

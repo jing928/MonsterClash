@@ -15,7 +15,7 @@ public class MikeWazowski extends Piece {
 
     public MikeWazowski(String id, Cell startingPos) {
         super(id, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
-        iconName = IconUtil.MIKE_WEZOWSKI;
+        setIcon(IconUtil.MIKE_WEZOWSKI);
     }
 
 }
