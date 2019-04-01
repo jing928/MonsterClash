@@ -2,6 +2,7 @@ package grp.oozmakappa.monsterclash.model.monsters.oozmakappa;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.utils.IconUtil;
 
 /**
  * @author Jing Li
@@ -13,6 +14,7 @@ public class Squishy extends Piece {
         this.health = 100;
         this.attackPower = 15;
         this.attackRange = 8;
+        iconName = IconUtil.SQUISHY;
     }
 
 }

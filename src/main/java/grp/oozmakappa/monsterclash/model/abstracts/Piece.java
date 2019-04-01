@@ -1,5 +1,13 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
+import grp.oozmakappa.monsterclash.utils.IconUtil;
+import grp.oozmakappa.monsterclash.view.interfaces.PieceObserver;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * @author Jing Li
  */
@@ -10,16 +18,32 @@ public abstract class Piece {
     protected Cell position;
     protected double attackPower;
     protected int attackRange;
+    protected int nextMove;
+    protected Collection<PieceObserver> observers;
+    protected String iconName;
 
     public Piece(String id, Cell position) {
         this.id = id;
         this.position = position;
+        observers = new ArrayList<>();
+    }
+
+    @Deprecated
+    public Piece(String id, double health, Cell position, double attackPower, int attackRange) {
+        this.id = id;
+        this.health = health;
+        this.position = position;
+        this.attackPower = attackPower;
+        this.attackRange = attackRange;
+    }
+
+    public ImageIcon getIcon() {
+        return IconUtil.getMonsterIcon(iconName);
     }
 
     public void move(Cell newPos) {
         setPosition(newPos);
     }
-
 
     public boolean attack(Piece target) {
         double distance = getTargetDistance(target);
@@ -85,5 +109,38 @@ public abstract class Piece {
 
     public void setPosition(Cell position) {
         this.position = position;
+        notifyNextPosition(position.getLocation());
     }
+
+    public int getNextMove() {
+        return nextMove;
+    }
+
+    public void setNextMove(int nextMove) {
+        this.nextMove = nextMove;
+    }
+
+    public void addObserver(PieceObserver observer) {
+        observers.add(observer);
+    }
+
+    public void notifyMoving() {
+        for (PieceObserver observer : observers) {
+            observer.positionChanging(this);
+        }
+    }
+
+    public void notifyMoved(Point newPosition) {
+        for (PieceObserver observer : observers) {
+            observer.positionChanged(this, newPosition);
+        }
+        nextMove = 0;
+    }
+
+    private void notifyNextPosition(Point nextPosition) {
+        for (PieceObserver observer : observers) {
+            observer.positionVerified(this, nextPosition);
+        }
+    }
+
 }
