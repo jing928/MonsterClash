@@ -1,6 +1,8 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
 
+import java.awt.*;
+
 /**
  * The element of {@link grp.oozmakappa.monsterclash.model.Board}
  * NB: the concrete classes inherit from this must be Immutable.
@@ -13,10 +15,46 @@ public abstract class Cell {
      */
     protected final int x;
     protected final int y;
+    protected final Role role;
+    /**
+     * The order in {@link grp.oozmakappa.monsterclash.model.Board}
+     */
+    @Deprecated
+    protected final int order;
+    private Point location;
 
-    public Cell(int x, int y) {
+    protected Cell(int x, int y) {
         this.x = x;
         this.y = y;
+        order = -1;
+        role = Role.DISABLE;
+    }
+
+    protected Cell(int x, int y, int order) {
+        this(x, y, order, Role.NEUTRAL);
+    }
+
+    protected Cell(int x, int y, int order, Role role) {
+        this.x = x;
+        this.y = y;
+        this.order = order;
+        this.role = role;
+    }
+
+    public Point getLocation() {
+        return location;
+    }
+
+    public void setLocation(Point location) {
+        this.location = location;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public int getX() {
@@ -61,7 +99,18 @@ public abstract class Cell {
             return super.equals(other);
         } else {
             Cell cell = (Cell) other;
-            return this.x == cell.x && this.y == cell.y;
+            return equals(cell.x, cell.y);
         }
+    }
+
+    public boolean equals(int x, int y) {
+        return this.x == x && this.y == y;
+    }
+
+    public enum Role {
+        TEAM_A,
+        TEAM_B,
+        NEUTRAL,
+        DISABLE,
     }
 }
