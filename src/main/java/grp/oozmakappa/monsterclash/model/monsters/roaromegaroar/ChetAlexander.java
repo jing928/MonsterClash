@@ -12,8 +12,8 @@ public class ChetAlexander extends Piece {
     private static final int DEFAULTATTACKPOWER = 15;
     private static final int DEFAULTATTACKRANGE = 8;
 
-    public ChetAlexander(String id, Cell position, double health, double attackPower, int attackRange) {
-        super(id, position, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
+    public ChetAlexander(String id, Cell startingPos) {
+        super(id, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
     }
 
 }
