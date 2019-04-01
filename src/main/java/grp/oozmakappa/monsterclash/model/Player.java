@@ -70,4 +70,11 @@ public class Player {
 		return currentSelectedPiece;
 	}
 	
+	/**
+	 * Returns the player's deck
+	 */
+	
+	public Piece[] getAllPieces() {
+		return pieces;
+	}
 }
