@@ -8,11 +8,12 @@ import grp.oozmakappa.monsterclash.model.abstracts.Piece;
  */
 public class Squishy extends Piece {
 
+    private static final double DEFAULTHEALTH = 100;
+    private static final int DEFAULTATTACKPOWER = 15;
+    private static final int DEFAULTATTACKRANGE = 8;
+
     public Squishy(String id, Cell startingPos) {
-        super(id, startingPos);
-        this.health = 100;
-        this.attackPower = 15;
-        this.attackRange = 8;
+        super(id, startingPos,DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
     }
 
 }

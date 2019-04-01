@@ -8,11 +8,12 @@ import grp.oozmakappa.monsterclash.model.abstracts.Piece;
  */
 public class RandallBoggs extends Piece {
 
+    private static final double DEFAULTHEALTH = 100;
+    private static final int DEFAULTATTACKPOWER = 10;
+    private static final int DEFAULTATTACKRANGE = 3;
+
     public RandallBoggs(String id, Cell startingPos) {
-        super(id, startingPos);
-        this.health = 100;
-        this.attackPower = 10;
-        this.attackRange = 3;
+        super(id, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
     }
 
 }
