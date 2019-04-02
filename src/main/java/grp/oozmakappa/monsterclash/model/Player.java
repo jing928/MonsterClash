@@ -18,17 +18,15 @@ public class Player {
 	 * Used for setting the player name
 	 */
 	
-	public boolean setName(String name) {
+	public void setName(String name) {
 		this.name = name;
-		return true;
 	}
 	/**
 	 * This method should be used when the player is assigning
 	 * their monsters (before game starts)
 	 */
-	public boolean setPiece(Piece piece, int pos) {
+	public void setPiece(Piece piece, int pos) {
 		this.pieces[pos] = piece;
-		return true;
 	}
 	/**
 	 * This method is used when the player is selected on the active
