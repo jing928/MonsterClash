@@ -1,17 +1,17 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
+import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.utils.IconUtil;
 import grp.oozmakappa.monsterclash.view.interfaces.PieceObserver;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * @author Jing Li
  */
-public abstract class Piece {
+public abstract class Piece implements DiceObserver {
 
     private final String id;
     private String iconName;
@@ -107,13 +107,14 @@ public abstract class Piece {
 
     public void setPosition(Cell position) {
         this.position = position;
-        notifyNextPosition(position.getLocation());
+        notifyMoved();
     }
 
     public int getNextMove() {
         return nextMove;
     }
 
+    @Deprecated
     public void setNextMove(int nextMove) {
         this.nextMove = nextMove;
     }
@@ -128,17 +129,21 @@ public abstract class Piece {
         }
     }
 
-    public void notifyMoved(Point newPosition) {
+    public void notifyMoved() {
         for (PieceObserver observer : observers) {
-            observer.positionChanged(this, newPosition);
+            observer.positionChanged();
         }
         nextMove = 0;
     }
 
-    private void notifyNextPosition(Point nextPosition) {
-        for (PieceObserver observer : observers) {
-            observer.positionVerified(this, nextPosition);
-        }
+    @Override
+    public void valueChanged(int value) {
+        this.nextMove = value;
     }
+//    private void notifyNextPosition(Point nextPosition) {
+//        for (PieceObserver observer : observers) {
+//            observer.positionVerified(this, nextPosition);
+//        }
+//    }
 
 }

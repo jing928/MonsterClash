@@ -16,7 +16,6 @@ public class DiceButton extends JButton {
 
     private static final int DEFAULT_ICON_ID = 1;
     private static final Logger LOG = LogManager.getLogger();
-    private int value;
 
     public DiceButton() {
         // set default icon
@@ -27,15 +26,11 @@ public class DiceButton extends JButton {
     }
 
 
-    public int getValue() {
-        return value;
-    }
-
     /**
-     * Updates the value of {@link DiceButton}.
+     * Updates the icon of {@link DiceButton}.
      * Will animate the button before the final value determined.
      */
-    public synchronized void setValue(int value) {
+    public synchronized void updateIcon(final int value) {
         new Thread(() -> {
             // The rolling animation.
             for (Icon icon : DICE_ROLLING_ICONS) {
@@ -47,20 +42,8 @@ public class DiceButton extends JButton {
                 }
             }
             // set the final dice.
-            this.value = value;
             setIcon(DICE_ICONS.get(value - 1));
             LOG.info("Update dice value to: " + value);
         }).start();
     }
-
-
-//    @Override
-//    public void positionChanging(Piece pieceToMove) {
-////        pieceToMove.setNextMove(value);
-//    }
-//
-//    @Override
-//    public void positionChanged(Piece pieceMoved) {
-////        pieceMoved.resetMovingDistance();
-//    }
 }
