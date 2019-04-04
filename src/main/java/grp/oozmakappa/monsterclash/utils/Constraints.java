@@ -12,6 +12,6 @@ public class Constraints {
     public static final int BOARD_HEIGHT = 800;
 
 
-    public static final int CELL_X = 60;
+    public static final int CELL_LENGTH = 60;
     public static final int PIECE_DIAMETER = 100;
 }

@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * {@link Board} consists of some {@link Cell}s.
@@ -65,20 +64,19 @@ public class Board {
 
     private void initializeCells() {
         cells = new ArrayList<>();
-        int maxY = getMaxY();
-        int maxX = getMaxX();
         int i = 0;
         for (int y = -1 * maxY; y <= maxY; y++) {
             for (int x = -1 * maxX; x <= maxX; x++) {
                 int order = i++;
+                Cell.Role role;
                 if (inBoard(x, y)) {
-                    Cell.Role role = x == 0
+                    role = x == 0
                             ? Cell.Role.NEUTRAL
                             : (x > 0 ? Cell.Role.TEAM_A : Cell.Role.TEAM_B);
-                    cells.add(new NormalCell(x, y, order, role));
                 } else {
-                    cells.add(new NormalCell(x, y, order, Cell.Role.DISABLE));
+                    role = Cell.Role.DISABLE;
                 }
+                cells.add(new NormalCell(x, y, order, role));
             }
         }
     }
@@ -120,17 +118,4 @@ public class Board {
         return true;
     }
 
-    /**
-     * Returns all {@link Cell}s at a specified distance from certain {@link Cell}.
-     *
-     * @param cell     a certain {@link Cell}.
-     * @param distance the specified distance.
-     * @return the available {@link Cell}s.
-     */
-    @Deprecated
-    public List<Cell> getCellsFrom(Cell cell, int distance) {
-        return cells.stream()
-                .filter(c -> cell.distance(c) == distance)
-                .collect(Collectors.toList());
-    }
 }

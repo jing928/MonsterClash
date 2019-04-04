@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 
-import static grp.oozmakappa.monsterclash.utils.Constraints.CELL_X;
+import static grp.oozmakappa.monsterclash.utils.Constraints.CELL_LENGTH;
 
 /**
  * @author Chenglong Ma
@@ -24,7 +24,6 @@ public class CellLabel extends JLabel implements PieceObserver {
     private boolean canPlaced = false;
     private Color currentColor;
 
-
     public CellLabel(Cell cell) {
         this.cell = cell;
         setAlignmentX(CENTER_ALIGNMENT);
@@ -35,11 +34,25 @@ public class CellLabel extends JLabel implements PieceObserver {
 
         // set color
         setDefaultColor();
-        setPreferredSize(new Dimension(CELL_X, CELL_X));
+        setPreferredSize(new Dimension(CELL_LENGTH, CELL_LENGTH));
 
         // set listener
         addMouseListener(new CellListener(this));
-        this.cell.setLocation(getLocation());
+    }
+
+    public boolean canPlaced() {
+        return canPlaced;
+    }
+
+    public Cell getCell() {
+        return cell;
+    }
+
+    public void setColor(Color color) {
+        if (cell.getRole() != Cell.Role.DISABLE) {
+            this.currentColor = color;
+            setBackground(color);
+        }
     }
 
     private void setDefaultColor() {
@@ -65,48 +78,18 @@ public class CellLabel extends JLabel implements PieceObserver {
 
     @Override
     public void positionChanging(Piece pieceToMove) {
-        // TODO: is this appropriate?
         if (cell.getRole() == Cell.Role.DISABLE) {
             return;
         }
         if (cell.distance(pieceToMove.getPosition()) == pieceToMove.getNextMove()) {
-//            LOG.info("Available positions: " + cell.getX() + ", " + cell.getY());
             setBackground(Color.RED);
             canPlaced = true;
-            LOG.info("Cell location: " + getLocation());
         }
     }
 
     @Override
-    public void positionChanged(Piece pieceMoved, Point newPosition) {
+    public void positionChanged() {
         setBackground(currentColor);
-        double offset = Math.sqrt(getWidth() * getWidth() + getHeight() * getHeight());
-        if (canPlaced) {
-            LOG.info("Distance: " + getLocation().distance(newPosition));
-            LOG.info("Offset: " + offset);
-            LOG.info("new Position: " + newPosition);
-        }
-        canPlaced &= getLocation().distance(newPosition) < offset;
-        if (canPlaced) {
-            cell.setLocation(getLocation());
-            pieceMoved.setPosition(cell);
-        }
         canPlaced = false;
-    }
-
-    @Override
-    public void positionVerified(Piece pieceVerified, Point nextPosition) {
-        // do nothing
-    }
-
-    public Cell getCell() {
-        return cell;
-    }
-
-    public void setColor(Color color) {
-        if (cell.getRole() != Cell.Role.DISABLE) {
-            this.currentColor = color;
-            setBackground(color);
-        }
     }
 }

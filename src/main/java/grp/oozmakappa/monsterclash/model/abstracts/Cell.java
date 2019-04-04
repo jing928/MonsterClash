@@ -1,7 +1,9 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
 
-import java.awt.*;
+import grp.oozmakappa.monsterclash.utils.Constraints;
+
+import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
 
 /**
  * The element of {@link grp.oozmakappa.monsterclash.model.Board}
@@ -13,15 +15,15 @@ public abstract class Cell {
     /**
      * The coordinate of cell will not be changed once set.
      */
-    protected final int x;
-    protected final int y;
-    protected final Role role;
+    private final int x;
+    private final int y;
+    private final Role role;
     /**
      * The order in {@link grp.oozmakappa.monsterclash.model.Board}
      */
     @Deprecated
-    protected final int order;
-    private Point location;
+    // TODO remove this
+    private final int order;
 
     protected Cell(int x, int y) {
         this.x = x;
@@ -35,20 +37,17 @@ public abstract class Cell {
     }
 
     protected Cell(int x, int y, int order, Role role) {
+        this(x, y, Constraints.CELL_LENGTH, order, role);
+    }
+
+    protected Cell(int x, int y, int length, int order, Role role) {
         this.x = x;
         this.y = y;
         this.order = order;
         this.role = role;
     }
 
-    public Point getLocation() {
-        return location;
-    }
-
-    public void setLocation(Point location) {
-        this.location = location;
-    }
-
+    @Deprecated
     public int getOrder() {
         return order;
     }
@@ -83,9 +82,7 @@ public abstract class Cell {
      * @return the Manhattan distance
      */
     public int distance(int x, int y) {
-        x -= this.x;
-        y -= this.y;
-        return Math.abs(x) + Math.abs(y);
+        return manhattanDistance(this.x, this.y, x, y);
     }
 
     public int hashCode() {
@@ -107,6 +104,7 @@ public abstract class Cell {
         return this.x == x && this.y == y;
     }
 
+    // TODO: to be checked.
     public enum Role {
         TEAM_A,
         TEAM_B,

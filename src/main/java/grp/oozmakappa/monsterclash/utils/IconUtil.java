@@ -35,8 +35,8 @@ public class IconUtil {
     /**
      * Returns {@link Icon} by file name
      *
-     * @param name
-     * @return
+     * @param name the icon name
+     * @return the icon of monster
      */
     public static ImageIcon getMonsterIcon(String name) {
         String path = MONSTERS_DIR + name;

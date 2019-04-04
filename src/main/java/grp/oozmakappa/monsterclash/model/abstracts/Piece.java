@@ -114,25 +114,17 @@ public abstract class Piece implements DiceObserver {
         return nextMove;
     }
 
-    @Deprecated
-    public void setNextMove(int nextMove) {
-        this.nextMove = nextMove;
-    }
 
     public void addObserver(PieceObserver observer) {
         observers.add(observer);
     }
 
     public void notifyMoving() {
-        for (PieceObserver observer : observers) {
-            observer.positionChanging(this);
-        }
+        observers.forEach(o -> o.positionChanging(this));
     }
 
-    public void notifyMoved() {
-        for (PieceObserver observer : observers) {
-            observer.positionChanged();
-        }
+    private void notifyMoved() {
+        observers.forEach(PieceObserver::positionChanged);
         nextMove = 0;
     }
 
@@ -140,10 +132,5 @@ public abstract class Piece implements DiceObserver {
     public void valueChanged(int value) {
         this.nextMove = value;
     }
-//    private void notifyNextPosition(Point nextPosition) {
-//        for (PieceObserver observer : observers) {
-//            observer.positionVerified(this, nextPosition);
-//        }
-//    }
 
 }
