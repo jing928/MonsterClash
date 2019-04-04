@@ -28,6 +28,7 @@ public class DiceButton extends JButton {
 
     /**
      * Updates the icon of {@link DiceButton}.
+     * <br>
      * Will animate the button before the final value determined.
      */
     public synchronized void updateIcon(final int value) {

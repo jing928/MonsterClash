@@ -1,6 +1,5 @@
 package grp.oozmakappa.monsterclash.view;
 
-import grp.oozmakappa.monsterclash.controller.BoardController;
 import grp.oozmakappa.monsterclash.model.Board;
 import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import org.apache.logging.log4j.LogManager;
@@ -26,9 +25,8 @@ public class BoardPanel extends JLayeredPane {
     private List<CellLabel> cellLabels;
     private JPanel cellPanel, piecePanel;
 
-    public BoardPanel(BoardController controller, Board board) {
+    public BoardPanel(Board board) {
         this.board = board;
-        controller.setBoardPanel(this);
         int x = board.getWidth();
         int y = board.getHeight();
         int gap = 2;
@@ -60,6 +58,11 @@ public class BoardPanel extends JLayeredPane {
         piecePanel.add(pieceButton, order);
     }
 
+    /**
+     * Queries all {@link CellLabel}s in the {@link Board}.
+     *
+     * @return
+     */
     public List<CellLabel> getCellLabels() {
         if (cellLabels == null) {
             cellLabels = new ArrayList<>();
@@ -71,12 +74,17 @@ public class BoardPanel extends JLayeredPane {
                 cellLabels.add(cellLabel);
             }
         }
+        // returns unmodified list to prevent memory leak
         return Collections.unmodifiableList(cellLabels);
     }
 
+    /**
+     * Initializes the {@link CellLabel}s for this {@link Board}.
+     */
     private void initCells() {
         List<Cell> cells = board.getCells();
         for (int i = 0; i < cells.size(); i++) {
+            // The board panel is the creator of cell labels.
             CellLabel cellLabel = new CellLabel(cells.get(i));
             if (i % 2 == 0) {
                 cellLabel.setColor(Color.BLACK);
@@ -85,6 +93,11 @@ public class BoardPanel extends JLayeredPane {
         }
     }
 
+    /**
+     * Initializes the piece for {@link #piecePanel}.
+     * <br>
+     * Using transparent {@link JLabel} as placeholder for {@link PieceButton}.
+     */
     private void initPieces() {
         for (int i = 0; i < cellPanel.getComponentCount(); i++) {
             JLabel placeHolder = new JLabel();
@@ -93,6 +106,12 @@ public class BoardPanel extends JLayeredPane {
         }
     }
 
+    /**
+     * Returns the closest {@link CellLabel} to specified {@link Component}
+     *
+     * @param component
+     * @return the closest {@link CellLabel} if available.
+     */
     public CellLabel getClosestCell(Component component) {
         CellLabel closestCell = null;
         double minDis = Double.MAX_VALUE;
@@ -101,8 +120,9 @@ public class BoardPanel extends JLayeredPane {
                 continue;
             }
             double dis = manhattanDistance(component.getLocation(), cellLabel.getLocation());
-            // TODO: if dis is too big, the location should not be moved.
             double maxDis = cellLabel.getWidth() + cellLabel.getHeight();
+            // the cell will be ignored if the minimum distance is larger than
+            // the boundary of component
             if (dis < Math.min(maxDis, minDis)) {
                 minDis = dis;
                 closestCell = cellLabel;

@@ -119,12 +119,19 @@ public abstract class Piece implements DiceObserver {
         observers.add(observer);
     }
 
+    /**
+     * Notifies all observers that this piece is ready to move.
+     */
     public void notifyMoving() {
         observers.forEach(o -> o.positionChanging(this));
     }
 
+    /**
+     * Notifies all observers when the piece has moved to new position.
+     */
     private void notifyMoved() {
         observers.forEach(PieceObserver::positionChanged);
+        // reset `nextMove` for next round.
         nextMove = 0;
     }
 

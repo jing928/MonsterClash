@@ -54,6 +54,13 @@ public class Board {
         return cells;
     }
 
+    /**
+     * Gets the non-disabled {@link Cell} in the board.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public Cell getCell(int x, int y) {
         return cells
                 .stream()
@@ -62,6 +69,9 @@ public class Board {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid coordinate"));
     }
 
+    /**
+     * Creates new {@link Cell}s for this {@link Board}
+     */
     private void initializeCells() {
         cells = new ArrayList<>();
         int i = 0;
@@ -76,6 +86,7 @@ public class Board {
                 } else {
                     role = Cell.Role.DISABLE;
                 }
+                // Board is the creator of cell.
                 cells.add(new NormalCell(x, y, order, role));
             }
         }
@@ -98,10 +109,24 @@ public class Board {
     }
 
 
+    /**
+     * Determines if the specified {@link Cell} in the {@link Board}
+     *
+     * @param cell
+     * @return
+     * @see #inBoard(int, int)
+     */
     public boolean inBoard(Cell cell) {
         return inBoard(cell.getX(), cell.getY());
     }
 
+    /**
+     * Determines if the specified coordinate in the {@link Board}
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean inBoard(int x, int y) {
         Range<Integer> xRange = Range.between(-1 * getMaxX(), getMaxX());
         Range<Integer> yRange = Range.between(-1 * getMaxY(), getMaxY());

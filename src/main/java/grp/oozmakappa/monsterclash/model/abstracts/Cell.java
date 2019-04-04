@@ -1,8 +1,6 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
 
-import grp.oozmakappa.monsterclash.utils.Constraints;
-
 import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
 
 /**
@@ -36,11 +34,18 @@ public abstract class Cell {
         this(x, y, order, Role.NEUTRAL);
     }
 
+    /**
+     * The {@link Cell} can only be created in
+     * {@link grp.oozmakappa.monsterclash.model.Board}
+     * <br>
+     * Make the constructor is `protected` to prevent being instantiated.
+     *
+     * @param x
+     * @param y
+     * @param order
+     * @param role
+     */
     protected Cell(int x, int y, int order, Role role) {
-        this(x, y, Constraints.CELL_LENGTH, order, role);
-    }
-
-    protected Cell(int x, int y, int length, int order, Role role) {
         this.x = x;
         this.y = y;
         this.order = order;
@@ -75,7 +80,8 @@ public abstract class Cell {
     }
 
     /**
-     * Returns the Manhattan distance to another {@link Cell}
+     * Returns the Manhattan distance to another {@link Cell},
+     * or some other object that has coordinates.
      *
      * @param x
      * @param y
@@ -86,8 +92,8 @@ public abstract class Cell {
     }
 
     public int hashCode() {
-        long code = java.lang.Double.doubleToLongBits(this.getX());
-        code ^= java.lang.Double.doubleToLongBits(this.getY()) * 31L;
+        long code = java.lang.Double.doubleToLongBits(x);
+        code ^= java.lang.Double.doubleToLongBits(y) * 31L;
         return (int) code ^ (int) (code >> 32);
     }
 
@@ -100,11 +106,25 @@ public abstract class Cell {
         }
     }
 
+    /**
+     * Returns if the specified location is same as this cell
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean equals(int x, int y) {
         return this.x == x && this.y == y;
     }
 
     // TODO: to be checked.
+
+    /**
+     * The role of the cell.
+     * <p>
+     * To be used to determine the cell color.
+     * </p>
+     */
     public enum Role {
         TEAM_A,
         TEAM_B,

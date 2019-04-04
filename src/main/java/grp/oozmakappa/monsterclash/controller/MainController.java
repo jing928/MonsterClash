@@ -42,9 +42,12 @@ public class MainController {
         board = new Board(MAX_X, MAX_Y, CORNER_X, CORNER_Y);
     }
 
+    /**
+     * @pre the {@link Board} should be instantiated first.
+     */
     private void initBoardPanel() {
-        assert board != null && boardController != null;
-        boardPanel = new BoardPanel(boardController, board);
+        assert board != null;
+        boardPanel = new BoardPanel(board);
     }
 
     private void initDice() {
@@ -55,7 +58,7 @@ public class MainController {
     /**
      * Initializes the {@link Piece}s.
      *
-     * @pre The boardController cannot be null
+     * @pre The {@link BoardController} cannot be null
      */
     private void initPieces() {
         assert boardController != null;
@@ -86,7 +89,9 @@ public class MainController {
         player2Panel.setPreferredSize(new Dimension(300, 60));
     }
 
-
+    /**
+     * @pre the components in {@link GameFrame} should be created first.
+     */
     private void initGameFrame() {
         assert player1Panel != null;
         assert player2Panel != null;
@@ -102,9 +107,9 @@ public class MainController {
     public void run() {
         initDice();
 
-        boardController = new BoardController();
         initBoard();
         initBoardPanel();
+        boardController = new BoardController(boardPanel);
 
         initPieces();
 

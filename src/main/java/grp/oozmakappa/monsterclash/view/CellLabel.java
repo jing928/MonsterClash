@@ -40,6 +40,11 @@ public class CellLabel extends JLabel implements PieceObserver {
         addMouseListener(new CellListener(this));
     }
 
+    /**
+     * Returns true if this cell is allowed to be placed in.
+     *
+     * @return
+     */
     public boolean canPlaced() {
         return canPlaced;
     }
@@ -48,6 +53,12 @@ public class CellLabel extends JLabel implements PieceObserver {
         return cell;
     }
 
+    /**
+     * Sets the color of this label.
+     *
+     * @param color
+     * @pre the role of the {@link Cell} cannot be disable.
+     */
     public void setColor(Color color) {
         if (cell.getRole() != Cell.Role.DISABLE) {
             this.currentColor = color;
@@ -76,11 +87,17 @@ public class CellLabel extends JLabel implements PieceObserver {
         setBackground(currentColor);
     }
 
+    /**
+     * @param pieceToMove
+     * @pre this label cannot be placed if the cell is disabled.
+     */
     @Override
     public void positionChanging(Piece pieceToMove) {
         if (cell.getRole() == Cell.Role.DISABLE) {
             return;
         }
+        // the cell would be lightened if the distance between the cell and
+        // the piece equals the next move of the piece.
         if (cell.distance(pieceToMove.getPosition()) == pieceToMove.getNextMove()) {
             setBackground(Color.RED);
             canPlaced = true;

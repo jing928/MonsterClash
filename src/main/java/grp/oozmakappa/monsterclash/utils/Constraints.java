@@ -1,6 +1,8 @@
 package grp.oozmakappa.monsterclash.utils;
 
 /**
+ * Specifies default constraints for this game.
+ *
  * @author Chenglong Ma
  */
 public class Constraints {
