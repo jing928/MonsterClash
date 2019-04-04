@@ -9,15 +9,18 @@ import java.awt.event.ActionListener;
 /**
  * @author Chenglong Ma
  */
-public class DiceListener implements ActionListener {
+public class DiceController implements ActionListener {
+
     private final DiceButton diceButton;
 
-    public DiceListener(DiceButton diceButton) {
+    public DiceController(DiceButton diceButton) {
+
         this.diceButton = diceButton;
+        this.diceButton.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        diceButton.setValue(Dice.roll());
+        diceButton.updateIcon(Dice.roll());
     }
 }

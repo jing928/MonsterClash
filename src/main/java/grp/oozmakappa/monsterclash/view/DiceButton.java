@@ -1,53 +1,37 @@
 package grp.oozmakappa.monsterclash.view;
 
-import grp.oozmakappa.monsterclash.controller.DiceListener;
-import grp.oozmakappa.monsterclash.model.Dice;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.awt.*;
 
-import static grp.oozmakappa.monsterclash.utils.FileUtil.getSubFiles;
+import static grp.oozmakappa.monsterclash.utils.IconUtil.DICE_ICONS;
+import static grp.oozmakappa.monsterclash.utils.IconUtil.DICE_ROLLING_ICONS;
 
 /**
  * @author Chenglong Ma
  */
 public class DiceButton extends JButton {
-    private static final String VALUE_DIR = "img/dice/value/";
-    public static final List<Icon> DICE_ICONS = getIcons(VALUE_DIR);
-    private static final String ROLLING_DIR = "img/dice/rolling/";
-    public static final List<Icon> DICE_ROLLING_ICONS = getIcons(ROLLING_DIR);
+
     private static final int DEFAULT_ICON_ID = 1;
-    private int value;
+    private static final Logger LOG = LogManager.getLogger();
 
     public DiceButton() {
-        addActionListener(new DiceListener(this));
         // set default icon
         setIcon(DICE_ROLLING_ICONS.get(DEFAULT_ICON_ID));
+        setAlignmentX(Component.CENTER_ALIGNMENT);
+        setContentAreaFilled(false);
+        setBorderPainted(false);
     }
 
 
     /**
-     * Returns {@link Dice} icon set available for {@link DiceButton}
-     *
-     * @param dir
-     * @return The icons under specific dir.
-     */
-    private static List<Icon> getIcons(String dir) {
-        return getSubFiles(dir).stream()
-                .map(ImageIcon::new).collect(Collectors.toList());
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-
-    /**
-     * Updates the value of {@link DiceButton}.
+     * Updates the icon of {@link DiceButton}.
+     * <br>
      * Will animate the button before the final value determined.
      */
-    public synchronized void setValue(int value) {
+    public synchronized void updateIcon(final int value) {
         new Thread(() -> {
             // The rolling animation.
             for (Icon icon : DICE_ROLLING_ICONS) {
@@ -59,8 +43,8 @@ public class DiceButton extends JButton {
                 }
             }
             // set the final dice.
-            this.value = value;
             setIcon(DICE_ICONS.get(value - 1));
+            LOG.info("Update dice value to: " + value);
         }).start();
     }
 }

@@ -11,6 +11,11 @@ import java.util.Objects;
  */
 public class FileUtil {
 
+    public static File getResource(String filename) {
+        String path = Objects.requireNonNull(FileUtil.class.getClassLoader().getResource(filename)).getPath();
+        return new File(path);
+    }
+
     /**
      * Returns the file list in the specific dir.
      * The format of dir is relative path in 'resources/'
@@ -19,8 +24,7 @@ public class FileUtil {
      * @return the paths in the dir.
      */
     public static List<String> getSubFiles(String dir) {
-        String path = Objects.requireNonNull(FileUtil.class.getClassLoader().getResource(dir)).getPath();
-        File file = new File(path);
+        File file = getResource(dir);
         List<String> res = new ArrayList<>();
         File[] subFiles = file.listFiles();
         for (File subFile : Objects.requireNonNull(subFiles)) {

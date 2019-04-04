@@ -7,7 +7,15 @@ import grp.oozmakappa.monsterclash.model.abstracts.Cell;
  */
 public final class NormalCell extends Cell {
 
-    public NormalCell(int x, int y) {
+    NormalCell(int x, int y) {
         super(x, y);
+    }
+
+    NormalCell(int x, int y, int order) {
+        super(x, y, order);
+    }
+
+    NormalCell(int x, int y, int order, Role role) {
+        super(x, y, order, role);
     }
 }

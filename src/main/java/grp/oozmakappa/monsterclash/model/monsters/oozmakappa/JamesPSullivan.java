@@ -2,6 +2,7 @@ package grp.oozmakappa.monsterclash.model.monsters.oozmakappa;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.utils.IconUtil;
 
 /**
  * @author Jing Li
@@ -14,6 +15,7 @@ public class JamesPSullivan extends Piece {
 
     public JamesPSullivan(String id, Cell startingPos) {
         super(id, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
+        setIcon(IconUtil.JAMES_P_SULLIVAN);
     }
 
 }

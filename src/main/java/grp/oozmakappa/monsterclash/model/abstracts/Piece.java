@@ -1,15 +1,26 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
+import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
+import grp.oozmakappa.monsterclash.utils.IconUtil;
+import grp.oozmakappa.monsterclash.view.interfaces.PieceObserver;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * @author Jing Li
  */
-public abstract class Piece {
+public abstract class Piece implements DiceObserver {
 
     private final String id;
+    private String iconName;
     private double health;
     private Cell position;
     private double attackPower;
     private int attackRange;
+    private int nextMove;
+    private Collection<PieceObserver> observers;
 
     public Piece(String id, Cell position, double health, double attackPower, int attackRange) {
         this.id = id;
@@ -17,12 +28,20 @@ public abstract class Piece {
         this.health = health;
         this.attackPower = attackPower;
         this.attackRange = attackRange;
+        observers = new ArrayList<>();
+    }
+
+    public ImageIcon getIcon() {
+        return IconUtil.getMonsterIcon(iconName);
+    }
+
+    protected void setIcon(String iconName) {
+        this.iconName = iconName;
     }
 
     public void move(Cell newPos) {
         setPosition(newPos);
     }
-
 
     public boolean attack(Piece target) {
         double distance = getTargetDistance(target);
@@ -88,5 +107,37 @@ public abstract class Piece {
 
     public void setPosition(Cell position) {
         this.position = position;
+        notifyMoved();
     }
+
+    public int getNextMove() {
+        return nextMove;
+    }
+
+
+    public void addObserver(PieceObserver observer) {
+        observers.add(observer);
+    }
+
+    /**
+     * Notifies all observers that this piece is ready to move.
+     */
+    public void notifyMoving() {
+        observers.forEach(o -> o.positionChanging(this));
+    }
+
+    /**
+     * Notifies all observers when the piece has moved to new position.
+     */
+    private void notifyMoved() {
+        observers.forEach(PieceObserver::positionChanged);
+        // reset `nextMove` for next round.
+        nextMove = 0;
+    }
+
+    @Override
+    public void valueChanged(int value) {
+        this.nextMove = value;
+    }
+
 }
