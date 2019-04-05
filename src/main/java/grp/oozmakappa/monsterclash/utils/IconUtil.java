@@ -15,7 +15,7 @@ public class IconUtil {
     //region For Pieces
     // Oozma Kappa
     public static final String JAMES_P_SULLIVAN = "oozmakappa/james_p_sullivan.png";
-    public static final String MIKE_WEZOWSKI = "oozmakappa/mike_wazowski.png";
+    public static final String MIKE_WAZOWSKI = "oozmakappa/mike_wazowski.png";
     public static final String SQUISHY = "oozmakappa/squishy.png";
     // Roar Omega Roar
     public static final String CHET_ALEXANDER = "roaromegaroar/chet_alexander.png";
