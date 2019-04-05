@@ -10,7 +10,7 @@ import grp.oozmakappa.monsterclash.utils.IconUtil;
  */
 public class ChetAlexander extends Piece {
 
-	private static final Team TEAM = Team.RoarOmegaRoar;
+    private static final Team TEAM = Team.RoarOmegaRoar;
     private static final double DEFAULTHEALTH = 100;
     private static final int DEFAULTATTACKPOWER = 15;
     private static final int DEFAULTATTACKRANGE = 8;

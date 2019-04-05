@@ -10,7 +10,7 @@ import grp.oozmakappa.monsterclash.utils.IconUtil;
  */
 public class JohnnyWorthington extends Piece {
 
-	private static final Team TEAM = Team.RoarOmegaRoar;
+    private static final Team TEAM = Team.RoarOmegaRoar;
     private static final double DEFAULTHEALTH = 200;
     private static final int DEFAULTATTACKPOWER = 20;
     private static final int DEFAULTATTACKRANGE = 5;

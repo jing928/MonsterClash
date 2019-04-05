@@ -10,13 +10,13 @@ import grp.oozmakappa.monsterclash.utils.IconUtil;
  */
 public class Squishy extends Piece {
 
-	private static final Team TEAM = Team.OozmaKappa;
+    private static final Team TEAM = Team.OozmaKappa;
     private static final double DEFAULTHEALTH = 100;
     private static final int DEFAULTATTACKPOWER = 15;
     private static final int DEFAULTATTACKRANGE = 8;
 
     public Squishy(Cell startingPos) {
-        super(TEAM, startingPos,DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
+        super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
         setIcon(IconUtil.SQUISHY);
     }
 
