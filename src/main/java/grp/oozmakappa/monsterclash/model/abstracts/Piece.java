@@ -62,7 +62,7 @@ public abstract class Piece implements DiceObserver {
         return position.distance(targetPosition);
     }
 
-    public String getTeam() {
+    public Team getTeam() {
         return team;
     }
 
