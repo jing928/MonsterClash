@@ -3,14 +3,14 @@ package grp.oozmakappa.monsterclash.model;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 
 public class Player {
-    private String id;
+    private Team team;
     private String name;
     private Piece[] pieces;
     private Piece currentSelectedPiece;
 
-    public Player(String id, String name) {
-        this.id = id;
+    public Player(String name, Team team) {
         this.name = name;
+        this.team = team;
         this.pieces = new Piece[3];
     }
 
@@ -50,8 +50,8 @@ public class Player {
      * Returns Id
      */
 
-    public String getId() {
-        return id;
+    public Team getTeam() {
+        return team;
     }
 
     /**

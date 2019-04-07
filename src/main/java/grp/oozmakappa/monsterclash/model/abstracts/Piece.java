@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
+import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.utils.IconUtil;
 import grp.oozmakappa.monsterclash.view.interfaces.PieceObserver;
@@ -13,7 +14,7 @@ import java.util.Collection;
  */
 public abstract class Piece implements DiceObserver {
 
-    private final String id;
+    private final Team team;
     private String iconName;
     private double health;
     private Cell position;
@@ -22,8 +23,8 @@ public abstract class Piece implements DiceObserver {
     private int nextMove;
     private Collection<PieceObserver> observers;
 
-    public Piece(String id, Cell position, double health, double attackPower, int attackRange) {
-        this.id = id;
+    public Piece(Team team, Cell position, double health, double attackPower, int attackRange) {
+        this.team = team;
         this.position = position;
         this.health = health;
         this.attackPower = attackPower;
@@ -61,8 +62,8 @@ public abstract class Piece implements DiceObserver {
         return position.distance(targetPosition);
     }
 
-    public String getId() {
-        return id;
+    public Team getTeam() {
+        return team;
     }
 
     public double getHealth() {
