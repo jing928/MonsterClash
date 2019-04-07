@@ -64,13 +64,13 @@ public class MainController {
         assert boardController != null;
         List<Piece> pieces = new ArrayList<>();
         // TODO hardcode
-        pieces.add(new JamesPSullivan("James", board.getCell(-MAX_X, 4)));
-        pieces.add(new MikeWazowski("Mike", board.getCell(-MAX_X, 3)));
-        pieces.add(new Squishy("Squishy", board.getCell(-MAX_X, 2)));
+        pieces.add(new JamesPSullivan(board.getCell(-MAX_X, 4)));
+        pieces.add(new MikeWazowski(board.getCell(-MAX_X, 3)));
+        pieces.add(new Squishy(board.getCell(-MAX_X, 2)));
 
-        pieces.add(new ChetAlexander("Chet", board.getCell(MAX_X, 4)));
-        pieces.add(new JohnnyWorthington("Johnny", board.getCell(MAX_X, 3)));
-        pieces.add(new RandallBoggs("Randall", board.getCell(MAX_X, 2)));
+        pieces.add(new ChetAlexander(board.getCell(MAX_X, 4)));
+        pieces.add(new JohnnyWorthington(board.getCell(MAX_X, 3)));
+        pieces.add(new RandallBoggs(board.getCell(MAX_X, 2)));
 
         for (Piece piece : pieces) {
             boardController.addPiece(piece);
