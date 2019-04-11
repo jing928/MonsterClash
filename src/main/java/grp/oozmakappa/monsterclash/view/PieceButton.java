@@ -9,11 +9,13 @@ import static grp.oozmakappa.monsterclash.utils.Constraints.PIECE_DIAMETER;
 
 /**
  * @author Chenglong Ma
+ * @invariant the {@link #piece} cannot be changed
+ * @invariant the {@link #icon} of the button cannot be changed
  */
 public class PieceButton extends JButton {
 
-    private Piece piece;
-    private ImageIcon icon;
+    private final Piece piece;
+    private final ImageIcon icon;
 
     public PieceButton(Piece piece) {
         this.piece = piece;

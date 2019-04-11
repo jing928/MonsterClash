@@ -8,6 +8,7 @@ import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
  * NB: the concrete classes inherit from this must be Immutable.
  *
  * @author Chenglong Ma
+ * @invariant the coordinate of the cell and its role cannot be changed
  */
 public abstract class Cell {
     /**

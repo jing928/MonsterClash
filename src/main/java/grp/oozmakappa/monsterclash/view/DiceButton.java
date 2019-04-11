@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.view;
 
+import grp.oozmakappa.monsterclash.controller.DiceListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,6 +19,7 @@ public class DiceButton extends JButton {
     private static final Logger LOG = LogManager.getLogger();
 
     public DiceButton() {
+        addActionListener(new DiceListener(this));
         // set default icon
         setIcon(DICE_ROLLING_ICONS.get(DEFAULT_ICON_ID));
         setAlignmentX(Component.CENTER_ALIGNMENT);

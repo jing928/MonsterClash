@@ -34,6 +34,7 @@ public class BoardController extends MouseAdapter implements DiceObserver {
      *
      * @param piece
      */
+    // TODO: is this okay?
     public void addPiece(Piece piece) {
         // Board Panel is the creator of piece button.
         PieceButton button = new PieceButton(piece);
