@@ -31,16 +31,20 @@ public class Distance {
      * @see #manhattanDistance(int, int, int, int)
      */
     public static int manhattanDistance(Point a, Point b) {
+        assert a != null && b != null;
         return manhattanDistance(a.x, a.y, b.x, b.y);
     }
 
     /**
-     * @param a
-     * @param b
-     * @return
+     * @param a the start point
+     * @param b the target point
+     * @return the manhattan distance
+     * @pre a and b are not null
+     * @post the distance is >= 0
      * @see #manhattanDistance(int, int, int, int)
      */
     public static int manhattanDistance(Cell a, Cell b) {
+        assert a != null && b != null;
         return manhattanDistance(a.getX(), a.getY(), b.getX(), b.getY());
     }
 }

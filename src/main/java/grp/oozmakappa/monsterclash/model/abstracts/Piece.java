@@ -106,7 +106,17 @@ public abstract class Piece implements DiceObserver {
         return position;
     }
 
+    /**
+     * Change the position of this piece and notify all observers.
+     *
+     * @param position
+     * @post the {@link #nextMove} should be reset if the position changed.
+     */
     public void setPosition(Cell position) {
+        if (!position.equals(this.position)) {
+            // reset `nextMove` for next round.
+            nextMove = 0;
+        }
         this.position = position;
         notifyMoved();
     }
@@ -132,8 +142,6 @@ public abstract class Piece implements DiceObserver {
      */
     private void notifyMoved() {
         observers.forEach(PieceObserver::positionChanged);
-        // reset `nextMove` for next round.
-        nextMove = 0;
     }
 
     @Override

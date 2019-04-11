@@ -110,6 +110,7 @@ public class MainController {
         initBoard();
         initBoardPanel();
         boardController = new BoardController(boardPanel);
+        Dice.addObserver(boardController);
 
         initPieces();
 
