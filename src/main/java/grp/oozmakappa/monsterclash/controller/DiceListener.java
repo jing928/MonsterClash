@@ -9,14 +9,12 @@ import java.awt.event.ActionListener;
 /**
  * @author Chenglong Ma
  */
-public class DiceController implements ActionListener {
+public class DiceListener implements ActionListener {
 
     private final DiceButton diceButton;
 
-    public DiceController(DiceButton diceButton) {
-
+    public DiceListener(DiceButton diceButton) {
         this.diceButton = diceButton;
-        this.diceButton.addActionListener(this);
     }
 
     @Override
