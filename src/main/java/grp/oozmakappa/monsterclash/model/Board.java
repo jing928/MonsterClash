@@ -36,6 +36,7 @@ import java.util.List;
  * as it's perfectly symmetric.
  *
  * @author Chenglong Ma
+ * @invariant the size of the board cannot be changed
  */
 public class Board {
     private static final Logger LOG = LogManager.getLogger();

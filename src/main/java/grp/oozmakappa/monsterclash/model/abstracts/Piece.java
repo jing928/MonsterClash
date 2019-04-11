@@ -11,6 +11,7 @@ import java.util.Collection;
 
 /**
  * @author Jing Li
+ * @invariant the icon of Piece cannot be changed
  */
 public abstract class Piece implements DiceObserver {
 

@@ -14,12 +14,13 @@ import static grp.oozmakappa.monsterclash.utils.Constraints.CELL_LENGTH;
 
 /**
  * @author Chenglong Ma
+ * @invariant the {@link #cell} cannot be changed.
  */
 public class CellLabel extends JLabel implements PieceObserver {
     private static final Color COLOR_A = Color.ORANGE;
     private static final Color COLOR_B = Color.BLUE;
     private static final Color COLOR_NEUTRAL = Color.DARK_GRAY;
-    private final Logger LOG = LogManager.getLogger();
+    private static final Logger LOG = LogManager.getLogger();
     private final Cell cell;
     private boolean canPlaced = false;
     private Color currentColor;
