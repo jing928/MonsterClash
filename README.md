@@ -1,5 +1,5 @@
 # MonsterClash
-Monster Clash is a two-player turn-based board game inspired by the Pixar animation movie *Monsters University*. 
+Monster Clash is a two-player turn-based board game inspired by the Pixar animation movie *Monsters University* [1]. 
 
 ## Game Play
 
@@ -41,3 +41,8 @@ The team wins when __any__ of the following scenarios happen.
 - Each turn a monster has to move, unless all monsters are frozen by trap cells or other similar events.
 - The attack damage is calculated as `(AttackPower of the Attacking Monster) - (ShieldStrength of the Attacked Monster)`
 - Distance is calculated using Manhattan Distance algorithm.
+
+
+
+[1] *Disney presents a Pixar Animation Studios film ; directed by Dan Scanlon ; produced by Kori Rae ; story by Dan Scanlon, Daniel Gerson & Robert L. Baird ; screenplay by Daniel Gerson & Robert L. Baird, Dan Scanlon. Monsters University. Burbank, CA :Distributed by Buena Vista Home Entertainment, 2013. Print.*
+
