@@ -1,12 +1,13 @@
 package grp.oozmakappa.monsterclash.model;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Cell;
-import org.apache.commons.lang3.Range;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static grp.oozmakappa.monsterclash.utils.NumberUtil.between;
 
 /**
  * {@link Board} consists of some {@link Cell}s.
@@ -129,19 +130,15 @@ public class Board {
      * @return
      */
     public boolean inBoard(int x, int y) {
-        Range<Integer> xRange = Range.between(-1 * getMaxX(), getMaxX());
-        Range<Integer> yRange = Range.between(-1 * getMaxY(), getMaxY());
+        boolean validX = between(x, -maxX, maxX);
+        boolean validY = between(y, -maxY, maxY);
 
-        if (!xRange.contains(x) || !yRange.contains(y)) {
+        if (!validX || !validY) {
             return false;
         }
-
-        xRange = Range.between(-1 * cornerX, cornerX);
-        yRange = Range.between(-1 * cornerY, cornerY);
-        if (!xRange.contains(x)) {
-            return yRange.contains(y);
-        }
-        return true;
+        validX = between(x, -cornerX, cornerX);
+        validY = between(y, -cornerY, cornerY);
+        return validX || validY;
     }
 
 }
