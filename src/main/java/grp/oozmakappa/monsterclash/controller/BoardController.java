@@ -4,12 +4,14 @@ import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
+import grp.oozmakappa.monsterclash.utils.Constraints;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,6 +25,7 @@ public class BoardController extends MouseAdapter implements DiceObserver {
     private Point initMouseLocation, initPieceLocation;
     private Team currTeam = Team.OozmaKappa;
     private boolean canMove = true;
+    private Thread timeOutThread;
 
     public BoardController(BoardPanel boardPanel) {
         this.boardPanel = boardPanel;
@@ -60,6 +63,19 @@ public class BoardController extends MouseAdapter implements DiceObserver {
         initMouseLocation = e.getPoint();
         initPieceLocation = button.getLocation();
         piece.notifyMoving();
+        timeOutThread = new Thread(() -> {
+            try {
+                Thread.sleep(Constraints.TIME_OUT);
+                LOG.info("Time out for this turn");
+                changeTurn();
+                piece.setPosition(piece.getPosition());
+                button.setLocation(initPieceLocation);
+                JOptionPane.showMessageDialog(boardPanel, "Time out for your turn.");
+            } catch (InterruptedException ex) {
+                LOG.info(ex.getMessage());
+            }
+        });
+        timeOutThread.start();
     }
 
     /**
@@ -77,12 +93,10 @@ public class BoardController extends MouseAdapter implements DiceObserver {
         Piece piece = button.getPiece();
         CellLabel cellLabel = boardPanel.getClosestCell(button);
         if (cellLabel != null) {
-            currTeam = currTeam == Team.OozmaKappa
-                    ? Team.RoarOmegaRoar
-                    : Team.OozmaKappa;
-            canMove = false;
+            changeTurn();
             newCell = cellLabel.getCell();
             newLoc = cellLabel.getLocation();
+            timeOutThread.interrupt();
         } else {
             // stay put
             newCell = piece.getPosition();
@@ -102,6 +116,13 @@ public class BoardController extends MouseAdapter implements DiceObserver {
         int x = piecePoint.x + e.getX() - initMouseLocation.x;
         int y = piecePoint.y + e.getY() - initMouseLocation.y;
         e.getComponent().setLocation(x, y);
+    }
+
+    private void changeTurn() {
+        currTeam = currTeam == Team.OozmaKappa
+                ? Team.RoarOmegaRoar
+                : Team.OozmaKappa;
+        canMove = false;
     }
 
     private boolean invalidPiece(MouseEvent e) {
