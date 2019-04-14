@@ -16,4 +16,6 @@ public class Constraints {
 
     public static final int CELL_LENGTH = 60;
     public static final int PIECE_DIAMETER = 100;
+
+    public static final int TIME_OUT = 3000;
 }
