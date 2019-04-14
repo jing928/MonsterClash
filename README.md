@@ -31,6 +31,7 @@ The team wins when __any__ of the following scenarios happen.
 - Two players cannot pick the same team.
 - Monsters can move towards any directions but cannot move out of the border lines of the game board.
 - Player rolls the dice first and then pick a monster to move and act.
+- Once the player rolls the dice and picks a monster to move, all the valid cells that the monster can move to will be lit up. However, if the player clicks an invalid cell, the monster will not move and the player has to choose again.
 - Each turn a player can only pick one monster.
 - The monster has to move first and act second.
 - After the move, the player can choose to attack __or__ use special skill of the selected monster, provided the monster has any special skill.
