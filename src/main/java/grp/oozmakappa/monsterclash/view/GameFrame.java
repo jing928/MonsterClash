@@ -42,7 +42,7 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * @pre the {@link Board} should be instantiated first.
+     * @pre board != null
      */
     public void initBoardPanel(Board board) {
         assert board != null;
@@ -60,7 +60,7 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * @pre the {@link #boardPanel} must be added before this
+     * @pre mainPanel.getComponentCount() > 0
      */
     @Deprecated
     public void initPlayer2Panel() {
@@ -71,7 +71,7 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * @pre all panels should be initialized first.
+     * @pre mainPanel != null && player1Panel != null && play2Panel != null
      */
     public void display() {
         // finish setup

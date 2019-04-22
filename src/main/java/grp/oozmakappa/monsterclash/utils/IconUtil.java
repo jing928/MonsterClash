@@ -13,6 +13,7 @@ import static grp.oozmakappa.monsterclash.utils.FileUtil.getSubFiles;
 public class IconUtil {
 
     //region For Pieces
+
     // Oozma Kappa
     public static final String JAMES_P_SULLIVAN = "oozmakappa/james_p_sullivan.png";
     public static final String MIKE_WAZOWSKI = "oozmakappa/mike_wazowski.png";
@@ -23,13 +24,16 @@ public class IconUtil {
     public static final String RANDALL_BOGGS = "roaromegaroar/randall_boggs.png";
 
     private static final String MONSTERS_DIR = "img/monsters/";
+
     //endregion
 
     //region For Dice
+
     private static final String DICE_VALUE_DIR = "img/dice/value/";
     public static final List<Icon> DICE_ICONS = getIcons(DICE_VALUE_DIR);
     private static final String DICE_ROLLING_DIR = "img/dice/rolling/";
     public static final List<Icon> DICE_ROLLING_ICONS = getIcons(DICE_ROLLING_DIR);
+
     //endregion
 
     /**
@@ -39,6 +43,7 @@ public class IconUtil {
      * @return the icon of monster
      */
     public static ImageIcon getMonsterIcon(String name) {
+        assert name != null;
         String path = MONSTERS_DIR + name;
         File file = FileUtil.getResource(path);
         return new ImageIcon(file.getAbsolutePath());

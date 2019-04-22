@@ -1,6 +1,5 @@
 package grp.oozmakappa.monsterclash.model;
 
-import grp.oozmakappa.monsterclash.controller.BoardController;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.monsters.oozmakappa.JamesPSullivan;
 import grp.oozmakappa.monsterclash.model.monsters.oozmakappa.MikeWazowski;
@@ -43,8 +42,6 @@ public class Game {
 
     /**
      * Initializes the {@link Piece}s.
-     *
-     * @pre The {@link BoardController} cannot be null
      */
     private void initPieces() {
         // TODO hardcode

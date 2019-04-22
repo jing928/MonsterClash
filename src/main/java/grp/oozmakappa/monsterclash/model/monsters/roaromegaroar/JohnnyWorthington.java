@@ -7,6 +7,7 @@ import grp.oozmakappa.monsterclash.utils.IconUtil;
 
 /**
  * @author Jing Li
+ * @invariant getTeam().equals(" Team.RoarOmegaRoar ")
  */
 public class JohnnyWorthington extends Piece {
 

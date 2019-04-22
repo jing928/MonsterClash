@@ -11,7 +11,9 @@ import java.util.Collection;
 
 /**
  * @author Jing Li
- * @invariant the icon of Piece cannot be changed
+ * @invariant nextMove >= 0
+ * @invariant health >= 0
+ * @invariant observers.size() >= 0
  */
 public abstract class Piece implements DiceObserver {
 
@@ -33,6 +35,10 @@ public abstract class Piece implements DiceObserver {
         observers = new ArrayList<>();
     }
 
+    /**
+     * @return
+     * @pre iconName != null
+     */
     public ImageIcon getIcon() {
         return IconUtil.getMonsterIcon(iconName);
     }
@@ -111,7 +117,6 @@ public abstract class Piece implements DiceObserver {
      * Change the position of this piece and notify all observers.
      *
      * @param position
-     * @post the {@link #nextMove} should be reset if the position changed.
      */
     public void setPosition(Cell position) {
         if (!position.equals(this.position)) {
