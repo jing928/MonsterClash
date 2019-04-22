@@ -11,9 +11,9 @@ import java.util.Collection;
 
 /**
  * @author Jing Li
- * @invariant nextMove >= 0
- * @invariant health >= 0
- * @invariant observers.size() >= 0
+ * @Invariant nextMove >= 0
+ * @Invariant health >= 0
+ * @Invariant observers.size() >= 0
  */
 public abstract class Piece implements DiceObserver {
 
@@ -37,7 +37,7 @@ public abstract class Piece implements DiceObserver {
 
     /**
      * @return
-     * @pre iconName != null
+     * @Requires iconName != null
      */
     public ImageIcon getIcon() {
         return IconUtil.getMonsterIcon(iconName);

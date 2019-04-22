@@ -17,7 +17,7 @@ public class Distance {
      * @param bX
      * @param bY
      * @return
-     * @post dx + dy >= 0
+     * @Ensures dx + dy >= 0
      */
     public static int manhattanDistance(int aX, int aY, int bX, int bY) {
         int dx = Math.abs(aX - bX);

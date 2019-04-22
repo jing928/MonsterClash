@@ -14,7 +14,7 @@ import static grp.oozmakappa.monsterclash.utils.Constraints.CELL_LENGTH;
 
 /**
  * @author Chenglong Ma
- * @invariant cell != null
+ * @Invariant cell != null
  */
 public class CellLabel extends JLabel implements PieceObserver {
     private static final Color COLOR_A = Color.ORANGE;
@@ -58,7 +58,7 @@ public class CellLabel extends JLabel implements PieceObserver {
      * Sets the color of this label.
      *
      * @param color
-     * @pre cell.getRole() != Cell.Role.DISABLE
+     * @Requires cell.getRole() != Cell.Role.DISABLE
      */
     public void setColor(Color color) {
         if (cell.getRole() != Cell.Role.DISABLE) {

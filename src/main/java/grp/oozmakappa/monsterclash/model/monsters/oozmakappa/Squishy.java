@@ -7,7 +7,7 @@ import grp.oozmakappa.monsterclash.utils.IconUtil;
 
 /**
  * @author Jing Li
- * @invariant getTeam().equals(" Team.OozmaKappa ")
+ * @Invariant getTeam().equals(" Team.OozmaKappa ")
  */
 public class Squishy extends Piece {
 

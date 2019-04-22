@@ -42,7 +42,7 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * @pre board != null
+     * @Requires board != null
      */
     public void initBoardPanel(Board board) {
         assert board != null;
@@ -60,7 +60,7 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * @pre mainPanel.getComponentCount() > 0
+     * @Requires mainPanel.getComponentCount() > 0
      */
     @Deprecated
     public void initPlayer2Panel() {
@@ -71,7 +71,7 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * @pre mainPanel != null && player1Panel != null && play2Panel != null
+     * @Requires mainPanel != null && player1Panel != null && play2Panel != null
      */
     public void display() {
         // finish setup
