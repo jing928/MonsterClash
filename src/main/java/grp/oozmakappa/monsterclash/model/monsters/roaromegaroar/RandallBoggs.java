@@ -1,12 +1,13 @@
 package grp.oozmakappa.monsterclash.model.monsters.roaromegaroar;
 
-        import grp.oozmakappa.monsterclash.model.Team;
-        import grp.oozmakappa.monsterclash.model.abstracts.Cell;
-        import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-        import grp.oozmakappa.monsterclash.utils.IconUtil;
+import grp.oozmakappa.monsterclash.model.Team;
+import grp.oozmakappa.monsterclash.model.abstracts.Cell;
+import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.utils.IconUtil;
 
 /**
  * @author Jing Li
+ * @Invariant getTeam().equals(" Team.RoarOmegaRoar ")
  */
 public class RandallBoggs extends Piece {
 

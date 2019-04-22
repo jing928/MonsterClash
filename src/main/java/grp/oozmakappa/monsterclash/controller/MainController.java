@@ -16,7 +16,6 @@ public class MainController {
     /**
      * @param board
      * @return
-     * @pre {@link Board} must be inited first
      */
     private GameFrame initGameFrame(Board board) {
         assert board != null;

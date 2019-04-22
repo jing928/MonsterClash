@@ -17,6 +17,7 @@ import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
 
 /**
  * @author Chenglong Ma
+ * @Invariant cellLabels.size() >= 0
  */
 public class BoardPanel extends JLayeredPane {
     private static final Logger LOG = LogManager.getLogger();

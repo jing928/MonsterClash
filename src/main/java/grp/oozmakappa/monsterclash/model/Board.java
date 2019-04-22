@@ -37,7 +37,8 @@ import static grp.oozmakappa.monsterclash.utils.NumberUtil.between;
  * as it's perfectly symmetric.
  *
  * @author Chenglong Ma
- * @invariant the size of the board cannot be changed
+ * @Invariant cells.size() >= 0
+ * @Invariant maxX > 0 && maxY > 0 && cornerX > 0 && cornerY > 0
  */
 public class Board {
     private static final Logger LOG = LogManager.getLogger();
@@ -73,6 +74,8 @@ public class Board {
 
     /**
      * Creates new {@link Cell}s for this {@link Board}
+     *
+     * @Ensures cells != null && cells.size() > 0
      */
     private void initializeCells() {
         cells = new ArrayList<>();
@@ -119,6 +122,7 @@ public class Board {
      * @see #inBoard(int, int)
      */
     public boolean inBoard(Cell cell) {
+        assert cell != null;
         return inBoard(cell.getX(), cell.getY());
     }
 

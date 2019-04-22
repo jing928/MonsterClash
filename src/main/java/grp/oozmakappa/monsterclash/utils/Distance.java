@@ -17,7 +17,7 @@ public class Distance {
      * @param bX
      * @param bY
      * @return
-     * @post the distance >= 0
+     * @Ensures dx + dy >= 0
      */
     public static int manhattanDistance(int aX, int aY, int bX, int bY) {
         int dx = Math.abs(aX - bX);
@@ -40,8 +40,6 @@ public class Distance {
      * @param a the start point
      * @param b the target point
      * @return the manhattan distance
-     * @pre a and b are not null
-     * @post the distance is >= 0
      * @see #manhattanDistance(int, int, int, int)
      */
     public static int manhattanDistance(Cell a, Cell b) {

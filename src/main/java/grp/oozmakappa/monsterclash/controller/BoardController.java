@@ -49,10 +49,6 @@ public class BoardController extends MouseAdapter implements DiceObserver {
         }
     }
 
-    /**
-     * @param e
-     * @pre the clicked component should be {@link PieceButton}
-     */
     @Override
     public void mousePressed(MouseEvent e) {
         if (invalidPiece(e)) {
@@ -78,10 +74,6 @@ public class BoardController extends MouseAdapter implements DiceObserver {
         timeOutThread.start();
     }
 
-    /**
-     * @param e
-     * @pre the clicked component should be {@link PieceButton}
-     */
     @Override
     public void mouseReleased(MouseEvent e) {
         if (invalidPiece(e)) {

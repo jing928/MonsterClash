@@ -24,6 +24,7 @@ public final class Dice {
      * Generates next dice value randomly.
      *
      * @return the new dice value
+     * @Ensures NumberUtil.between(value, 0, 5) == true
      */
     public static int roll() {
         int value = (int) (Math.random() * MAX_DICE) + 1;
