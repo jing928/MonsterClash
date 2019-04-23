@@ -66,9 +66,8 @@ public class GameFrame extends JFrame {
     @Deprecated
     public void initPlayer1Panel() {
         // TODO: hardcode
-        player1Panel = new JPanel();
+        player1Panel = new PlayerPanel();
         player1Panel.setBackground(Color.RED);
-        player1Panel.setPreferredSize(new Dimension(300, 60));
         mainPanel.add(player1Panel);
     }
 
@@ -77,9 +76,8 @@ public class GameFrame extends JFrame {
      */
     @Deprecated
     public void initPlayer2Panel() {
-        player2Panel = new JPanel();
+        player2Panel = new PlayerPanel();
         player2Panel.setBackground(Color.BLUE);
-        player2Panel.setPreferredSize(new Dimension(300, 60));
         mainPanel.add(player2Panel);
     }
 

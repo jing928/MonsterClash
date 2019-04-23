@@ -3,6 +3,9 @@ package grp.oozmakappa.monsterclash.controller;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.Command;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.model.command.MoveCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.utils.Constraints;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
@@ -21,6 +24,7 @@ import java.awt.event.MouseEvent;
  */
 public class BoardController extends MouseAdapter implements DiceObserver {
     private static final Logger LOG = LogManager.getLogger();
+    private static final CommandManager COMMAND_MANAGER = CommandManager.getInstance();
     private final BoardPanel boardPanel;
     private Point initMouseLocation, initPieceLocation;
     private Team currTeam = Team.OozmaKappa;
@@ -89,10 +93,14 @@ public class BoardController extends MouseAdapter implements DiceObserver {
             newCell = cellLabel.getCell();
             newLoc = cellLabel.getLocation();
             timeOutThread.interrupt();
+            Command moveCmd = new MoveCommand(button, initPieceLocation, newCell, newLoc);
+            COMMAND_MANAGER.storeAndExecute(moveCmd);
         } else {
             // stay put
             newCell = piece.getPosition();
             newLoc = initPieceLocation;
+            piece.setPosition(newCell);
+            button.setLocation(newLoc);
         }
         button.setLocation(newLoc);
         piece.setPosition(newCell);
