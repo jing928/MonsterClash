@@ -2,15 +2,18 @@ package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
  * @author Chenglong Ma
  */
-public class PlayerPanel extends JPanel {
+public class PlayerPanel extends JPanel implements ActionListener {
     private final Team team;
 
     public PlayerPanel(List<Piece> pieces, Team team) {
@@ -26,6 +29,14 @@ public class PlayerPanel extends JPanel {
                 add(new PieceInfoPanel(piece));
             }
         }
-        add(new JButton("Undo"));
+        JButton undoBtn = new JButton("Undo");
+        add(undoBtn);
+        undoBtn.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        CommandManager cmdManager = CommandManager.getInstance();
+        cmdManager.undoLast();
     }
 }

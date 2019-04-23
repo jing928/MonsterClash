@@ -12,8 +12,10 @@ import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
-
 import java.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.util.ArrayList;
 
 /**
  * @author Jing Li
@@ -38,6 +40,7 @@ public abstract class Piece implements DiceObserver {
     private double armor;
     private int nextMove;
     private Mode mode;
+    protected static final Logger LOG = LogManager.getLogger();
 
     public Piece(Team team, Cell position, double health, double attackPower, int reachableRange) {
         this.team = team;
