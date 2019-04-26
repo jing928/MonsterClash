@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.model.monsters.oozmakappa;
 
+import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
@@ -19,6 +20,8 @@ public class Squishy extends Piece {
     public Squishy(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
         setIcon(IconUtil.SQUISHY);
+        addSpecialAbility(Ability.SPECIAL_ATTACK);
+        addSpecialAbility(Ability.SPECIAL_HEALING);
     }
 
 }
