@@ -5,6 +5,7 @@ import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.utils.Constraints;
+import grp.oozmakappa.monsterclash.view.AbilityDialog;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import grp.oozmakappa.monsterclash.view.PieceButton;
@@ -96,6 +97,7 @@ public class BoardController extends MouseAdapter implements DiceObserver {
         }
         piece.setPosition(newCell);
         button.setLocation(newLoc);
+        new AbilityDialog(null, piece).setVisible(true);
     }
 
     @Override
