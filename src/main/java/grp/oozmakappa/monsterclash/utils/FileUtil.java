@@ -1,10 +1,7 @@
 package grp.oozmakappa.monsterclash.utils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author Chenglong Ma
@@ -27,6 +24,7 @@ public class FileUtil {
         File file = getResource(dir);
         List<String> res = new ArrayList<>();
         File[] subFiles = file.listFiles();
+        Arrays.sort(subFiles);
         for (File subFile : Objects.requireNonNull(subFiles)) {
             if (subFile.isFile()) {
                 res.add(subFile.getAbsolutePath());
