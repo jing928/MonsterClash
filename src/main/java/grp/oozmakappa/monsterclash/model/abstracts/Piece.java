@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
+import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.utils.IconUtil;
@@ -8,6 +9,8 @@ import grp.oozmakappa.monsterclash.view.interfaces.PieceObserver;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Jing Li
@@ -18,13 +21,14 @@ import java.util.Collection;
 public abstract class Piece implements DiceObserver {
 
     private final Team team;
+    private final Collection<PieceObserver> observers;
+    private final List<Ability> abilities;
     private String iconName;
     private double health;
     private Cell position;
     private double attackPower;
     private int attackRange;
     private int nextMove;
-    private Collection<PieceObserver> observers;
 
     public Piece(Team team, Cell position, double health, double attackPower, int attackRange) {
         this.team = team;
@@ -33,6 +37,12 @@ public abstract class Piece implements DiceObserver {
         this.attackPower = attackPower;
         this.attackRange = attackRange;
         observers = new ArrayList<>();
+        abilities = new ArrayList<>();
+        abilities.add(Ability.PLAIN_ATTACK);
+    }
+
+    public List<Ability> getAbilities() {
+        return Collections.unmodifiableList(abilities);
     }
 
     /**
@@ -85,6 +95,10 @@ public abstract class Piece implements DiceObserver {
         health = damage > health ? 0 : health - damage;
     }
 
+    public void increaseHealth(double health) {
+        this.health += health;
+    }
+
     public int getX() {
         return position.getX();
     }
@@ -101,7 +115,7 @@ public abstract class Piece implements DiceObserver {
         this.attackPower = attackPower;
     }
 
-    public double getAttackRange() {
+    public int getAttackRange() {
         return attackRange;
     }
 
@@ -150,9 +164,14 @@ public abstract class Piece implements DiceObserver {
         observers.forEach(PieceObserver::positionChanged);
     }
 
+    protected void addSpecialAbility(Ability ability) {
+        abilities.add(ability);
+    }
+
     @Override
     public void valueChanged(int value) {
         this.nextMove = value;
     }
+
 
 }
