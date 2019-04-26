@@ -38,6 +38,14 @@ public class IconUtil {
     //endregion
 
     //region For piece abilities
+
+    /**
+     * Acknowledgement:
+     * Icons made by {
+     * Lorc, http://lorcblog.blogspot.com,
+     * Delapouite, http://delapouite.com,
+     * }
+     */
     public static final String ABILITIES_DIR = "img/abilities/";
     //endregion
 
