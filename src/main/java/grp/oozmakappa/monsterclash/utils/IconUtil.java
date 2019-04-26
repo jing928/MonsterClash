@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static grp.oozmakappa.monsterclash.utils.FileUtil.getResource;
 import static grp.oozmakappa.monsterclash.utils.FileUtil.getSubFiles;
 
 /**
@@ -36,6 +37,11 @@ public class IconUtil {
 
     //endregion
 
+    //region For piece abilities
+    public static final String ABILITIES_DIR = "img/abilities/";
+    //endregion
+
+
     /**
      * Returns {@link Icon} by file name
      *
@@ -58,5 +64,16 @@ public class IconUtil {
     public static List<Icon> getIcons(String dir) {
         return getSubFiles(dir).stream()
                 .map(ImageIcon::new).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns {@link Icon} in specified path
+     *
+     * @param filename the path of {@link Icon}
+     * @return the {@link ImageIcon}
+     */
+    public static ImageIcon getIcon(String filename) {
+        File file = getResource(filename);
+        return new ImageIcon(file.getAbsolutePath());
     }
 }
