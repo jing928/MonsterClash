@@ -28,12 +28,13 @@ public class MainController {
 
     private void initControllers(Game model, GameFrame view) {
         assert model != null && view != null;
+        Dice dice = Dice.getInstance();
         BoardController boardController = new BoardController(view.getBoardPanel());
         for (Piece piece : model.getPieces()) {
             boardController.addPiece(piece);
-            Dice.addObserver(piece);
+            dice.addObserver(piece);
         }
-        Dice.addObserver(boardController);
+        dice.addObserver(boardController);
     }
 
     public void run() {

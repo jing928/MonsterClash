@@ -19,6 +19,6 @@ public class DiceListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        diceButton.updateIcon(Dice.roll());
+        diceButton.updateIcon(Dice.getInstance().roll());
     }
 }

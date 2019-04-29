@@ -9,7 +9,7 @@ public interface DiceObserver {
      * generates new value.
      *
      * @param value the new dice value.
-     * @Requires NumberUtil.between(value, 0, 5) == true
+     * @Requires NumberUtil.between(value, 0, 5)
      */
     void valueChanged(int value);
 }

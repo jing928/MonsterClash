@@ -10,13 +10,21 @@ import java.util.List;
  */
 public final class Dice {
     private static final int MAX_DICE = 6;
-    private static final List<DiceObserver> observers = new ArrayList<>();
+    private final List<DiceObserver> observers = new ArrayList<>();
+    private static Dice dice;
 
     private Dice() {
         // cannot be instantiated
     }
 
-    public static void addObserver(DiceObserver observer) {
+    public static synchronized Dice getInstance() {
+        if (dice == null) {
+            dice = new Dice();
+        }
+        return dice;
+    }
+
+    public void addObserver(DiceObserver observer) {
         observers.add(observer);
     }
 
@@ -24,9 +32,9 @@ public final class Dice {
      * Generates next dice value randomly.
      *
      * @return the new dice value
-     * @Ensures NumberUtil.between(value, 0, 5) == true
+     * @Ensures NumberUtil.between(value, 0, 5)
      */
-    public static int roll() {
+    public int roll() {
         int value = (int) (Math.random() * MAX_DICE) + 1;
         observers.forEach(o -> o.valueChanged(value));
         return value;
