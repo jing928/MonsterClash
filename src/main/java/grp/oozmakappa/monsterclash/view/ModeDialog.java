@@ -11,31 +11,48 @@ import java.awt.event.ActionListener;
 /**
  * @author Chenglong Ma
  */
-public class AbilityDialog extends JDialog implements ActionListener {
+public class ModeDialog extends JDialog implements ActionListener {
     private final Piece piece;
 
-    public AbilityDialog(Frame owner, Piece piece) {
-        super(owner, true);
-        int cols = piece.getAbilities().size();
-        setLayout(new GridLayout(1, cols, 2, 2));
-        Point point = MouseInfo.getPointerInfo().getLocation();
-        setBounds(point.x, point.y, 100 * cols, 120);
+    public ModeDialog(Piece piece) {
+        super((Frame) null, true);
         this.piece = piece;
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         initView();
         setUndecorated(true);
     }
 
+    public void display() {
+        // set location
+        Point point = MouseInfo.getPointerInfo().getLocation();
+        setLocation(point);
+
+        pack();
+        setVisible(true);
+    }
+
     private void initView() {
+        JPanel modePanel = new JPanel();
+        int cols = piece.getAbilities().size();
+        modePanel.setLayout(new GridLayout(1, cols, 2, 2));
+        // 1. add buttons
         for (Ability ability : piece.getAbilities()) {
             JButton button = new AbilityButton(ability);
             button.addActionListener(this);
-            add(button);
+            modePanel.add(button);
         }
+        modePanel.setPreferredSize(new Dimension(100 * cols, 120));
+        add(modePanel);
+
+        // 2. add cancel buttons
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(cancelButton);
     }
 
     /**
      * @param e
-     * @deprecated to be further improved
+     * @deprecated TODO to be further improved
      */
     @Override
     @Deprecated

@@ -5,9 +5,9 @@ import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.utils.Constraints;
-import grp.oozmakappa.monsterclash.view.AbilityDialog;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
 import grp.oozmakappa.monsterclash.view.CellLabel;
+import grp.oozmakappa.monsterclash.view.ModeDialog;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,7 +38,6 @@ public class BoardController extends MouseAdapter implements DiceObserver {
      *
      * @param piece
      */
-    // TODO: is this okay?
     public void addPiece(Piece piece) {
         // Board Panel is the creator of piece button.
         PieceButton button = new PieceButton(piece);
@@ -97,7 +96,7 @@ public class BoardController extends MouseAdapter implements DiceObserver {
         }
         piece.setPosition(newCell);
         button.setLocation(newLoc);
-        new AbilityDialog(null, piece).setVisible(true);
+        new ModeDialog(piece).display();
     }
 
     @Override
@@ -120,12 +119,12 @@ public class BoardController extends MouseAdapter implements DiceObserver {
     }
 
     private boolean invalidPiece(MouseEvent e) {
-        if (!(e.getComponent() instanceof PieceButton)) {
+        if (!canMove || !(e.getComponent() instanceof PieceButton)) {
             return true;
         }
         PieceButton button = (PieceButton) e.getComponent();
         Piece piece = button.getPiece();
-        if (piece.getTeam() != currTeam || !canMove) {
+        if (piece.getTeam() != currTeam) {
             e.consume();
             return true;
         }
