@@ -1,6 +1,7 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
 import grp.oozmakappa.monsterclash.model.Ability;
+import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.utils.IconUtil;

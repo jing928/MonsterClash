@@ -1,6 +1,6 @@
 package grp.oozmakappa.monsterclash.utils;
 
-import grp.oozmakappa.monsterclash.model.abstracts.Cell;
+import grp.oozmakappa.monsterclash.model.Cell;
 
 import java.awt.*;
 

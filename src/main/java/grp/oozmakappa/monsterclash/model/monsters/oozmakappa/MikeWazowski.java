@@ -1,8 +1,8 @@
 package grp.oozmakappa.monsterclash.model.monsters.oozmakappa;
 
 import grp.oozmakappa.monsterclash.model.Ability;
+import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
-import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.utils.IconUtil;
 
