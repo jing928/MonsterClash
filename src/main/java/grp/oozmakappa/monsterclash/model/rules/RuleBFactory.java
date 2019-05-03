@@ -9,7 +9,7 @@ import grp.oozmakappa.monsterclash.model.decorators.*;
 public class RuleBFactory extends AbstractRuleFactory {
     @Override
     AttackDecorator createAttackDecorator(Piece piece) {
-        return new FatherAttack(piece);
+        return new FartherAttack(piece);
     }
 
     @Override
