@@ -22,10 +22,11 @@ public class CellLabel extends JLabel implements PieceObserver {
     private static final Color COLOR_NEUTRAL = Color.DARK_GRAY;
     private static final Logger LOG = LogManager.getLogger();
     private final Cell cell;
+    private final CellListener listener;
     private boolean canPlaced = false;
     private Color currentColor;
 
-    public CellLabel(Cell cell) {
+    CellLabel(Cell cell) {
         this.cell = cell;
         setAlignmentX(CENTER_ALIGNMENT);
         setAlignmentY(CENTER_ALIGNMENT);
@@ -38,7 +39,8 @@ public class CellLabel extends JLabel implements PieceObserver {
         setPreferredSize(new Dimension(CELL_LENGTH, CELL_LENGTH));
 
         // set listener
-        addMouseListener(new CellListener(this));
+        listener = new CellListener(this);
+        addMouseListener(listener);
     }
 
     /**
@@ -105,8 +107,11 @@ public class CellLabel extends JLabel implements PieceObserver {
     }
 
     @Override
-    public void positionChanged() {
+    public void positionChanged(Piece pieceLocated) {
         setBackground(currentColor);
         canPlaced = false;
+        if (cell.distance(pieceLocated.getPosition()) == 0) {
+            listener.affect(pieceLocated);
+        }
     }
 }

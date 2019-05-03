@@ -166,7 +166,7 @@ public abstract class Piece implements DiceObserver {
      * Notifies all observers when the piece has moved to new position.
      */
     private void notifyMoved() {
-        observers.forEach(PieceObserver::positionChanged);
+        observers.forEach(o -> o.positionChanged(this));
     }
 
     protected void addSpecialAbility(Ability ability) {
