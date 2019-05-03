@@ -1,22 +1,23 @@
 package grp.oozmakappa.monsterclash.view;
 
+import grp.oozmakappa.monsterclash.controller.ModeListener;
 import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Chenglong Ma
  */
-public class ModeDialog extends JDialog implements ActionListener {
+public class ModeDialog extends JDialog {
     private final Piece piece;
+    private final ModeListener listener;
 
     public ModeDialog(Piece piece) {
         super((Frame) null, true);
         this.piece = piece;
+        listener = new ModeListener(piece, this);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         initView();
         setUndecorated(true);
@@ -38,7 +39,7 @@ public class ModeDialog extends JDialog implements ActionListener {
         // 1. add buttons
         for (Ability ability : piece.getAbilities()) {
             JButton button = new AbilityButton(ability);
-            button.addActionListener(this);
+            button.addActionListener(listener);
             modePanel.add(button);
         }
         modePanel.setPreferredSize(new Dimension(100 * cols, 120));
@@ -46,18 +47,9 @@ public class ModeDialog extends JDialog implements ActionListener {
 
         // 2. add cancel buttons
         JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(listener);
         cancelButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(cancelButton);
-    }
-
-    /**
-     * @param e
-     * @deprecated TODO to be further improved
-     */
-    @Override
-    @Deprecated
-    public void actionPerformed(ActionEvent e) {
-        setVisible(false);
     }
 
     private class AbilityButton extends JButton {

@@ -29,6 +29,7 @@ public abstract class Piece implements DiceObserver {
     private double attackPower;
     private int attackRange;
     private int nextMove;
+    private Ability currAbility;
 
     public Piece(Team team, Cell position, double health, double attackPower, int attackRange) {
         this.team = team;
@@ -39,6 +40,10 @@ public abstract class Piece implements DiceObserver {
         observers = new ArrayList<>();
         abilities = new ArrayList<>();
         abilities.add(Ability.PLAIN_ATTACK);
+    }
+
+    public Ability getCurrAbility() {
+        return currAbility;
     }
 
     public List<Ability> getAbilities() {
@@ -166,6 +171,20 @@ public abstract class Piece implements DiceObserver {
 
     protected void addSpecialAbility(Ability ability) {
         abilities.add(ability);
+    }
+
+    /**
+     * @param ability
+     * @Requires abilities.contains(ability)
+     * @deprecated TODO: use state pattern?
+     */
+    @Deprecated
+    public void setCurrentAbility(Ability ability) {
+        if (!abilities.contains(ability)) {
+            this.currAbility = null;
+        } else {
+            this.currAbility = ability;
+        }
     }
 
     @Override
