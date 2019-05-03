@@ -17,20 +17,53 @@ public enum Ability {
     SPECIAL_MOVE,
     ;
 
+    private static final String DELIMITER = " ";
+
+    /**
+     * Parse {@link #toString()} to {@link Ability} instance
+     *
+     * @param formattedValue the String formatted by {@link #toString()}
+     * @return
+     * @see #toString()
+     */
+    public static Ability parse(String formattedValue) {
+        String val = String.join("_", formattedValue.split(DELIMITER));
+        try {
+            return Ability.valueOf(val.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Overrides super {@link #toString()} used for button text.
+     *
+     * @return
+     */
     @Override
     public String toString() {
         if (name().isEmpty()) {
             return "";
         }
         String[] words = name().split("_");
-        return String.join(" ", capitalizeFirstLetter(words));
+        return String.join(DELIMITER, capitalizeFirstLetter(words));
     }
 
+    /**
+     * Returns the icon for Ability Button.
+     *
+     * @return
+     */
     public ImageIcon getIcon() {
         String filename = ABILITIES_DIR + name().toLowerCase() + ".png";
         return IconUtil.getIcon(filename);
     }
 
+    /**
+     * Returns the icon used when button pressed.
+     *
+     * @return
+     */
     public ImageIcon getPressedIcon() {
         String filename = ABILITIES_DIR + name().toLowerCase() + "_armed.png";
         return IconUtil.getIcon(filename);
