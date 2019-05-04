@@ -2,10 +2,10 @@ package grp.oozmakappa.monsterclash.model.abstracts;
 
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
-import grp.oozmakappa.monsterclash.utils.IconUtil;
+import grp.oozmakappa.monsterclash.utils.IconFactory;
+import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.interfaces.PieceObserver;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -39,8 +39,8 @@ public abstract class Piece implements DiceObserver {
      * @return
      * @Requires iconName != null
      */
-    public ImageIcon getIcon() {
-        return IconUtil.getMonsterIcon(iconName);
+    public IconFlyweight getIcon() {
+        return IconFactory.getInstance().getMonsterIcon(iconName);
     }
 
     protected void setIcon(String iconName) {

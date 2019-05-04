@@ -3,7 +3,7 @@ package grp.oozmakappa.monsterclash.model.monsters.oozmakappa;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.utils.IconUtil;
+import grp.oozmakappa.monsterclash.utils.IconFactory;
 
 /**
  * @author Jing Li
@@ -18,7 +18,7 @@ public class MikeWazowski extends Piece {
 
     public MikeWazowski(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
-        setIcon(IconUtil.MIKE_WAZOWSKI);
+        setIcon(IconFactory.MIKE_WAZOWSKI);
     }
 
 }

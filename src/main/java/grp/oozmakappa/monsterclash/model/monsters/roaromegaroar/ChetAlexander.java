@@ -3,7 +3,7 @@ package grp.oozmakappa.monsterclash.model.monsters.roaromegaroar;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.utils.IconUtil;
+import grp.oozmakappa.monsterclash.utils.IconFactory;
 
 /**
  * @author Jing Li
@@ -18,7 +18,7 @@ public class ChetAlexander extends Piece {
 
     public ChetAlexander(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
-        setIcon(IconUtil.CHET_ALEXANDER);
+        setIcon(IconFactory.CHET_ALEXANDER);
     }
 
 }

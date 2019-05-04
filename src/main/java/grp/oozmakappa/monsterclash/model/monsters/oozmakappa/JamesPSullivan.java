@@ -3,7 +3,7 @@ package grp.oozmakappa.monsterclash.model.monsters.oozmakappa;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.utils.IconUtil;
+import grp.oozmakappa.monsterclash.utils.IconFactory;
 
 /**
  * @author Jing Li
@@ -18,7 +18,7 @@ public class JamesPSullivan extends Piece {
 
     public JamesPSullivan(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
-        setIcon(IconUtil.JAMES_P_SULLIVAN);
+        setIcon(IconFactory.JAMES_P_SULLIVAN);
     }
 
 }

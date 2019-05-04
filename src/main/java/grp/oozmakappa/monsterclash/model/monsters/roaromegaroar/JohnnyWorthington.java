@@ -3,7 +3,7 @@ package grp.oozmakappa.monsterclash.model.monsters.roaromegaroar;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.utils.IconUtil;
+import grp.oozmakappa.monsterclash.utils.IconFactory;
 
 /**
  * @author Jing Li
@@ -18,7 +18,7 @@ public class JohnnyWorthington extends Piece {
 
     public JohnnyWorthington(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
-        setIcon(IconUtil.JOHNNY_WORTHINGTON);
+        setIcon(IconFactory.JOHNNY_WORTHINGTON);
     }
 
 }
