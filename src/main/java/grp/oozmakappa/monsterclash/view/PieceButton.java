@@ -1,6 +1,7 @@
 package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,17 +16,17 @@ import static grp.oozmakappa.monsterclash.utils.Constraints.PIECE_DIAMETER;
 public class PieceButton extends JButton {
 
     private final Piece piece;
-    private final ImageIcon icon;
+    private final IconFlyweight icon;
 
     public PieceButton(Piece piece) {
         this.piece = piece;
         setOpaque(false);
-        icon = piece.getIcon();
         setContentAreaFilled(false);
         setPreferredSize(new Dimension(PIECE_DIAMETER, PIECE_DIAMETER));
         setBorderPainted(false);
         setAlignmentX(CENTER_ALIGNMENT);
         setAlignmentY(CENTER_ALIGNMENT);
+        icon = piece.getIcon();
     }
 
     public Piece getPiece() {
@@ -51,10 +52,13 @@ public class PieceButton extends JButton {
             color = Color.WHITE;
         }
         g.setColor(color);
+        int weight = getWidth(), height = getHeight();
         // draw circle.
-        g.fillOval(0, 0, getWidth(), getHeight());
+        g.fillOval(0, 0, weight, height);
         // zoom the icon
-        g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
+        Image image = icon.getImage();
+        g.drawImage(image, 0, 0, weight, height, this);
         super.paintComponent(g);
     }
+
 }
