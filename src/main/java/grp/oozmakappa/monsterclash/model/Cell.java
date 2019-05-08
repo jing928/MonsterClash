@@ -121,11 +121,20 @@ public final class Cell implements CellEffect {
         return this.x == x && this.y == y;
     }
 
+    /**
+     * Invoked when {@link Piece}s located on this {@link Cell}.
+     * <p>
+     * Recursively called because multiple effects may happen.
+     * </p>
+     *
+     * @param pieceLocated
+     * @Requires cell.distance(pieceLocated.getPosition ()) == 0
+     */
     @Override
-    public void affect(Piece piece) {
+    public void affect(Piece pieceLocated) {
         CellEffect decorator = AbstractDecorator.getDecorator(this);
         if (decorator != null) {
-            decorator.affect(piece);
+            decorator.affect(pieceLocated);
         }
     }
 
