@@ -13,6 +13,8 @@ public interface PieceObserver {
 
     /**
      * Executes after {@link Piece} moving.
+     *
+     * @param pieceLocated
      */
-    void positionChanged();
+    void positionChanged(Piece pieceLocated);
 }

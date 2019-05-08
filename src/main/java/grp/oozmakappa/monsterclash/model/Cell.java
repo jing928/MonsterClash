@@ -1,6 +1,10 @@
 package grp.oozmakappa.monsterclash.model;
 
 
+import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.decorators.AbstractDecorator;
+import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
+
 import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
 
 /**
@@ -9,7 +13,7 @@ import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
  *
  * @author Chenglong Ma
  */
-public final class Cell {
+public final class Cell implements CellEffect {
     /**
      * The coordinate of cell will not be changed once set.
      */
@@ -115,6 +119,14 @@ public final class Cell {
      */
     public boolean equals(int x, int y) {
         return this.x == x && this.y == y;
+    }
+
+    @Override
+    public void affect(Piece piece) {
+        CellEffect decorator = AbstractDecorator.getDecorator(this);
+        if (decorator != null) {
+            decorator.affect(piece);
+        }
     }
 
     // TODO: to be checked.

@@ -102,7 +102,7 @@ public abstract class Piece implements DiceObserver {
         this.attackPower = attackPower;
     }
 
-    public double getAttackRange() {
+    public int getAttackRange() {
         return attackRange;
     }
 
@@ -148,7 +148,7 @@ public abstract class Piece implements DiceObserver {
      * Notifies all observers when the piece has moved to new position.
      */
     private void notifyMoved() {
-        observers.forEach(PieceObserver::positionChanged);
+        observers.forEach(o -> o.positionChanged(this));
     }
 
     @Override
@@ -156,4 +156,11 @@ public abstract class Piece implements DiceObserver {
         this.nextMove = value;
     }
 
+    /**
+     * @param healthGained
+     * @Requires healthGained > 0
+     */
+    public void increaseHealth(double healthGained) {
+        this.health += healthGained;
+    }
 }
