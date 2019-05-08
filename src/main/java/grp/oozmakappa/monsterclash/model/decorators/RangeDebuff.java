@@ -19,8 +19,6 @@ public class RangeDebuff extends DebuffDecorator {
     public void affect(Piece piece) {
         int range = piece.getAttackRange();
         piece.setAttackRange(range - loss);
-        String msg = String.format("You lost %d attack range", loss);
-        showMessage(msg);
         super.affect(piece);
     }
 }

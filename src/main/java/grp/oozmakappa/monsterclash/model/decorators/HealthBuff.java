@@ -18,8 +18,6 @@ public class HealthBuff extends BuffDecorator {
     @Override
     public void affect(Piece piece) {
         piece.increaseHealth(healthGained);
-        String msg = String.format("You gained %.2f health", healthGained);
-        showMessage(msg);
         super.affect(piece);
     }
 }

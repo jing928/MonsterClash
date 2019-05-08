@@ -3,7 +3,7 @@ package grp.oozmakappa.monsterclash.view;
 import grp.oozmakappa.monsterclash.controller.CellListener;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.view.interfaces.PieceObserver;
+import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +16,7 @@ import static grp.oozmakappa.monsterclash.utils.Constraints.CELL_LENGTH;
  * @author Chenglong Ma
  * @Invariant cell != null
  */
-public class CellLabel extends JLabel implements PieceObserver {
+public class CellLabel extends JLabel implements PiecePositionObserver {
     private static final Color COLOR_A = Color.ORANGE;
     private static final Color COLOR_B = Color.BLUE;
     private static final Color COLOR_NEUTRAL = Color.DARK_GRAY;

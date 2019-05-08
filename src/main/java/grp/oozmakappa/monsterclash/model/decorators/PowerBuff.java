@@ -20,8 +20,6 @@ public class PowerBuff extends BuffDecorator {
         double power = piece.getAttackPower();
         power += powerGained;
         piece.setAttackPower(power);
-        String msg = String.format("You gained %.2f attack power", powerGained);
-        showMessage(msg);
         super.affect(piece);
     }
 }

@@ -57,6 +57,4 @@ public abstract class AbstractDecorator implements CellEffect {
             toDecorated.affect(piece);
         }
     }
-
-    protected abstract void showMessage(String message);
 }

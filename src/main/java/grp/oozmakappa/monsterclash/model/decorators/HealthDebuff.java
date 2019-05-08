@@ -18,8 +18,6 @@ public class HealthDebuff extends DebuffDecorator {
     @Override
     public void affect(Piece piece) {
         piece.decreaseHealth(damage);
-        String msg = String.format("You lost %.2f health", damage);
-        showMessage(msg);
         super.affect(piece);
     }
 }
