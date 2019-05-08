@@ -1,5 +1,9 @@
-package grp.oozmakappa.monsterclash.model.abstracts;
+package grp.oozmakappa.monsterclash.model;
 
+
+import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.decorators.AbstractDecorator;
+import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 
 import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
 
@@ -9,7 +13,7 @@ import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
  *
  * @author Chenglong Ma
  */
-public abstract class Cell {
+public final class Cell implements CellEffect {
     /**
      * The coordinate of cell will not be changed once set.
      */
@@ -115,6 +119,23 @@ public abstract class Cell {
      */
     public boolean equals(int x, int y) {
         return this.x == x && this.y == y;
+    }
+
+    /**
+     * Invoked when {@link Piece}s located on this {@link Cell}.
+     * <p>
+     * Recursively called because multiple effects may happen.
+     * </p>
+     *
+     * @param pieceLocated
+     * @Requires cell.distance(pieceLocated.getPosition ()) == 0
+     */
+    @Override
+    public void affect(Piece pieceLocated) {
+        CellEffect decorator = AbstractDecorator.getDecorator(this);
+        if (decorator != null) {
+            decorator.affect(pieceLocated);
+        }
     }
 
     // TODO: to be checked.

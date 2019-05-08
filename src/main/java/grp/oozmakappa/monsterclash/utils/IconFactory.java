@@ -23,30 +23,26 @@ import static java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR;
  */
 public class IconFactory {
 
-    private static final Logger LOG = LogManager.getLogger();
-    private static IconFactory instance;
-    //region For Pieces
-
     // Oozma Kappa
     public static final String JAMES_P_SULLIVAN = "oozmakappa/james_p_sullivan.png";
     public static final String MIKE_WAZOWSKI = "oozmakappa/mike_wazowski.png";
+    //region For Pieces
     public static final String SQUISHY = "oozmakappa/squishy.png";
     // Roar Omega Roar
     public static final String CHET_ALEXANDER = "roaromegaroar/chet_alexander.png";
     public static final String JOHNNY_WORTHINGTON = "roaromegaroar/johnny_worthington.png";
     public static final String RANDALL_BOGGS = "roaromegaroar/randall_boggs.png";
-
+    private static final Logger LOG = LogManager.getLogger();
     private static final String MONSTERS_DIR = "img/monsters/";
+    private static final String DICE_VALUE_DIR = "img/dice/value/";
 
     //endregion
 
     //region For Dice
-
-    private static final String DICE_VALUE_DIR = "img/dice/value/";
     private static final String DICE_ROLLING_DIR = "img/dice/rolling/";
+    private static IconFactory instance;
 
     //endregion
-
     private final Map<String, IconFlyweight> icons;
 
     private IconFactory() {
@@ -135,7 +131,7 @@ public class IconFactory {
         if (icon == null) {
             icon = new IconImpl(filename);
             icons.put(filename, icon);
-            LOG.info("Load new icon");
+            LOG.info("Load new icon from " + filename);
         }
         return icon;
     }

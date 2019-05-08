@@ -1,10 +1,12 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
+import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.utils.IconFactory;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
-import grp.oozmakappa.monsterclash.view.interfaces.PieceObserver;
+import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
+import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,18 +15,19 @@ import java.util.Collection;
  * @author Jing Li
  * @Invariant nextMove >= 0
  * @Invariant health >= 0
- * @Invariant observers.size() >= 0
+ * @Invariant posObservers.size() >= 0
  */
 public abstract class Piece implements DiceObserver {
 
     private final Team team;
+    private final Collection<PiecePositionObserver> posObservers;
+    private final Collection<PiecePropertyObserver> pptObservers;
     private String iconName;
     private double health;
     private Cell position;
     private double attackPower;
     private int attackRange;
     private int nextMove;
-    private Collection<PieceObserver> observers;
 
     public Piece(Team team, Cell position, double health, double attackPower, int attackRange) {
         this.team = team;
@@ -32,7 +35,8 @@ public abstract class Piece implements DiceObserver {
         this.health = health;
         this.attackPower = attackPower;
         this.attackRange = attackRange;
-        observers = new ArrayList<>();
+        posObservers = new ArrayList<>();
+        pptObservers = new ArrayList<>();
     }
 
     /**
@@ -81,8 +85,23 @@ public abstract class Piece implements DiceObserver {
         this.health = health;
     }
 
+    /**
+     * @param healthGained
+     * @Requires healthGained > 0
+     */
+    public void increaseHealth(double healthGained) {
+        assert healthGained > 0;
+        this.health += healthGained;
+        notifyHealthChanged(healthGained);
+    }
+
+    /**
+     * @param damage
+     * @Requires damage > 0
+     */
     public void decreaseHealth(double damage) {
         health = damage > health ? 0 : health - damage;
+        notifyHealthChanged(-damage);
     }
 
     public int getX() {
@@ -99,14 +118,16 @@ public abstract class Piece implements DiceObserver {
 
     public void setAttackPower(double attackPower) {
         this.attackPower = attackPower;
+        notifyPowerChanged(attackPower - this.attackPower);
     }
 
-    public double getAttackRange() {
+    public int getAttackRange() {
         return attackRange;
     }
 
     public void setAttackRange(int attackRange) {
         this.attackRange = attackRange;
+        notifyRangeChanged(attackRange - this.attackRange);
     }
 
     public Cell getPosition() {
@@ -132,27 +153,51 @@ public abstract class Piece implements DiceObserver {
     }
 
 
-    public void addObserver(PieceObserver observer) {
-        observers.add(observer);
+    public void addObserver(PiecePositionObserver observer) {
+        posObservers.add(observer);
+    }
+
+    public void removeObserver(PiecePositionObserver observer) {
+        posObservers.remove(observer);
+    }
+
+    public void addObserver(PiecePropertyObserver observer) {
+        pptObservers.add(observer);
+    }
+
+    public void removeObserver(PiecePropertyObserver observer) {
+        pptObservers.remove(observer);
     }
 
     /**
      * Notifies all observers that this piece is ready to move.
      */
     public void notifyMoving() {
-        observers.forEach(o -> o.positionChanging(this));
+        posObservers.forEach(o -> o.positionChanging(this));
     }
 
     /**
-     * Notifies all observers when the piece has moved to new position.
+     * Notifies all posObservers when the piece has moved to new position.
      */
     private void notifyMoved() {
-        observers.forEach(PieceObserver::positionChanged);
+        posObservers.forEach(o -> o.positionChanged(this));
     }
+
+    private void notifyHealthChanged(double deltaHealth) {
+        pptObservers.forEach(o -> o.healthChanged(deltaHealth));
+    }
+
+    private void notifyPowerChanged(double deltaPower) {
+        pptObservers.forEach(o -> o.powerChanged(deltaPower));
+    }
+
+    private void notifyRangeChanged(int deltaRange) {
+        pptObservers.forEach(o -> o.rangeChanged(deltaRange));
+    }
+
 
     @Override
     public void valueChanged(int value) {
         this.nextMove = value;
     }
-
 }

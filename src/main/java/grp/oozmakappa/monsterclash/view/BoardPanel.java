@@ -1,7 +1,7 @@
 package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.Board;
-import grp.oozmakappa.monsterclash.model.abstracts.Cell;
+import grp.oozmakappa.monsterclash.model.Cell;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

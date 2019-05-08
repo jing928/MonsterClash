@@ -1,11 +1,11 @@
-package grp.oozmakappa.monsterclash.view.interfaces;
+package grp.oozmakappa.monsterclash.view.observers;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 
 /**
  * @author Chenglong Ma
  */
-public interface PieceObserver {
+public interface PiecePositionObserver {
     /**
      * Executes before {@link Piece} moving.
      */
@@ -13,6 +13,8 @@ public interface PieceObserver {
 
     /**
      * Executes after {@link Piece} moving.
+     *
+     * @param pieceLocated
      */
-    void positionChanged();
+    void positionChanged(Piece pieceLocated);
 }

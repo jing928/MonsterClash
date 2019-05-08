@@ -1,9 +1,9 @@
 package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.controller.CellListener;
-import grp.oozmakappa.monsterclash.model.abstracts.Cell;
+import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.view.interfaces.PieceObserver;
+import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,12 +16,13 @@ import static grp.oozmakappa.monsterclash.utils.Constraints.CELL_LENGTH;
  * @author Chenglong Ma
  * @Invariant cell != null
  */
-public class CellLabel extends JLabel implements PieceObserver {
+public class CellLabel extends JLabel implements PiecePositionObserver {
     private static final Color COLOR_A = Color.ORANGE;
     private static final Color COLOR_B = Color.BLUE;
     private static final Color COLOR_NEUTRAL = Color.DARK_GRAY;
     private static final Logger LOG = LogManager.getLogger();
     private final Cell cell;
+    private final CellListener listener;
     private boolean canPlaced = false;
     private Color currentColor;
 
@@ -38,7 +39,8 @@ public class CellLabel extends JLabel implements PieceObserver {
         setPreferredSize(new Dimension(CELL_LENGTH, CELL_LENGTH));
 
         // set listener
-        addMouseListener(new CellListener(this));
+        listener = new CellListener(this);
+        addMouseListener(listener);
     }
 
     /**
@@ -105,8 +107,11 @@ public class CellLabel extends JLabel implements PieceObserver {
     }
 
     @Override
-    public void positionChanged() {
+    public void positionChanged(Piece pieceLocated) {
         setBackground(currentColor);
         canPlaced = false;
+        if (cell.distance(pieceLocated.getPosition()) == 0) {
+            listener.affect(cell, pieceLocated);
+        }
     }
 }
