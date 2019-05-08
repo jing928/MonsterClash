@@ -1,6 +1,5 @@
 package grp.oozmakappa.monsterclash.model;
 
-import grp.oozmakappa.monsterclash.model.abstracts.Cell;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -92,7 +91,7 @@ public class Board {
                     role = Cell.Role.DISABLE;
                 }
                 // Board is the creator of cell.
-                cells.add(new NormalCell(x, y, order, role));
+                cells.add(new Cell(x, y, order, role));
             }
         }
     }

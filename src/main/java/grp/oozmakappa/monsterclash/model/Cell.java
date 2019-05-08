@@ -1,4 +1,4 @@
-package grp.oozmakappa.monsterclash.model.abstracts;
+package grp.oozmakappa.monsterclash.model;
 
 
 import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
@@ -9,7 +9,7 @@ import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
  *
  * @author Chenglong Ma
  */
-public abstract class Cell {
+public final class Cell {
     /**
      * The coordinate of cell will not be changed once set.
      */
