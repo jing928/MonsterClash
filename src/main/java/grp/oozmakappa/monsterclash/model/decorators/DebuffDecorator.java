@@ -5,8 +5,8 @@ import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 /**
  * @author Chenglong Ma
  */
-public abstract class DebuffDecorator extends AbstractDecorator {
-    protected DebuffDecorator(CellEffect toDecorated) {
+abstract class DebuffDecorator extends AbstractDecorator {
+    DebuffDecorator(CellEffect toDecorated) {
         super(toDecorated);
     }
 }
