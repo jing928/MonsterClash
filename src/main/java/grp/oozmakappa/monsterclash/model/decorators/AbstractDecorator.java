@@ -13,9 +13,9 @@ public abstract class AbstractDecorator implements CellEffect {
     // 0 and 1 are randomly selected.
     private static final int BUFF = 0;
     private static final int DEBUFF = 1;
-    protected final CellEffect toDecorated;
+    private final CellEffect toDecorated;
 
-    protected AbstractDecorator(CellEffect toDecorated) {
+    AbstractDecorator(CellEffect toDecorated) {
         this.toDecorated = toDecorated;
     }
 

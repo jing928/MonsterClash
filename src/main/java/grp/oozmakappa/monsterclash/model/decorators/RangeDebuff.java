@@ -10,9 +10,9 @@ public class RangeDebuff extends DebuffDecorator {
     private static final int MAX_LOSS = 10;
     private final int loss;
 
-    protected RangeDebuff(CellEffect toDecorated) {
+    RangeDebuff(CellEffect toDecorated) {
         super(toDecorated);
-        loss = (int) (MAX_LOSS * Math.random() + 1);
+        loss = (int) (MAX_LOSS * Math.random()) + 1;
     }
 
     @Override
