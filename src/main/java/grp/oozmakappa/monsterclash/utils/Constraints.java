@@ -18,4 +18,7 @@ public class Constraints {
     public static final int PIECE_DIAMETER = 100;
 
     public static final int TIME_OUT = 3000;
+
+    public static final String OFFENSIVE_MODE = "offensive";
+    public static final String DEFENSIVE_MODE = "defensive";
 }

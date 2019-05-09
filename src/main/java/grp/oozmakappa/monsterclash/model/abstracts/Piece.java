@@ -1,8 +1,10 @@
 package grp.oozmakappa.monsterclash.model.abstracts;
 
+import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
+import grp.oozmakappa.monsterclash.model.strategies.Mode;
 import grp.oozmakappa.monsterclash.utils.IconFactory;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
@@ -10,6 +12,8 @@ import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Jing Li
@@ -22,12 +26,16 @@ public abstract class Piece implements DiceObserver {
     private final Team team;
     private final Collection<PiecePositionObserver> posObservers;
     private final Collection<PiecePropertyObserver> pptObservers;
+    private final List<Ability> abilities;
+    private Ability currAbility;
     private String iconName;
     private double health;
     private Cell position;
     private double attackPower;
     private int attackRange;
+    private double armor;
     private int nextMove;
+    private Mode mode;
 
     public Piece(Team team, Cell position, double health, double attackPower, int attackRange) {
         this.team = team;
@@ -35,8 +43,47 @@ public abstract class Piece implements DiceObserver {
         this.health = health;
         this.attackPower = attackPower;
         this.attackRange = attackRange;
+        mode = null;
         posObservers = new ArrayList<>();
         pptObservers = new ArrayList<>();
+        abilities = new ArrayList<>();
+        abilities.add(Ability.PLAIN_ATTACK);
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+
+    public Ability getCurrAbility() {
+        return currAbility;
+    }
+
+    public List<Ability> getAbilities() {
+        return Collections.unmodifiableList(abilities);
+    }
+
+    /**
+     * @param ability
+     * @Requires !abilities.contains(ability)
+     */
+    protected void addSpecialAbility(Ability ability) {
+        if (!abilities.contains(ability)) {
+            abilities.add(ability);
+        }
+    }
+
+    /**
+     * @param ability
+     * @Requires abilities.contains(ability)
+     * @deprecated TODO: use state pattern?
+     */
+    @Deprecated
+    public void setCurrentAbility(Ability ability) {
+        if (!abilities.contains(ability)) {
+            this.currAbility = null;
+        } else {
+            this.currAbility = ability;
+        }
     }
 
     /**
@@ -58,7 +105,7 @@ public abstract class Piece implements DiceObserver {
     public boolean attack(Piece target) {
         double distance = getTargetDistance(target);
         if (attackRange >= distance) {
-            double damage = attackPower;
+            double damage = mode.getAttackPower(attackPower);
             target.decreaseHealth(damage);
             return true;
         }
@@ -100,7 +147,8 @@ public abstract class Piece implements DiceObserver {
      * @Requires damage > 0
      */
     public void decreaseHealth(double damage) {
-        health = damage > health ? 0 : health - damage;
+        double trueDamage = damage - mode.getArmor(this.armor);
+        health = Math.max(health - trueDamage, 0);
         notifyHealthChanged(-damage);
     }
 
@@ -177,7 +225,7 @@ public abstract class Piece implements DiceObserver {
     }
 
     /**
-     * Notifies all posObservers when the piece has moved to new position.
+     * Notifies all observers when the piece has moved to new position.
      */
     private void notifyMoved() {
         posObservers.forEach(o -> o.positionChanged(this));
@@ -195,9 +243,20 @@ public abstract class Piece implements DiceObserver {
         pptObservers.forEach(o -> o.rangeChanged(deltaRange));
     }
 
-
     @Override
     public void valueChanged(int value) {
         this.nextMove = value;
+    }
+
+    public double getArmor() {
+        return armor;
+    }
+
+    public void setArmor(double armor) {
+        this.armor = armor;
+    }
+
+    public Mode getCurrMode() {
+        return mode;
     }
 }
