@@ -1,6 +1,6 @@
 package grp.oozmakappa.monsterclash.model.command;
 
-import grp.oozmakappa.monsterclash.model.abstracts.Cell;
+import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 

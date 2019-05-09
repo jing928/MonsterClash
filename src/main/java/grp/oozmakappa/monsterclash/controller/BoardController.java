@@ -102,8 +102,6 @@ public class BoardController extends MouseAdapter implements DiceObserver {
             piece.setPosition(newCell);
             button.setLocation(newLoc);
         }
-        button.setLocation(newLoc);
-        piece.setPosition(newCell);
     }
 
     @Override
