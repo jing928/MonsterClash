@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.model.monsters.oozmakappa;
 
+import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
@@ -19,6 +20,8 @@ public class MikeWazowski extends Piece {
     public MikeWazowski(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
         setIcon(IconFactory.MIKE_WAZOWSKI);
+        addSpecialAbility(Ability.SPECIAL_HEALING);
+        addSpecialAbility(Ability.SPECIAL_MOVE);
     }
 
 }
