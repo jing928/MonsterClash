@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.model.monsters.roaromegaroar;
 
+import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
@@ -19,6 +20,8 @@ public class ChetAlexander extends Piece {
     public ChetAlexander(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
         setIcon(IconFactory.CHET_ALEXANDER);
+        addSpecialAbility(Ability.SPECIAL_ATTACK);
+        addSpecialAbility(Ability.SPECIAL_MOVE);
     }
 
 }

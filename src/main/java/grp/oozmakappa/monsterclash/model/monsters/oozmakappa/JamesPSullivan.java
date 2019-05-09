@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.model.monsters.oozmakappa;
 
+import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
@@ -19,6 +20,7 @@ public class JamesPSullivan extends Piece {
     public JamesPSullivan(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
         setIcon(IconFactory.JAMES_P_SULLIVAN);
+        addSpecialAbility(Ability.SPECIAL_ATTACK);
+        addSpecialAbility(Ability.SPECIAL_MOVE);
     }
-
 }
