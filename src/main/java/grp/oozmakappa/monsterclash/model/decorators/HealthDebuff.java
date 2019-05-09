@@ -12,7 +12,7 @@ public class HealthDebuff extends DebuffDecorator {
 
     protected HealthDebuff(CellEffect toDecorated) {
         super(toDecorated);
-        damage = MAX_LOSS * Math.random();
+        damage = MAX_LOSS * Math.random() + 1;
     }
 
     @Override

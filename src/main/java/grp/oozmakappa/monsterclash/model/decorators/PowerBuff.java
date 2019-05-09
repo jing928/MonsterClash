@@ -12,7 +12,7 @@ public class PowerBuff extends BuffDecorator {
 
     protected PowerBuff(CellEffect toDecorated) {
         super(toDecorated);
-        powerGained = MAX_GAIN * Math.random();
+        powerGained = MAX_GAIN * Math.random() + 1;
     }
 
     @Override

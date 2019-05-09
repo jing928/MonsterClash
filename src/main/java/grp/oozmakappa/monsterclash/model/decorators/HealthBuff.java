@@ -12,7 +12,7 @@ public class HealthBuff extends BuffDecorator {
 
     protected HealthBuff(CellEffect toDecorated) {
         super(toDecorated);
-        healthGained = MAX_GAIN * Math.random();
+        healthGained = MAX_GAIN * Math.random() + 1;
     }
 
     @Override
