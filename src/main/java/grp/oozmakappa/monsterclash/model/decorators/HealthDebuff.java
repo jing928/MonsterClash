@@ -17,6 +17,7 @@ class HealthDebuff extends DebuffDecorator {
 
     @Override
     public void affect(Piece piece) {
+        LOG.info("Get hurt: " + damage);
         piece.decreaseHealth(damage);
         super.affect(piece);
     }

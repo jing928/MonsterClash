@@ -7,13 +7,11 @@ import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.model.strategies.Mode;
 import grp.oozmakappa.monsterclash.utils.IconFactory;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
+import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Jing Li
@@ -24,8 +22,9 @@ import java.util.List;
 public abstract class Piece implements DiceObserver {
 
     private final Team team;
-    private final Collection<PiecePositionObserver> posObservers;
-    private final Collection<PiecePropertyObserver> pptObservers;
+    private final Set<PiecePositionObserver> posObservers;
+    private final Set<PiecePropertyObserver> pptObservers;
+    private final Set<PieceActionObserver> actObservers;
     private final List<Ability> abilities;
     private Ability currAbility;
     private String iconName;
@@ -44,8 +43,9 @@ public abstract class Piece implements DiceObserver {
         this.attackPower = attackPower;
         this.attackRange = attackRange;
         mode = null;
-        posObservers = new ArrayList<>();
-        pptObservers = new ArrayList<>();
+        posObservers = new HashSet<>();
+        pptObservers = new HashSet<>();
+        actObservers = new HashSet<>();
         abilities = new ArrayList<>();
         abilities.add(Ability.PLAIN_ATTACK);
     }
@@ -165,8 +165,9 @@ public abstract class Piece implements DiceObserver {
     }
 
     public void setAttackPower(double attackPower) {
+        double delta = attackPower - this.attackPower;
         this.attackPower = attackPower;
-        notifyPowerChanged(attackPower - this.attackPower);
+        notifyPowerChanged(delta);
     }
 
     public int getAttackRange() {
@@ -174,8 +175,9 @@ public abstract class Piece implements DiceObserver {
     }
 
     public void setAttackRange(int attackRange) {
+        int delta = attackRange - this.attackRange;
         this.attackRange = attackRange;
-        notifyRangeChanged(attackRange - this.attackRange);
+        notifyRangeChanged(delta);
     }
 
     public Cell getPosition() {
@@ -201,7 +203,7 @@ public abstract class Piece implements DiceObserver {
     }
 
 
-    public void addObserver(PiecePositionObserver observer) {
+    public void addPositionObserver(PiecePositionObserver observer) {
         posObservers.add(observer);
     }
 
@@ -209,8 +211,12 @@ public abstract class Piece implements DiceObserver {
         posObservers.remove(observer);
     }
 
-    public void addObserver(PiecePropertyObserver observer) {
+    public void addPropertyObserver(PiecePropertyObserver observer) {
         pptObservers.add(observer);
+    }
+
+    public void addActionObserver(PieceActionObserver observer) {
+        actObservers.add(observer);
     }
 
     public void removeObserver(PiecePropertyObserver observer) {
@@ -221,14 +227,18 @@ public abstract class Piece implements DiceObserver {
      * Notifies all observers that this piece is ready to move.
      */
     public void notifyMoving() {
-        posObservers.forEach(o -> o.positionChanging(this));
+        posObservers.forEach(o -> o.beforeMove(this));
+    }
+
+    public void notifyAttacking() {
+        actObservers.forEach(o -> o.beforeActing(this));
     }
 
     /**
      * Notifies all observers when the piece has moved to new position.
      */
     private void notifyMoved() {
-        posObservers.forEach(o -> o.positionChanged(this));
+        posObservers.forEach(o -> o.afterMove(this));
     }
 
     private void notifyHealthChanged(double deltaHealth) {
@@ -258,5 +268,9 @@ public abstract class Piece implements DiceObserver {
 
     public Mode getCurrMode() {
         return mode;
+    }
+
+    public int distance(Piece other) {
+        return position.distance(other.position);
     }
 }
