@@ -64,6 +64,8 @@ public class PieceButton extends JButton implements PiecePropertyObserver {
     }
 
     private void notifyChange(double deltaValue, String propertyName) {
+        // TODO: the notification can be confusing when one piece attack
+        //  and the target loses health
         String msg = String.format("You %s %.2f %s!",
                 deltaValue > 0 ? "gained" : "lost",
                 Math.abs(deltaValue),

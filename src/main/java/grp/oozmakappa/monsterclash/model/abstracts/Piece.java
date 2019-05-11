@@ -2,6 +2,9 @@ package grp.oozmakappa.monsterclash.model.abstracts;
 
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
+import grp.oozmakappa.monsterclash.model.command.Command;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.model.command.HealthChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.utils.IconFactory;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
@@ -9,6 +12,7 @@ import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -62,7 +66,9 @@ public abstract class Piece implements DiceObserver {
         double distance = getTargetDistance(target);
         if (attackRange >= distance) {
             double damage = attackPower;
-            target.decreaseHealth(damage);
+            Command healthChangeCmd = new HealthChangeCommand(target, -damage);
+            CommandManager manager = CommandManager.getInstance();
+            manager.storeAndExecute(healthChangeCmd);
             return true;
         }
         return false;
@@ -86,25 +92,7 @@ public abstract class Piece implements DiceObserver {
 
     public void setHealth(double health) {
         this.health = health;
-    }
-
-    /**
-     * @param healthGained
-     * @Requires healthGained > 0
-     */
-    public void increaseHealth(double healthGained) {
-        assert healthGained > 0;
-        this.health += healthGained;
-        notifyHealthChanged(healthGained);
-    }
-
-    /**
-     * @param damage
-     * @Requires damage > 0
-     */
-    public void decreaseHealth(double damage) {
-        health = damage > health ? 0 : health - damage;
-        notifyHealthChanged(-damage);
+        notifyHealthChanged(health - this.health);
     }
 
     public int getX() {

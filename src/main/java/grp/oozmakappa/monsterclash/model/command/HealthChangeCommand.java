@@ -15,15 +15,14 @@ public class HealthChangeCommand implements Command {
 
     @Override
     public void execute() {
-        if (healthChange < 0) {
-            piece.decreaseHealth(-healthChange);
-        } else {
-            piece.increaseHealth(healthChange);
-        }
+        double newHealth = prevHealth + healthChange;
+        piece.setHealth(newHealth);
     }
 
     @Override
     public void undo() {
+        piece.setUndoing(true);
         piece.setHealth(prevHealth);
+        piece.setUndoing(false);
     }
 }
