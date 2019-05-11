@@ -66,7 +66,7 @@ public class PieceButton extends JButton implements PiecePropertyObserver {
     private void notifyChange(double deltaValue, String propertyName) {
         String msg = String.format("You %s %.2f %s!",
                 deltaValue > 0 ? "gained" : "lost",
-                deltaValue,
+                Math.abs(deltaValue),
                 propertyName);
         GameFrame.showMessage(this, msg, deltaValue > 0);
     }
