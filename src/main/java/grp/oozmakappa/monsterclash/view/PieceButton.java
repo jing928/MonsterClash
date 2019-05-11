@@ -99,19 +99,25 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     }
 
     @Override
-    public void healthChanged(double deltaHealth) {
-        notifyChange(deltaHealth, "health");
+    public void healthChanged(double deltaHealth, boolean isUndoing) {
+        if (!isUndoing) {
+            notifyChange(deltaHealth, "health");
+        }
         setEnabled(piece.getHealth() > 0);
     }
 
     @Override
-    public void powerChanged(double deltaPower) {
-        notifyChange(deltaPower, "attack power");
+    public void powerChanged(double deltaPower, boolean isUndoing) {
+        if (!isUndoing) {
+            notifyChange(deltaPower, "attack power");
+        }
     }
 
     @Override
-    public void rangeChanged(int deltaRange) {
-        notifyChange(deltaRange, "range");
+    public void rangeChanged(int deltaRange, boolean isUndoing) {
+        if (!isUndoing) {
+            notifyChange(deltaRange, "attack range");
+        }
     }
 
     @Override
@@ -135,4 +141,5 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         canPlaced = false;
         changeBackground(DEF_COLOR);
     }
+
 }
