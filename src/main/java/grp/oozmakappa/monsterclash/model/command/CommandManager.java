@@ -12,6 +12,7 @@ public class CommandManager {
     private static final Logger LOG = LogManager.getLogger();
     private static final int UNDO_MOVES = 2;
     private final LinkedList<Command> history;
+    private static CommandManager commandManager;
 
     /**
      * private for singleton pattern
@@ -20,8 +21,11 @@ public class CommandManager {
         history = new LinkedList<>();
     }
 
-    public static CommandManager getInstance() {
-        return LazyHolder.COMMAND_MANAGER;
+    public static synchronized CommandManager getInstance() {
+        if (commandManager == null) {
+            commandManager = new CommandManager();
+        }
+        return commandManager;
     }
 
     public void storeAndExecute(Command cmd) {
@@ -41,10 +45,4 @@ public class CommandManager {
         }
     }
 
-    /**
-     * for singleton pattern
-     */
-    private static class LazyHolder {
-        static final CommandManager COMMAND_MANAGER = new CommandManager();
-    }
 }
