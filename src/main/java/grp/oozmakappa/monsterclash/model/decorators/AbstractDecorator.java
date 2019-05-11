@@ -32,6 +32,7 @@ public abstract class AbstractDecorator implements CellEffect {
         List<DebuffDecorator> decorators = new ArrayList<>();
         decorators.add(new HealthDebuff(toDecorated));
         decorators.add(new RangeDebuff(toDecorated));
+        decorators.add(new PowerDebuff(toDecorated));
         // TODO: add more
         int size = decorators.size();
         return decorators.get((int) (size * Math.random()));
