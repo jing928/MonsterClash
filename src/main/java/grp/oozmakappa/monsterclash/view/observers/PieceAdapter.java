@@ -23,7 +23,7 @@ public abstract class PieceAdapter implements PieceActionObserver, PiecePosition
     }
 
     @Override
-    public void afterMove(Piece pieceLocated) {
+    public void afterMove(Piece pieceLocated, boolean isUndoing) {
     }
 
     @Override
