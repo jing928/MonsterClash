@@ -91,8 +91,9 @@ public abstract class Piece implements DiceObserver {
     }
 
     public void setHealth(double health) {
+        double delta = health - this.health;
         this.health = health;
-        notifyHealthChanged(health - this.health);
+        notifyHealthChanged(delta);
     }
 
     public int getX() {
@@ -108,8 +109,9 @@ public abstract class Piece implements DiceObserver {
     }
 
     public void setAttackPower(double attackPower) {
+        double delta = attackPower - this.attackPower;
         this.attackPower = attackPower;
-        notifyPowerChanged(attackPower - this.attackPower);
+        notifyPowerChanged(delta);
     }
 
     public int getAttackRange() {
@@ -117,8 +119,9 @@ public abstract class Piece implements DiceObserver {
     }
 
     public void setAttackRange(int attackRange) {
+        int delta = attackRange - this.attackRange;
         this.attackRange = attackRange;
-        notifyRangeChanged(attackRange - this.attackRange);
+        notifyRangeChanged(delta);
     }
 
     public Cell getPosition() {
