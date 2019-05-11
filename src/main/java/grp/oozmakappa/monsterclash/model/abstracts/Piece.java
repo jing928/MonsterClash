@@ -186,14 +186,23 @@ public abstract class Piece implements DiceObserver {
     }
 
     private void notifyHealthChanged(double deltaHealth) {
+        if (deltaHealth == 0) {
+            return;
+        }
         pptObservers.forEach(o -> o.healthChanged(deltaHealth));
     }
 
     private void notifyPowerChanged(double deltaPower) {
+        if (deltaPower == 0) {
+            return;
+        }
         pptObservers.forEach(o -> o.powerChanged(deltaPower));
     }
 
     private void notifyRangeChanged(int deltaRange) {
+        if (deltaRange == 0) {
+            return;
+        }
         pptObservers.forEach(o -> o.rangeChanged(deltaRange));
     }
 
