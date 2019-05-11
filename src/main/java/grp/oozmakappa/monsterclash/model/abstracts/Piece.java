@@ -304,7 +304,7 @@ public abstract class Piece implements DiceObserver {
         if (deltaHealth == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.healthChanged(deltaHealth));
+        pptObservers.forEach(o -> o.healthChanged(deltaHealth, isUndoing));
     }
 
     /**
@@ -314,7 +314,7 @@ public abstract class Piece implements DiceObserver {
         if (deltaPower == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.powerChanged(deltaPower));
+        pptObservers.forEach(o -> o.powerChanged(deltaPower, isUndoing));
     }
 
     /**
@@ -324,7 +324,7 @@ public abstract class Piece implements DiceObserver {
         if (deltaRange == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.rangeChanged(deltaRange));
+        pptObservers.forEach(o -> o.rangeChanged(deltaRange, isUndoing));
     }
 
     @Override

@@ -1,6 +1,9 @@
 package grp.oozmakappa.monsterclash.model.decorators;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.Command;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.model.command.HealthChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 
 /**
@@ -19,6 +22,10 @@ class HealthBuff extends BuffDecorator {
     public void affect(Piece piece) {
         LOG.info("Gain health: " + healthGained);
         piece.increaseHealth(healthGained);
+        // TODO:
+//        Command healthChangeCmd = new HealthChangeCommand(piece, healthGained);
+//        CommandManager manager = CommandManager.getInstance();
+//        manager.storeAndExecute(healthChangeCmd);
         super.affect(piece);
     }
 }
