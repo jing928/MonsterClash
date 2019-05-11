@@ -273,4 +273,9 @@ public abstract class Piece implements DiceObserver {
     public int distance(Piece other) {
         return position.distance(other.position);
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s: Team: %s, Position: %s", getClass().getSimpleName(), team, getPosition());
+    }
 }
