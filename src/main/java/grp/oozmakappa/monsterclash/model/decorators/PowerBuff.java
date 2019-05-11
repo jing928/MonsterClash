@@ -17,6 +17,7 @@ class PowerBuff extends BuffDecorator {
 
     @Override
     public void affect(Piece piece) {
+        LOG.info("Gain power: " + powerGained);
         double power = piece.getAttackPower();
         power += powerGained;
         piece.setAttackPower(power);

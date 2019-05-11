@@ -17,6 +17,7 @@ class HealthBuff extends BuffDecorator {
 
     @Override
     public void affect(Piece piece) {
+        LOG.info("Gain health: " + healthGained);
         piece.increaseHealth(healthGained);
         super.affect(piece);
     }
