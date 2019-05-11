@@ -16,5 +16,5 @@ public interface PiecePositionObserver {
      *
      * @param pieceLocated
      */
-    void positionChanged(Piece pieceLocated);
+    void positionChanged(Piece pieceLocated, boolean isUndoing);
 }

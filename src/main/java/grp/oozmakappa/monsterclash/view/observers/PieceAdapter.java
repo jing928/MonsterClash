@@ -15,7 +15,7 @@ public abstract class PieceAdapter implements PiecePositionObserver, PieceProper
     }
 
     @Override
-    public void positionChanged(Piece pieceLocated) {
+    public void positionChanged(Piece pieceLocated, boolean isUndoing) {
     }
 
     @Override

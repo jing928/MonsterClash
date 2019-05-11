@@ -107,10 +107,10 @@ public class CellLabel extends JLabel implements PiecePositionObserver {
     }
 
     @Override
-    public void positionChanged(Piece pieceLocated) {
+    public void positionChanged(Piece pieceLocated, boolean isUndoing) {
         setBackground(currentColor);
         canPlaced = false;
-        if (cell.distance(pieceLocated.getPosition()) == 0) {
+        if (cell.distance(pieceLocated.getPosition()) == 0 && !isUndoing) {
             listener.affect(cell, pieceLocated);
         }
     }

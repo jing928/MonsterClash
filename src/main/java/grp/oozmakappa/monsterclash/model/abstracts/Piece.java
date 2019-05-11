@@ -29,6 +29,7 @@ public abstract class Piece implements DiceObserver {
     private double attackPower;
     private int attackRange;
     private int nextMove;
+    private boolean isUndoing = false;
     protected static final Logger LOG = LogManager.getLogger();
 
     public Piece(Team team, Cell position, double health, double attackPower, int attackRange) {
@@ -147,13 +148,20 @@ public abstract class Piece implements DiceObserver {
             nextMove = 0;
         }
         this.position = position;
-        notifyMoved();
+        notifyMoved(isUndoing);
     }
 
     public int getNextMove() {
         return nextMove;
     }
 
+    public boolean isUndoing() {
+        return isUndoing;
+    }
+
+    public void setUndoing(boolean undoing) {
+        isUndoing = undoing;
+    }
 
     public void addObserver(PiecePositionObserver observer) {
         posObservers.add(observer);
@@ -181,8 +189,8 @@ public abstract class Piece implements DiceObserver {
     /**
      * Notifies all posObservers when the piece has moved to new position.
      */
-    private void notifyMoved() {
-        posObservers.forEach(o -> o.positionChanged(this));
+    private void notifyMoved(boolean isUndoing) {
+        posObservers.forEach(o -> o.positionChanged(this, isUndoing));
     }
 
     private void notifyHealthChanged(double deltaHealth) {
