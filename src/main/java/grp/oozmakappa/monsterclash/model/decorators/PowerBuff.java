@@ -1,6 +1,9 @@
 package grp.oozmakappa.monsterclash.model.decorators;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.Command;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.model.command.PowerChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 
 /**
@@ -17,9 +20,9 @@ public class PowerBuff extends BuffDecorator {
 
     @Override
     public void affect(Piece piece) {
-        double power = piece.getAttackPower();
-        power += powerGained;
-        piece.setAttackPower(power);
+        Command powerChangeCmd = new PowerChangeCommand(piece, powerGained);
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(powerChangeCmd);
         super.affect(piece);
     }
 }
