@@ -40,7 +40,7 @@ public abstract class AbstractDecorator implements CellEffect {
     }
 
     public static CellEffect getDecorator(CellEffect toDecorated) {
-        int random = (int) (10 * Math.random());
+        int random = (int) (7 * Math.random());
         switch (random) {
 
             default:
