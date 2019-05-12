@@ -18,8 +18,8 @@ public class RangeDebuff extends DebuffDecorator {
     @Override
     public void affect(Piece piece) {
         LOG.info("Lost range: " + loss);
-        int range = piece.getAttackRange();
-        piece.setAttackRange(range - loss);
+        int range = piece.getCurrentReachableRange();
+        piece.setReachableRange(range - loss);
         super.affect(piece);
     }
 }
