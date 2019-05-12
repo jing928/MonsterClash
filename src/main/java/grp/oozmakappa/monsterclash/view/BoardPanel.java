@@ -24,7 +24,10 @@ public class BoardPanel extends JLayeredPane {
     private final Board board;
     private final GridLayout layout;
     private List<CellLabel> cellLabels;
+    private List<PieceButton> pieceButtons;
     private JPanel cellPanel, piecePanel;
+    private boolean updated;
+    private double minimumDistance;
 
     public BoardPanel(Board board) {
         this.board = board;
@@ -57,6 +60,8 @@ public class BoardPanel extends JLayeredPane {
         int order = pieceButton.getOrder();
         piecePanel.remove(order);
         piecePanel.add(pieceButton, order);
+        // indicate to update the piece button list
+        updated = true;
     }
 
     /**
@@ -66,6 +71,7 @@ public class BoardPanel extends JLayeredPane {
      */
     public List<CellLabel> getCellLabels() {
         if (cellLabels == null) {
+            // lazy initialization
             cellLabels = new ArrayList<>();
             for (Component component : cellPanel.getComponents()) {
                 if (!(component instanceof CellLabel)) {
@@ -77,6 +83,21 @@ public class BoardPanel extends JLayeredPane {
         }
         // returns unmodified list to prevent memory leak
         return Collections.unmodifiableList(cellLabels);
+    }
+
+    public List<PieceButton> getPieceButtons() {
+        if (pieceButtons == null || updated) {
+            pieceButtons = new ArrayList<>();
+            for (Component component : piecePanel.getComponents()) {
+                if (!(component instanceof PieceButton)) {
+                    continue;
+                }
+                PieceButton button = (PieceButton) component;
+                pieceButtons.add(button);
+            }
+            updated = false;
+        }
+        return Collections.unmodifiableList(pieceButtons);
     }
 
     /**
@@ -107,29 +128,52 @@ public class BoardPanel extends JLayeredPane {
         }
     }
 
+    private <T extends Component> T getClosestComponent(Component src, T target) {
+        T closest = null;
+        double dis = manhattanDistance(src.getLocation(), target.getLocation());
+        double maxDis = target.getWidth() + target.getHeight();
+        // T will be ignored if the minimum distance is larger than
+        // the boundary of component
+        if (dis < Math.min(maxDis, minimumDistance)) {
+            minimumDistance = dis;
+            closest = target;
+        }
+        return closest;
+    }
+
     /**
      * Returns the closest {@link CellLabel} to specified {@link Component}
      *
-     * @param component
+     * @param srcCell
      * @return the closest {@link CellLabel} if available.
      */
-    public CellLabel getClosestCell(Component component) {
+    public CellLabel getClosestCell(Component srcCell) {
         CellLabel closestCell = null;
-        double minDis = Double.MAX_VALUE;
+        minimumDistance = Double.MAX_VALUE;
         for (CellLabel cellLabel : getCellLabels()) {
             if (!cellLabel.canPlaced()) {
                 continue;
             }
-            double dis = manhattanDistance(component.getLocation(), cellLabel.getLocation());
-            double maxDis = cellLabel.getWidth() + cellLabel.getHeight();
-            // the cell will be ignored if the minimum distance is larger than
-            // the boundary of component
-            if (dis < Math.min(maxDis, minDis)) {
-                minDis = dis;
-                closestCell = cellLabel;
+            CellLabel closest = getClosestComponent(srcCell, cellLabel);
+            if (closest != null) {
+                closestCell = closest;
             }
         }
         return closestCell;
     }
 
+    public PieceButton getClosestPiece(Component srcPiece) {
+        PieceButton closestPiece = null;
+        minimumDistance = Double.MAX_VALUE;
+        for (PieceButton pieceButton : getPieceButtons()) {
+            if (!pieceButton.canPlaced()) {
+                continue;
+            }
+            PieceButton closest = getClosestComponent(srcPiece, pieceButton);
+            if (closest != null) {
+                closestPiece = closest;
+            }
+        }
+        return closestPiece;
+    }
 }
