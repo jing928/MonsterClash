@@ -27,9 +27,7 @@ public class AbilityListener implements ActionListener {
         String cmd = e.getActionCommand();
         Ability ability = Ability.parse(cmd);
         LOG.info("Selected Ability: " + ability);
-        if (ability != null) {
-            piece.setCurrentAbility(ability);
-        }
+        piece.setCurrentAbility(ability);
         dialog.close();
     }
 }
