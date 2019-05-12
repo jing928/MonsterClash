@@ -157,6 +157,9 @@ public abstract class Piece implements DiceObserver {
         return health;
     }
 
+    /**
+     * @Requires health >= 0
+     */
     public void setHealth(double health) {
         this.health = health;
     }
@@ -197,6 +200,9 @@ public abstract class Piece implements DiceObserver {
         return RULE.createAttackStrategy(this).getAttackPower(currPower);
     }
 
+    /**
+     * @Requires attackPower >= 0
+     */
     public void setAttackPower(double attackPower) {
         double delta = attackPower - this.attackPower;
         this.attackPower = attackPower;
@@ -219,6 +225,9 @@ public abstract class Piece implements DiceObserver {
         }
     }
 
+    /**
+     * @Requires reachableRange >= 0
+     */
     public void setReachableRange(int reachableRange) {
         int delta = reachableRange - this.reachableRange;
         this.reachableRange = reachableRange;

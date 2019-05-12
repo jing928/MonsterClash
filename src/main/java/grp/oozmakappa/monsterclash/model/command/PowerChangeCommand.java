@@ -16,6 +16,7 @@ public class PowerChangeCommand implements Command {
     @Override
     public void execute() {
         double newPower = prevPower + powerChange;
+        newPower = newPower < 0 ? 0 : newPower;
         piece.setAttackPower(newPower);
     }
 
