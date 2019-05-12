@@ -90,6 +90,9 @@ public abstract class Piece implements DiceObserver {
         return health;
     }
 
+    /**
+     * @Requires health >= 0
+     */
     public void setHealth(double health) {
         double delta = health - this.health;
         this.health = health;
@@ -108,6 +111,9 @@ public abstract class Piece implements DiceObserver {
         return attackPower;
     }
 
+    /**
+     * @Requires attackPower >= 0
+     */
     public void setAttackPower(double attackPower) {
         double delta = attackPower - this.attackPower;
         this.attackPower = attackPower;
@@ -118,6 +124,9 @@ public abstract class Piece implements DiceObserver {
         return attackRange;
     }
 
+    /**
+     * @Requires attackRange >= 0
+     */
     public void setAttackRange(int attackRange) {
         int delta = attackRange - this.attackRange;
         this.attackRange = attackRange;

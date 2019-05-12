@@ -16,6 +16,7 @@ public class RangeChangeCommand implements Command {
     @Override
     public void execute() {
         int newRange = prevRange + rangeChange;
+        newRange = newRange < 0 ? 0 : newRange;
         piece.setAttackRange(newRange);
     }
 
