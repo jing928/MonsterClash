@@ -4,6 +4,8 @@ import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,8 +19,12 @@ import static grp.oozmakappa.monsterclash.utils.Constraints.PIECE_DIAMETER;
  */
 public class PieceButton extends JButton implements PieceActionObserver, PiecePropertyObserver {
 
+    private static final Logger LOG = LogManager.getLogger();
+    private static final Color DEF_COLOR = new Color(255, 255, 255, 128);
     private final Piece piece;
     private final IconFlyweight icon;
+    private Color backgroundColor = DEF_COLOR;
+    private boolean canPlaced = false;
 
     public PieceButton(Piece piece) {
         this.piece = piece;
@@ -30,6 +36,10 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         setAlignmentX(CENTER_ALIGNMENT);
         setAlignmentY(CENTER_ALIGNMENT);
         icon = piece.getIcon();
+    }
+
+    public boolean canPlaced() {
+        return canPlaced;
     }
 
     public Piece getPiece() {
@@ -48,7 +58,7 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     @Override
     protected void paintComponent(Graphics g) {
         // the default background color
-        Color color = new Color(255, 255, 255, 128);
+        Color color = backgroundColor;
         // change the color when the button is clicked.
         if (getModel().isArmed()) {
             color = Color.WHITE;
@@ -79,6 +89,11 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         GameFrame.showMessage(this, msg, deltaValue > 0);
     }
 
+    private void changeBackgroud(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
+        repaint();
+    }
+
     @Override
     public void healthChanged(double deltaHealth) {
         notifyChange(deltaHealth, "health");
@@ -96,10 +111,20 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
 
     @Override
     public void beforeActing(Piece pieceToAct) {
-        // the cell would be lightened if the distance between the cell and
-        // the piece equals the next move of the piece.
-        if (piece.distance(pieceToAct) == pieceToAct.getAttackRange()) {
-            setBackground(Color.YELLOW);
+        boolean diffTeam = piece.getTeam() != pieceToAct.getTeam();
+        boolean canReach = piece.distance(pieceToAct) <= pieceToAct.getAttackRange();
+        // the button would be lightened if the distance between the button and
+        // the piece equals the attack range of the piece.
+        if (diffTeam & canReach) {
+            canPlaced = true;
+            changeBackgroud(Color.MAGENTA);
+            LOG.info("Reachable piece: " + piece);
         }
+    }
+
+    @Override
+    public void afterActing(Piece pieceActed) {
+        canPlaced = false;
+        changeBackgroud(DEF_COLOR);
     }
 }

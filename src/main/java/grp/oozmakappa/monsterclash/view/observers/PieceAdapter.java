@@ -9,13 +9,21 @@ import grp.oozmakappa.monsterclash.model.abstracts.Piece;
  *
  * @author Chenglong Ma
  */
-public abstract class PieceAdapter implements PiecePositionObserver, PiecePropertyObserver {
+public abstract class PieceAdapter implements PieceActionObserver, PiecePositionObserver, PiecePropertyObserver {
     @Override
-    public void positionChanging(Piece pieceToMove) {
+    public void beforeActing(Piece pieceToAct) {
     }
 
     @Override
-    public void positionChanged(Piece pieceLocated) {
+    public void afterActing(Piece pieceActed) {
+    }
+
+    @Override
+    public void beforeMove(Piece pieceToMove) {
+    }
+
+    @Override
+    public void afterMove(Piece pieceLocated) {
     }
 
     @Override

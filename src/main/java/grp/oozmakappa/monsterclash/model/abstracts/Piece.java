@@ -4,6 +4,7 @@ import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
+import grp.oozmakappa.monsterclash.model.strategies.DefaultMode;
 import grp.oozmakappa.monsterclash.model.strategies.Mode;
 import grp.oozmakappa.monsterclash.utils.IconFactory;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
@@ -42,7 +43,7 @@ public abstract class Piece implements DiceObserver {
         this.health = health;
         this.attackPower = attackPower;
         this.attackRange = attackRange;
-        mode = null;
+        mode = DefaultMode.getInstance();
         posObservers = new HashSet<>();
         pptObservers = new HashSet<>();
         actObservers = new HashSet<>();
@@ -107,6 +108,7 @@ public abstract class Piece implements DiceObserver {
         if (attackRange >= distance) {
             double damage = mode.getAttackPower(attackPower);
             target.decreaseHealth(damage);
+            notifyAttacked();
             return true;
         }
         return false;
@@ -232,6 +234,10 @@ public abstract class Piece implements DiceObserver {
 
     public void notifyAttacking() {
         actObservers.forEach(o -> o.beforeActing(this));
+    }
+
+    private void notifyAttacked() {
+        actObservers.forEach(o -> o.afterActing(this));
     }
 
     /**

@@ -90,11 +90,8 @@ public class CellLabel extends JLabel implements PiecePositionObserver {
         setBackground(currentColor);
     }
 
-    /**
-     * @param pieceToMove
-     */
     @Override
-    public void positionChanging(Piece pieceToMove) {
+    public void beforeMove(Piece pieceToMove) {
         if (cell.getRole() == Cell.Role.DISABLE) {
             return;
         }
@@ -107,7 +104,7 @@ public class CellLabel extends JLabel implements PiecePositionObserver {
     }
 
     @Override
-    public void positionChanged(Piece pieceLocated) {
+    public void afterMove(Piece pieceLocated) {
         setBackground(currentColor);
         canPlaced = false;
         if (cell.distance(pieceLocated.getPosition()) == 0) {

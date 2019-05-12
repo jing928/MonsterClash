@@ -8,13 +8,17 @@ import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 public interface PiecePositionObserver {
     /**
      * Executes before {@link Piece} moving.
+     *
+     * @param pieceToMove
+     * @Requires distance > 0
      */
-    void positionChanging(Piece pieceToMove);
+    void beforeMove(Piece pieceToMove);
 
     /**
      * Executes after {@link Piece} moving.
      *
      * @param pieceLocated
      */
-    void positionChanged(Piece pieceLocated);
+    void afterMove(Piece pieceLocated);
+
 }
