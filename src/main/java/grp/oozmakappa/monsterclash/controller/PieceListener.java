@@ -6,6 +6,7 @@ import grp.oozmakappa.monsterclash.controller.states.RollingState;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
+import grp.oozmakappa.monsterclash.utils.Constraints;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import grp.oozmakappa.monsterclash.view.PieceButton;
@@ -23,7 +24,7 @@ public class PieceListener extends MouseAdapter implements DiceObserver {
     private static final Logger LOG = LogManager.getLogger();
     private final BoardPanel boardPanel;
     private Point initMouseLocation;
-    private Team currTeam = Team.OozmaKappa;
+    private Team currTeam = Constraints.INITIATIVE_TEAM;
     private boolean canMove = true;
     private PieceButton currButton;
     private PieceButtonState state;

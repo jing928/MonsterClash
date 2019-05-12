@@ -1,7 +1,7 @@
 package grp.oozmakappa.monsterclash.controller;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.strategies.Mode;
+import grp.oozmakappa.monsterclash.model.strategies.modes.Mode;
 import grp.oozmakappa.monsterclash.view.AbstractDialog;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -25,7 +25,7 @@ public class ActionState implements PieceButtonState {
         }
         new AbilityDialog(piece).display();
         if (piece.getCurrAbility() != null) {
-            piece.notifyAttacking();
+            piece.notifyActing();
         }
         return instance;
     }
@@ -39,7 +39,7 @@ public class ActionState implements PieceButtonState {
             new AbilityDialog(piece).display();
             return;
         }
-        piece.notifyAttacking();
+        piece.notifyActing();
         button.addMouseMotionListener(ctrl);
         initPieceLocation = button.getLocation();
         // TODO implement strategy pattern
@@ -50,11 +50,12 @@ public class ActionState implements PieceButtonState {
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
         PieceButton targetButton = ctrl.getClosestPiece(button);
-        PieceButtonState nextState = null;
+        PieceButtonState nextState;
         if (targetButton != null) {
             Piece target = targetButton.getPiece();
-            piece.attack(target);
+            piece.act(target);
             nextState = RollingState.getInstance();
+            piece.setCurrentAbility(null);
         } else {
             nextState = this;
         }
