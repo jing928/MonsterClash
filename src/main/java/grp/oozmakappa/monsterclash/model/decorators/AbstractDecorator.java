@@ -22,6 +22,7 @@ public abstract class AbstractDecorator implements CellEffect {
     private static BuffDecorator getBuffDecorator(CellEffect toDecorated) {
         List<BuffDecorator> decorators = new ArrayList<>();
         decorators.add(new HealthBuff(toDecorated));
+        decorators.add(new RangeBuff(toDecorated));
         decorators.add(new PowerBuff(toDecorated));
         // TODO: add more
         int size = decorators.size();
