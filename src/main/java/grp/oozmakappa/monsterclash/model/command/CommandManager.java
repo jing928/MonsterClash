@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * @author Chenglong Ma
@@ -32,6 +33,28 @@ public class CommandManager {
         this.history.add(cmd);
         cmd.execute();
         LOG.info("Execute Command");
+    }
+
+    public void undoTurn() {
+        int turnChangeCounter = 0;
+        // A list of commands to undo
+        Queue cmdList = new LinkedList<Command>();
+        boolean turnStartFound = false;
+        while (!turnStartFound) {
+            if (history.size() == 0 || turnChangeCounter == 2) {
+                turnStartFound = true;
+            } else {
+                Command lastCmd = history.removeLast();
+                if (lastCmd instanceof TurnChangeCommand) {
+                    turnChangeCounter++;
+                }
+                cmdList.add(lastCmd);
+            }
+        }
+        for (Object object : cmdList) {
+            Command cmd = (Command) object;
+            cmd.undo();
+        }
     }
 
     public void undoLast() {

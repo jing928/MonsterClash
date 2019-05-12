@@ -21,6 +21,6 @@ public class PlayerPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         CommandManager cmdManager = CommandManager.getInstance();
-        cmdManager.undoLast();
+        cmdManager.undoTurn();
     }
 }
