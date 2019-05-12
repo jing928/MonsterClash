@@ -4,8 +4,9 @@ import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
-import grp.oozmakappa.monsterclash.model.strategies.DefaultMode;
-import grp.oozmakappa.monsterclash.model.strategies.Mode;
+import grp.oozmakappa.monsterclash.model.rules.AbstractRuleFactory;
+import grp.oozmakappa.monsterclash.model.strategies.modes.DefaultMode;
+import grp.oozmakappa.monsterclash.model.strategies.modes.Mode;
 import grp.oozmakappa.monsterclash.utils.IconFactory;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
@@ -22,6 +23,7 @@ import java.util.*;
  */
 public abstract class Piece implements DiceObserver {
 
+    private static final AbstractRuleFactory RULE = AbstractRuleFactory.getRuleFactory();
     private final Team team;
     private final Set<PiecePositionObserver> posObservers;
     private final Set<PiecePropertyObserver> pptObservers;
@@ -32,23 +34,31 @@ public abstract class Piece implements DiceObserver {
     private double health;
     private Cell position;
     private double attackPower;
-    private int attackRange;
+    private int reachableRange;
     private double armor;
     private int nextMove;
     private Mode mode;
 
-    public Piece(Team team, Cell position, double health, double attackPower, int attackRange) {
+    public Piece(Team team, Cell position, double health, double attackPower, int reachableRange) {
         this.team = team;
         this.position = position;
         this.health = health;
         this.attackPower = attackPower;
-        this.attackRange = attackRange;
+        this.reachableRange = reachableRange;
         mode = DefaultMode.getInstance();
         posObservers = new HashSet<>();
         pptObservers = new HashSet<>();
         actObservers = new HashSet<>();
         abilities = new ArrayList<>();
         abilities.add(Ability.PLAIN_ATTACK);
+    }
+
+    public int getOriginalRange() {
+        return reachableRange;
+    }
+
+    public double getOriginalAttackPower() {
+        return attackPower;
     }
 
     public void setMode(Mode mode) {
@@ -76,14 +86,27 @@ public abstract class Piece implements DiceObserver {
     /**
      * @param ability
      * @Requires abilities.contains(ability)
-     * @deprecated TODO: use state pattern?
      */
-    @Deprecated
     public void setCurrentAbility(Ability ability) {
         if (!abilities.contains(ability)) {
             this.currAbility = null;
         } else {
             this.currAbility = ability;
+            notifyAbilityChanged(ability);
+        }
+    }
+
+    private void notifyAbilityChanged(Ability ability) {
+        switch (ability) {
+
+            case PLAIN_ATTACK:
+            case SPECIAL_ATTACK:
+            case SPECIAL_HEALING:
+                notifyActing();
+                break;
+            case SPECIAL_MOVE:
+                notifyMoving();
+                break;
         }
     }
 
@@ -105,10 +128,10 @@ public abstract class Piece implements DiceObserver {
 
     public boolean attack(Piece target) {
         double distance = getTargetDistance(target);
-        if (attackRange >= distance) {
-            double damage = mode.getAttackPower(attackPower);
+        if (getCurrentReachableRange() >= distance) {
+            double damage = getCurrentAttackPower();
             target.decreaseHealth(damage);
-            notifyAttacked();
+            notifyActed();
             return true;
         }
         return false;
@@ -149,7 +172,7 @@ public abstract class Piece implements DiceObserver {
      * @Requires damage > 0
      */
     public void decreaseHealth(double damage) {
-        double trueDamage = damage - mode.getArmor(this.armor);
+        double trueDamage = damage - getArmor();
         health = Math.max(health - trueDamage, 0);
         notifyHealthChanged(-damage);
     }
@@ -162,8 +185,12 @@ public abstract class Piece implements DiceObserver {
         return position.getY();
     }
 
-    public double getAttackPower() {
-        return attackPower;
+    public double getCurrentAttackPower() {
+        double currPower = mode.getAttackPower(attackPower);
+        if (currAbility == null || currAbility == Ability.PLAIN_ATTACK) {
+            return currPower;
+        }
+        return RULE.createAttackStrategy(this).getAttackPower(currPower);
     }
 
     public void setAttackPower(double attackPower) {
@@ -172,13 +199,22 @@ public abstract class Piece implements DiceObserver {
         notifyPowerChanged(delta);
     }
 
-    public int getAttackRange() {
-        return attackRange;
+    public int getCurrentReachableRange() {
+        switch (currAbility) {
+            default:
+            case PLAIN_ATTACK:
+            case SPECIAL_MOVE:
+                return reachableRange;
+            case SPECIAL_ATTACK:
+                return RULE.createAttackStrategy(this).getAttackRange(reachableRange);
+            case SPECIAL_HEALING:
+                return RULE.createHealStrategy(this).getHealRange(reachableRange);
+        }
     }
 
-    public void setAttackRange(int attackRange) {
-        int delta = attackRange - this.attackRange;
-        this.attackRange = attackRange;
+    public void setReachableRange(int reachableRange) {
+        int delta = reachableRange - this.reachableRange;
+        this.reachableRange = reachableRange;
         notifyRangeChanged(delta);
     }
 
@@ -232,11 +268,11 @@ public abstract class Piece implements DiceObserver {
         posObservers.forEach(o -> o.beforeMove(this));
     }
 
-    public void notifyAttacking() {
+    public void notifyActing() {
         actObservers.forEach(o -> o.beforeActing(this));
     }
 
-    private void notifyAttacked() {
+    public void notifyActed() {
         actObservers.forEach(o -> o.afterActing(this));
     }
 
@@ -265,7 +301,7 @@ public abstract class Piece implements DiceObserver {
     }
 
     public double getArmor() {
-        return armor;
+        return mode.getArmor(armor);
     }
 
     public void setArmor(double armor) {
@@ -278,6 +314,24 @@ public abstract class Piece implements DiceObserver {
 
     public int distance(Piece other) {
         return position.distance(other.position);
+    }
+
+    public void act(Piece target) {
+        switch (currAbility) {
+
+            case PLAIN_ATTACK:
+                attack(target);
+                break;
+            case SPECIAL_ATTACK:
+                RULE.createAttackStrategy(this).attack(target);
+                break;
+            case SPECIAL_HEALING:
+                RULE.createHealStrategy(this).heal(target);
+                break;
+            case SPECIAL_MOVE:
+                RULE.createMoveStrategy(this).move();
+                break;
+        }
     }
 
     @Override
