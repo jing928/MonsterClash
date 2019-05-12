@@ -12,9 +12,7 @@ public class TurnChangeCommand implements Command {
 
     public TurnChangeCommand(BoardController boardController) {
         this.boardController = boardController;
-        Team currTeam = boardController.getCurrTeam();
-        // Default team is Oozma Kappa
-        this.prevTeam = currTeam == null ? Team.OozmaKappa : currTeam;
+        this.prevTeam = boardController.getCurrTeam();
     }
 
     @Override

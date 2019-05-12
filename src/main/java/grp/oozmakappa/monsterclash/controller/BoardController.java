@@ -32,9 +32,9 @@ public class BoardController extends MouseAdapter implements DiceObserver {
     private boolean canMove;
     private Thread timeOutThread;
 
-    public BoardController(BoardPanel boardPanel) {
+    public BoardController(BoardPanel boardPanel, Team startTeam) {
         this.boardPanel = boardPanel;
-        changeTurn();
+        this.currTeam = startTeam;
     }
 
 

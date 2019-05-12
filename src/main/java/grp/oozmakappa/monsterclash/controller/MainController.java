@@ -3,6 +3,7 @@ package grp.oozmakappa.monsterclash.controller;
 import grp.oozmakappa.monsterclash.model.Board;
 import grp.oozmakappa.monsterclash.model.Dice;
 import grp.oozmakappa.monsterclash.model.Game;
+import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.view.GameFrame;
 
@@ -29,7 +30,8 @@ public class MainController {
     private void initControllers(Game model, GameFrame view) {
         assert model != null && view != null;
         Dice dice = Dice.getInstance();
-        BoardController boardController = new BoardController(view.getBoardPanel());
+        // Default start team is Oozma Kappa
+        BoardController boardController = new BoardController(view.getBoardPanel(), Team.OozmaKappa);
         for (Piece piece : model.getPieces()) {
             boardController.addPiece(piece);
             dice.addObserver(piece);
