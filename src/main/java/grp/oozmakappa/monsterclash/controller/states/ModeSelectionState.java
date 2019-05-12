@@ -2,7 +2,7 @@ package grp.oozmakappa.monsterclash.controller.states;
 
 import grp.oozmakappa.monsterclash.controller.PieceListener;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.strategies.DefaultMode;
+import grp.oozmakappa.monsterclash.model.strategies.modes.DefaultMode;
 import grp.oozmakappa.monsterclash.view.ModeDialog;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 import org.apache.logging.log4j.LogManager;

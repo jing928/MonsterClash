@@ -1,4 +1,4 @@
-package grp.oozmakappa.monsterclash.model.strategies;
+package grp.oozmakappa.monsterclash.model.strategies.modes;
 
 /**
  * @author Chenglong Ma

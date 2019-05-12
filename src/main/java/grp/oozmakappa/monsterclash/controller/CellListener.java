@@ -25,7 +25,7 @@ public class CellListener extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
         defaultColor = cellLabel.getBackground();
-        cellLabel.setBackground(Color.GREEN);
+        cellLabel.setBackground(Color.CYAN);
     }
 
     @Override

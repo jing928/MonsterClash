@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.view;
 
+import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
@@ -29,6 +30,7 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     public PieceButton(Piece piece) {
         this.piece = piece;
         piece.addPropertyObserver(this);
+        piece.addActionObserver(this);
         setOpaque(false);
         setContentAreaFilled(false);
         setPreferredSize(new Dimension(PIECE_DIAMETER, PIECE_DIAMETER));
@@ -106,18 +108,21 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
 
     @Override
     public void rangeChanged(int deltaRange) {
-        notifyChange(deltaRange, "attack range");
+        notifyChange(deltaRange, "range");
     }
 
     @Override
     public void beforeActing(Piece pieceToAct) {
-        boolean diffTeam = piece.getTeam() != pieceToAct.getTeam();
-        boolean canReach = piece.distance(pieceToAct) <= pieceToAct.getAttackRange();
+        boolean teammate = piece.getTeam() == pieceToAct.getTeam();
+        // notify teammates if piece's ability is healing
+        boolean notifyTeammate = pieceToAct.getCurrAbility() == Ability.SPECIAL_HEALING == teammate;
+        Color notifiedColor = teammate ? Color.GREEN : Color.MAGENTA;
+        boolean canReach = piece.distance(pieceToAct) <= pieceToAct.getCurrentReachableRange();
         // the button would be lightened if the distance between the button and
         // the piece equals the attack range of the piece.
-        if (diffTeam & canReach) {
+        if (notifyTeammate && canReach) {
             canPlaced = true;
-            changeBackgroud(Color.MAGENTA);
+            changeBackgroud(notifiedColor);
             LOG.info("Reachable piece: " + piece);
         }
     }
