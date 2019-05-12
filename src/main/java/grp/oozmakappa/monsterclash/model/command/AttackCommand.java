@@ -23,8 +23,8 @@ public class AttackCommand implements Command {
 
     @Override
     public void undo() {
-        target.setUndoing(true);
+        target.setShouldNotify(false);
         target.setHealth(targetPrevHealth);
-        target.setUndoing(false);
+        target.setShouldNotify(true);
     }
 }

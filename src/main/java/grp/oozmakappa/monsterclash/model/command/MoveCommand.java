@@ -32,9 +32,9 @@ public class MoveCommand implements Command {
 
     @Override
     public void undo() {
-        piece.setUndoing(true);
+        piece.setShouldNotify(false);
         piece.move(prevPosition);
-        piece.setUndoing(false);
+        piece.setShouldNotify(true);
         button.setLocation(prevLocation);
         // TODO: unable to reset the turn
     }
