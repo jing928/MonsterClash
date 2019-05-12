@@ -21,8 +21,8 @@ public class PowerChangeCommand implements Command {
 
     @Override
     public void undo() {
-        piece.setUndoing(true);
+        piece.setShouldNotify(false);
         piece.setAttackPower(prevPower);
-        piece.setUndoing(false);
+        piece.setShouldNotify(true);
     }
 }

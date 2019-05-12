@@ -21,8 +21,8 @@ public class RangeChangeCommand implements Command {
 
     @Override
     public void undo() {
-        piece.setUndoing(true);
+        piece.setShouldNotify(false);
         piece.setAttackRange(prevRange);
-        piece.setUndoing(false);
+        piece.setShouldNotify(true);
     }
 }

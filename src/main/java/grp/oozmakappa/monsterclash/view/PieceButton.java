@@ -74,22 +74,22 @@ public class PieceButton extends JButton implements PiecePropertyObserver {
     }
 
     @Override
-    public void healthChanged(double deltaHealth, boolean isUndoing) {
-        if (!isUndoing) {
+    public void healthChanged(double deltaHealth, boolean shouldNotify) {
+        if (shouldNotify) {
             notifyChange(deltaHealth, "health");
         }
     }
 
     @Override
-    public void powerChanged(double deltaPower, boolean isUndoing) {
-        if (!isUndoing) {
+    public void powerChanged(double deltaPower, boolean shouldNotify) {
+        if (shouldNotify) {
             notifyChange(deltaPower, "attack power");
         }
     }
 
     @Override
-    public void rangeChanged(int deltaRange, boolean isUndoing) {
-        if (!isUndoing) {
+    public void rangeChanged(int deltaRange, boolean shouldNotify) {
+        if (shouldNotify) {
             notifyChange(deltaRange, "attack range");
         }
     }

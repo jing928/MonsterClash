@@ -21,8 +21,8 @@ public class HealthChangeCommand implements Command {
 
     @Override
     public void undo() {
-        piece.setUndoing(true);
+        piece.setShouldNotify(false);
         piece.setHealth(prevHealth);
-        piece.setUndoing(false);
+        piece.setShouldNotify(true);
     }
 }

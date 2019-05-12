@@ -33,7 +33,7 @@ public abstract class Piece implements DiceObserver {
     private double attackPower;
     private int attackRange;
     private int nextMove;
-    private boolean isUndoing = false;
+    private boolean shouldNotify = true;
     protected static final Logger LOG = LogManager.getLogger();
 
     public Piece(Team team, Cell position, double health, double attackPower, int attackRange) {
@@ -139,19 +139,19 @@ public abstract class Piece implements DiceObserver {
             nextMove = 0;
         }
         this.position = position;
-        notifyMoved(isUndoing);
+        notifyMoved();
     }
 
     public int getNextMove() {
         return nextMove;
     }
 
-    public boolean isUndoing() {
-        return isUndoing;
+    public boolean getShouldNotify() {
+        return shouldNotify;
     }
 
-    public void setUndoing(boolean undoing) {
-        isUndoing = undoing;
+    public void setShouldNotify(boolean shouldNotify) {
+        this.shouldNotify = shouldNotify;
     }
 
     public void addObserver(PiecePositionObserver observer) {
@@ -180,29 +180,29 @@ public abstract class Piece implements DiceObserver {
     /**
      * Notifies all posObservers when the piece has moved to new position.
      */
-    private void notifyMoved(boolean isUndoing) {
-        posObservers.forEach(o -> o.positionChanged(this, isUndoing));
+    private void notifyMoved() {
+        posObservers.forEach(o -> o.positionChanged(this, shouldNotify));
     }
 
     private void notifyHealthChanged(double deltaHealth) {
         if (deltaHealth == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.healthChanged(deltaHealth, isUndoing));
+        pptObservers.forEach(o -> o.healthChanged(deltaHealth, shouldNotify));
     }
 
     private void notifyPowerChanged(double deltaPower) {
         if (deltaPower == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.powerChanged(deltaPower, isUndoing));
+        pptObservers.forEach(o -> o.powerChanged(deltaPower, shouldNotify));
     }
 
     private void notifyRangeChanged(int deltaRange) {
         if (deltaRange == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.rangeChanged(deltaRange, isUndoing));
+        pptObservers.forEach(o -> o.rangeChanged(deltaRange, shouldNotify));
     }
 
 
