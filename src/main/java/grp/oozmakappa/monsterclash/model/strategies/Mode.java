@@ -19,7 +19,7 @@ public interface Mode {
     static Mode getMode(String name) {
         switch (name) {
             default:
-                return null;
+                return DefaultMode.getInstance();
             case Constraints.OFFENSIVE_MODE:
                 return OffensiveMode.getInstance();
             case Constraints.DEFENSIVE_MODE:
