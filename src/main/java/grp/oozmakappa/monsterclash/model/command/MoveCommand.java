@@ -36,6 +36,5 @@ public class MoveCommand implements Command {
         piece.move(prevPosition);
         piece.setShouldNotify(true);
         button.setLocation(prevLocation);
-        // TODO: unable to reset the turn
     }
 }

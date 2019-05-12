@@ -6,6 +6,7 @@ import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.command.Command;
 import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.command.MoveCommand;
+import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.utils.Constraints;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
@@ -27,12 +28,13 @@ public class BoardController extends MouseAdapter implements DiceObserver {
     private static final CommandManager COMMAND_MANAGER = CommandManager.getInstance();
     private final BoardPanel boardPanel;
     private Point initMouseLocation, initPieceLocation;
-    private Team currTeam = Team.OozmaKappa;
-    private boolean canMove = true;
+    private Team currTeam;
+    private boolean canMove;
     private Thread timeOutThread;
 
     public BoardController(BoardPanel boardPanel) {
         this.boardPanel = boardPanel;
+        changeTurn();
     }
 
 
@@ -117,10 +119,9 @@ public class BoardController extends MouseAdapter implements DiceObserver {
     }
 
     private void changeTurn() {
-        currTeam = currTeam == Team.OozmaKappa
-                ? Team.RoarOmegaRoar
-                : Team.OozmaKappa;
-        canMove = false;
+        TurnChangeCommand turnChangeCmd = new TurnChangeCommand(this);
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(turnChangeCmd);
     }
 
     private boolean invalidPiece(MouseEvent e) {
@@ -140,4 +141,17 @@ public class BoardController extends MouseAdapter implements DiceObserver {
     public void valueChanged(int value) {
         canMove = true;
     }
+
+    public Team getCurrTeam() {
+        return currTeam;
+    }
+
+    public void setCurrTeam(Team currTeam) {
+        this.currTeam = currTeam;
+    }
+
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
+    }
+
 }
