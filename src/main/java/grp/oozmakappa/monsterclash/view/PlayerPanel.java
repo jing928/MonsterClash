@@ -9,9 +9,7 @@ import java.awt.event.ActionListener;
 
 /**
  * @author Chenglong Ma
- * @deprecated have not finished.
  */
-@Deprecated
 public class PlayerPanel extends JPanel implements ActionListener {
     public PlayerPanel() {
         setPreferredSize(new Dimension(300, 60));
