@@ -3,10 +3,8 @@ package grp.oozmakappa.monsterclash.controller;
 import grp.oozmakappa.monsterclash.controller.states.ModeSelectionState;
 import grp.oozmakappa.monsterclash.controller.states.PieceButtonState;
 import grp.oozmakappa.monsterclash.controller.states.RollingState;
-import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
-import grp.oozmakappa.monsterclash.utils.Constraints;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import grp.oozmakappa.monsterclash.view.PieceButton;
@@ -23,15 +21,15 @@ import java.awt.event.MouseEvent;
 public class PieceListener extends MouseAdapter implements DiceObserver {
     private static final Logger LOG = LogManager.getLogger();
     private final BoardPanel boardPanel;
+    private final BoardController boardController;
     private Point initMouseLocation;
-    private Team currTeam = Constraints.INITIATIVE_TEAM;
-    private boolean canMove = true;
     private PieceButton currButton;
     private PieceButtonState state;
 
-    public PieceListener(BoardPanel boardPanel) {
-        this.boardPanel = boardPanel;
-        state = RollingState.getInstance();
+    public PieceListener(BoardController boardController) {
+        this.boardController = boardController;
+        this.boardPanel = boardController.getBoardPanel();
+        state = RollingState.getInstance(this);
     }
 
     public void setState(PieceButtonState state) {
@@ -48,7 +46,7 @@ public class PieceListener extends MouseAdapter implements DiceObserver {
             return;
         }
         initMouseLocation = e.getPoint();
-        state.todo(this);
+        state.todo();
     }
 
     @Override
@@ -56,7 +54,7 @@ public class PieceListener extends MouseAdapter implements DiceObserver {
         if (invalidPiece(e)) {
             return;
         }
-        state.done(this);
+        state.done();
     }
 
     @Override
@@ -72,12 +70,12 @@ public class PieceListener extends MouseAdapter implements DiceObserver {
     }
 
     private boolean invalidPiece(MouseEvent e) {
-        if (!canMove || !(e.getComponent() instanceof PieceButton)) {
+        if (!boardController.canMove() || !(e.getComponent() instanceof PieceButton)) {
             return true;
         }
         currButton = (PieceButton) e.getComponent();
         Piece piece = currButton.getPiece();
-        if (piece.getTeam() != currTeam) {
+        if (piece.getTeam() != boardController.getCurrTeam()) {
             e.consume();
             return true;
         }
@@ -86,8 +84,7 @@ public class PieceListener extends MouseAdapter implements DiceObserver {
 
     @Override
     public void valueChanged(int value) {
-        canMove = true;// TODO: state
-        setState(ModeSelectionState.getInstance());
+        setState(ModeSelectionState.getInstance(this));
     }
 
     /**

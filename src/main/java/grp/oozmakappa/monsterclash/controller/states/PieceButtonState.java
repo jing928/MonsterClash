@@ -5,8 +5,14 @@ import grp.oozmakappa.monsterclash.controller.PieceListener;
 /**
  * @author Chenglong Ma
  */
-public interface PieceButtonState {
-    void todo(PieceListener ctrl);
+public abstract class PieceButtonState {
+    final PieceListener ctrl;
 
-    void done(PieceListener ctrl);
+    PieceButtonState(PieceListener ctrl) {
+        this.ctrl = ctrl;
+    }
+
+    public abstract void todo();
+
+    public abstract void done();
 }
