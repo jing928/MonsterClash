@@ -10,18 +10,18 @@ import java.awt.*;
 /**
  * @author Chenglong Ma
  */
-public class ActionState implements PieceButtonState {
+public class ActionState extends PieceButtonState {
     private static ActionState instance;
     private Point initPieceLocation;
 
-
-    private ActionState() {
+    private ActionState(PieceListener ctrl) {
+        super(ctrl);
         // for singleton pattern
     }
 
-    public static ActionState getInstance(Piece piece) {
+    public static synchronized ActionState getInstance(Piece piece, PieceListener ctrl) {
         if (instance == null) {
-            instance = new ActionState();
+            instance = new ActionState(ctrl);
         }
         new AbilityDialog(piece).display();
         if (piece.getCurrAbility() != null) {
@@ -32,7 +32,7 @@ public class ActionState implements PieceButtonState {
 
 
     @Override
-    public void todo(PieceListener ctrl) {
+    public void todo() {
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
         if (piece.getCurrAbility() == null) {
@@ -46,7 +46,7 @@ public class ActionState implements PieceButtonState {
     }
 
     @Override
-    public void done(PieceListener ctrl) {
+    public void done() {
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
         PieceButton targetButton = ctrl.getClosestPiece(button);
@@ -54,7 +54,7 @@ public class ActionState implements PieceButtonState {
         if (targetButton != null) {
             Piece target = targetButton.getPiece();
             piece.act(target);
-            nextState = RollingState.getInstance();
+            nextState = RollingState.getInstance(ctrl);
             piece.setCurrentAbility(null);
         } else {
             nextState = this;

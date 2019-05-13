@@ -25,5 +25,5 @@ public class Constraints {
     public static final String DEFENSIVE_MODE = "defensive";
 
     public static final AbstractRuleFactory.Rule RULE = AbstractRuleFactory.Rule.A;
-    public static final Team INITIATIVE_TEAM = Team.OozmaKappa;
+    public static final Team INITIAL_TEAM = Team.OozmaKappa;
 }

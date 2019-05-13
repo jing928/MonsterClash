@@ -16,7 +16,7 @@ import java.awt.*;
 /**
  * @author Chenglong Ma
  */
-public class MoveState implements PieceButtonState {
+public class MoveState extends PieceButtonState {
     private static final Logger LOG = LogManager.getLogger();
     private static MoveState instance;
     private Point initPieceLocation;
@@ -24,12 +24,13 @@ public class MoveState implements PieceButtonState {
     private boolean canMove = true;
     private Thread timeOutThread;
 
-    private MoveState() {
+    private MoveState(PieceListener ctrl) {
+        super(ctrl);
     }
 
-    public static MoveState getInstance(Piece piece) {
+    public static synchronized MoveState getInstance(Piece piece, PieceListener ctrl) {
         if (instance == null) {
-            instance = new MoveState();
+            instance = new MoveState(ctrl);
         }
         piece.notifyMoving();
         return instance;
@@ -44,7 +45,7 @@ public class MoveState implements PieceButtonState {
     }
 
     @Override
-    public void todo(PieceListener ctrl) {
+    public void todo() {
         PieceButton button = ctrl.getButton();
         button.addMouseMotionListener(ctrl);
         Piece piece = button.getPiece();
@@ -66,7 +67,7 @@ public class MoveState implements PieceButtonState {
     }
 
     @Override
-    public void done(PieceListener ctrl) {
+    public void done() {
         Cell newCell;
         Point newLoc;
         PieceButton button = ctrl.getButton();
@@ -78,7 +79,7 @@ public class MoveState implements PieceButtonState {
             newCell = cellLabel.getCell();
             newLoc = cellLabel.getLocation();
             timeOutThread.interrupt();
-            nextState = ActionState.getInstance(piece);
+            nextState = ActionState.getInstance(piece, ctrl);
             LOG.info("Piece has moved.");
         } else {
             // stay put
