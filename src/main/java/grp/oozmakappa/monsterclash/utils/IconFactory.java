@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.utils;
 
+import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

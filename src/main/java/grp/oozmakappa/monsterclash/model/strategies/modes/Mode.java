@@ -1,6 +1,6 @@
 package grp.oozmakappa.monsterclash.model.strategies.modes;
 
-import grp.oozmakappa.monsterclash.utils.Constraints;
+import grp.oozmakappa.monsterclash.model.Constraints;
 
 /**
  * @author Chenglong Ma

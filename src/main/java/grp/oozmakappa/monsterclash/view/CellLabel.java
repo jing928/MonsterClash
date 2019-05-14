@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 
-import static grp.oozmakappa.monsterclash.utils.Constraints.CELL_LENGTH;
+import static grp.oozmakappa.monsterclash.model.Constraints.CELL_LENGTH;
 
 /**
  * @author Chenglong Ma
