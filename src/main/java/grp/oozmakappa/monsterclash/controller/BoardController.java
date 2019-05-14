@@ -2,7 +2,6 @@ package grp.oozmakappa.monsterclash.controller;
 
 import grp.oozmakappa.monsterclash.model.Dice;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import grp.oozmakappa.monsterclash.view.PieceButton;
@@ -14,7 +13,7 @@ import java.awt.event.MouseAdapter;
 /**
  * @author Chenglong Ma
  */
-public class BoardController extends MouseAdapter implements DiceObserver {
+public class BoardController extends MouseAdapter {
     private static final Logger LOG = LogManager.getLogger();
     private final BoardPanel boardPanel;
 
@@ -47,8 +46,4 @@ public class BoardController extends MouseAdapter implements DiceObserver {
         boardPanel.addPieceButton(button);
     }
 
-    @Override
-    public void valueChanged(int value) {
-        // TODO: change state
-    }
 }

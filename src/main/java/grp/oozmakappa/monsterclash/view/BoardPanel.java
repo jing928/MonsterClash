@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static grp.oozmakappa.monsterclash.utils.Constraints.BOARD_HEIGHT;
-import static grp.oozmakappa.monsterclash.utils.Constraints.BOARD_WIDTH;
+import static grp.oozmakappa.monsterclash.model.Constraints.BOARD_HEIGHT;
+import static grp.oozmakappa.monsterclash.model.Constraints.BOARD_WIDTH;
 import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
 
 /**

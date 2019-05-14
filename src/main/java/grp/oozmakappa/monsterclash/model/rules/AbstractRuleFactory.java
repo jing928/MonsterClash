@@ -1,10 +1,10 @@
 package grp.oozmakappa.monsterclash.model.rules;
 
+import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.strategies.abilities.AttackStrategy;
 import grp.oozmakappa.monsterclash.model.strategies.abilities.HealStrategy;
 import grp.oozmakappa.monsterclash.model.strategies.abilities.MoveStrategy;
-import grp.oozmakappa.monsterclash.utils.Constraints;
 
 /**
  * @author Chenglong Ma
@@ -17,7 +17,7 @@ public abstract class AbstractRuleFactory {
      * @return concrete rule factory
      */
     public static AbstractRuleFactory getRuleFactory() {
-        Rule rule = Constraints.RULE;
+        Rule rule = Constraints.getInstance().getCurrentRule();
         switch (rule) {
             default:
             case A:

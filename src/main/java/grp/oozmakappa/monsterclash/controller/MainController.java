@@ -34,7 +34,6 @@ public class MainController {
             boardController.addPiece(piece);
             dice.addObserver(piece);
         }
-        dice.addObserver(boardController);
     }
 
     public void run() {

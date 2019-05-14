@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 
-import static grp.oozmakappa.monsterclash.utils.Constraints.PIECE_DIAMETER;
+import static grp.oozmakappa.monsterclash.model.Constraints.PIECE_DIAMETER;
 
 /**
  * @author Chenglong Ma

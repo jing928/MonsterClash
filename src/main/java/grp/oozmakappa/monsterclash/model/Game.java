@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static grp.oozmakappa.monsterclash.utils.Constraints.*;
+import static grp.oozmakappa.monsterclash.model.Constraints.*;
 
 /**
  * The main model
