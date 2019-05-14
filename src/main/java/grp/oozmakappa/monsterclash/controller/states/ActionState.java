@@ -1,10 +1,12 @@
 package grp.oozmakappa.monsterclash.controller.states;
 
 import grp.oozmakappa.monsterclash.controller.PieceListener;
+import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.view.AbilityDialog;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -42,25 +44,31 @@ public class ActionState extends PieceButtonState {
         piece.notifyActing();
         button.addMouseMotionListener(ctrl);
         initPieceLocation = button.getLocation();
-        // TODO implement strategy pattern
     }
 
     @Override
     public void done() {
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
+        PieceButtonState nextState = ModeSelectionState.getInstance();
         PieceButton targetButton = ctrl.getClosestPiece(button);
-        PieceButtonState nextState;
         if (targetButton != null) {
             Piece target = targetButton.getPiece();
             piece.act(target);
-            nextState = RollingState.getInstance(ctrl);
-            piece.setCurrentAbility(null);
-        } else {
+            Constraints.getInstance().changeTurn();
+        } else if (askContinue(button)) {
             nextState = this;
+        } else {
+            Constraints.getInstance().changeTurn();
         }
+        piece.setCurrentAbility(null);
         button.removeMouseMotionListener(ctrl);
         button.setLocation(initPieceLocation);
         ctrl.setState(nextState);
+    }
+
+    private boolean askContinue(Component component) {
+        int res = JOptionPane.showConfirmDialog(component, "No reachable target, select again?", "Warning", JOptionPane.YES_NO_OPTION);
+        return res == JOptionPane.YES_OPTION;
     }
 }

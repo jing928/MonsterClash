@@ -1,6 +1,5 @@
 package grp.oozmakappa.monsterclash.controller;
 
-import grp.oozmakappa.monsterclash.model.Dice;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
 import grp.oozmakappa.monsterclash.view.CellLabel;
@@ -40,7 +39,6 @@ public class BoardController extends MouseAdapter {
         }
         // 2. set listener
         PieceListener listener = new PieceListener(boardPanel);
-        Dice.getInstance().addObserver(listener);
         button.addMouseListener(listener);
         // 3. add to board panel
         boardPanel.addPieceButton(button);
