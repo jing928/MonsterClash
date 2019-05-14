@@ -9,6 +9,7 @@ import grp.oozmakappa.monsterclash.view.PieceButton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,7 +17,7 @@ import java.awt.event.MouseEvent;
 /**
  * @author Chenglong Ma
  */
-public class PieceListener extends MouseAdapter implements DiceObserver {
+public class PieceListener extends MouseAdapter {
     private static final Logger LOG = LogManager.getLogger();
     private final BoardPanel boardPanel;
     private Point initMouseLocation;
@@ -56,6 +57,31 @@ public class PieceListener extends MouseAdapter implements DiceObserver {
         e.getComponent().setLocation(x, y);
     }
 
+    private boolean isInvalid(MouseEvent e) {
+        Component component = e.getComponent();
+        Constraints constraints = Constraints.getInstance();
+        if (!(component instanceof PieceButton)) {
+            showMessage(component, "Invalid operation");
+            return true;
+        }
+        currButton = (PieceButton) component;
+        Piece piece = currButton.getPiece();
+        if (piece.getTeam() != constraints.getCurrentTeam()) {
+            showMessage(currButton, "It's not your turn.");
+            return true;
+        }
+        boolean canMove = constraints.canMove();
+        if (!canMove) {
+            showMessage(component, "Cannot move, Please roll dice first.");
+            return true;
+        }
+        return false;
+    }
+
+    private void showMessage(Component component, String msg) {
+        JOptionPane.showMessageDialog(component, msg, "Warning", JOptionPane.WARNING_MESSAGE);
+    }
+
     /**
      * Delegates to {@link BoardPanel}
      *
@@ -66,12 +92,4 @@ public class PieceListener extends MouseAdapter implements DiceObserver {
         return boardPanel.getClosestCell(button);
     }
 
-    public PieceButton getClosestPiece(PieceButton button) {
-        return boardPanel.getClosestPiece(button);
-    }
-
-    @Override
-    public void valueChanged(int value) {
-//        setState(ModeSelectionState.getInstance(this));
-    }
 }

@@ -2,9 +2,8 @@ package grp.oozmakappa.monsterclash.controller.states;
 
 import grp.oozmakappa.monsterclash.controller.PieceListener;
 import grp.oozmakappa.monsterclash.model.Cell;
-import grp.oozmakappa.monsterclash.model.Team;
+import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.utils.Constraints;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 import org.apache.logging.log4j.LogManager;
@@ -20,8 +19,6 @@ public class MoveState extends PieceButtonState {
     private static final Logger LOG = LogManager.getLogger();
     private static MoveState instance;
     private Point initPieceLocation;
-    private Team currTeam = Team.OozmaKappa;
-    private boolean canMove = true;
     private Thread timeOutThread;
 
     private MoveState(PieceListener ctrl) {
@@ -36,14 +33,6 @@ public class MoveState extends PieceButtonState {
         return instance;
     }
 
-    @Deprecated // TODO move to global state
-    private void changeTurn() {
-        currTeam = currTeam == Team.OozmaKappa
-                ? Team.RoarOmegaRoar
-                : Team.OozmaKappa;
-        canMove = false;
-    }
-
     @Override
     public void todo() {
         PieceButton button = ctrl.getButton();
@@ -55,7 +44,7 @@ public class MoveState extends PieceButtonState {
             try {
                 Thread.sleep(Constraints.TIME_OUT);
                 LOG.info("Time out for this turn");
-                changeTurn();
+                Constraints.getInstance().changeTurn();
                 piece.setPosition(piece.getPosition());
                 button.setLocation(initPieceLocation);
                 JOptionPane.showMessageDialog(button, "Time out for your turn.");
@@ -75,7 +64,6 @@ public class MoveState extends PieceButtonState {
         CellLabel cellLabel = ctrl.getClosestCell(button);
         PieceButtonState nextState;
         if (cellLabel != null) {
-            changeTurn();
             newCell = cellLabel.getCell();
             newLoc = cellLabel.getLocation();
             timeOutThread.interrupt();
