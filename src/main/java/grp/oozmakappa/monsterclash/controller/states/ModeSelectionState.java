@@ -11,38 +11,37 @@ import org.apache.logging.log4j.Logger;
 /**
  * @author Chenglong Ma
  */
-public class ModeSelectionState extends PieceButtonState {
+public class ModeSelectionState implements PieceButtonState {
 
     private static final Logger LOG = LogManager.getLogger();
     private static ModeSelectionState instance;
 
-    private ModeSelectionState(PieceListener ctrl) {
-        super(ctrl);
+    private ModeSelectionState() {
         // for singleton pattern
     }
 
-    public static synchronized ModeSelectionState getInstance(PieceListener ctrl) {
+    public static ModeSelectionState getInstance() {
         if (instance == null) {
-            instance = new ModeSelectionState(ctrl);
+            instance = new ModeSelectionState();
         }
         return instance;
     }
 
 
     @Override
-    public void todo() {
+    public void todo(PieceListener ctrl) {
         PieceButton button = ctrl.getButton();
         button.removeMouseMotionListener(ctrl);
         Piece piece = button.getPiece();
         new ModeDialog(piece).display();
         PieceButtonState nextState = piece.getCurrMode() == DefaultMode.getInstance()
                 ? this
-                : MoveState.getInstance(piece, ctrl);
+                : MoveState.getInstance(piece);
         ctrl.setState(nextState);
     }
 
     @Override
-    public void done() {
+    public void done(PieceListener ctrl) {
         // unreachable method
     }
 }

@@ -12,18 +12,18 @@ import java.awt.*;
 /**
  * @author Chenglong Ma
  */
-public class ActionState extends PieceButtonState {
+public class ActionState implements PieceButtonState {
     private static ActionState instance;
     private Point initPieceLocation;
 
-    private ActionState(PieceListener ctrl) {
-        super(ctrl);
+
+    private ActionState() {
         // for singleton pattern
     }
 
-    public static synchronized ActionState getInstance(Piece piece, PieceListener ctrl) {
+    public static ActionState getInstance(Piece piece) {
         if (instance == null) {
-            instance = new ActionState(ctrl);
+            instance = new ActionState();
         }
         new AbilityDialog(piece).display();
         if (piece.getCurrAbility() != null) {
@@ -34,7 +34,7 @@ public class ActionState extends PieceButtonState {
 
 
     @Override
-    public void todo() {
+    public void todo(PieceListener ctrl) {
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
         if (piece.getCurrAbility() == null) {
@@ -47,7 +47,7 @@ public class ActionState extends PieceButtonState {
     }
 
     @Override
-    public void done() {
+    public void done(PieceListener ctrl) {
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
         PieceButtonState nextState = ModeSelectionState.getInstance();
