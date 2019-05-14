@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 
-import static grp.oozmakappa.monsterclash.utils.Constraints.CELL_LENGTH;
+import static grp.oozmakappa.monsterclash.model.Constraints.CELL_LENGTH;
 
 /**
  * @author Chenglong Ma
@@ -90,11 +90,8 @@ public class CellLabel extends JLabel implements PiecePositionObserver {
         setBackground(currentColor);
     }
 
-    /**
-     * @param pieceToMove
-     */
     @Override
-    public void positionChanging(Piece pieceToMove) {
+    public void beforeMove(Piece pieceToMove) {
         if (cell.getRole() == Cell.Role.DISABLE) {
             return;
         }
@@ -107,7 +104,7 @@ public class CellLabel extends JLabel implements PiecePositionObserver {
     }
 
     @Override
-    public void positionChanged(Piece pieceLocated) {
+    public void afterMove(Piece pieceLocated) {
         setBackground(currentColor);
         canPlaced = false;
         if (cell.distance(pieceLocated.getPosition()) == 0) {

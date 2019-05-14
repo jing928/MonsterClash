@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.model;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,5 +26,13 @@ public class BoardTest {
             }
             System.out.println();
         }
+    }
+
+    @Test
+    public void testBitCalculation() {
+        boolean value = false;
+        boolean falseVal = false;
+        System.out.println(1 & 1);
+        Assert.assertTrue(value & falseVal);
     }
 }

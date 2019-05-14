@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.model.monsters.roaromegaroar;
 
+import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
@@ -19,6 +20,7 @@ public class RandallBoggs extends Piece {
     public RandallBoggs(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
         setIcon(IconFactory.RANDALL_BOGGS);
+        addSpecialAbility(Ability.SPECIAL_MOVE);
     }
 
 }

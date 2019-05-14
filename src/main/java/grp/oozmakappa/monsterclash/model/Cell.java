@@ -110,6 +110,11 @@ public final class Cell implements CellEffect {
         }
     }
 
+    @Override
+    public String toString() {
+        return String.format("Cell: [ %d , %d ]", getX(), getY());
+    }
+
     /**
      * Returns if the specified location is same as this cell
      *

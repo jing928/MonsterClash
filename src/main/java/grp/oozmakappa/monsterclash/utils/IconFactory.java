@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.utils;
 
+import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,26 +24,44 @@ import static java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR;
  */
 public class IconFactory {
 
+    private static final Logger LOG = LogManager.getLogger();
+    private static IconFactory instance;
+    //region For Pieces
+
     // Oozma Kappa
     public static final String JAMES_P_SULLIVAN = "oozmakappa/james_p_sullivan.png";
     public static final String MIKE_WAZOWSKI = "oozmakappa/mike_wazowski.png";
-    //region For Pieces
     public static final String SQUISHY = "oozmakappa/squishy.png";
     // Roar Omega Roar
     public static final String CHET_ALEXANDER = "roaromegaroar/chet_alexander.png";
     public static final String JOHNNY_WORTHINGTON = "roaromegaroar/johnny_worthington.png";
     public static final String RANDALL_BOGGS = "roaromegaroar/randall_boggs.png";
-    private static final Logger LOG = LogManager.getLogger();
+
     private static final String MONSTERS_DIR = "img/monsters/";
-    private static final String DICE_VALUE_DIR = "img/dice/value/";
 
     //endregion
 
     //region For Dice
+
+    private static final String DICE_VALUE_DIR = "img/dice/value/";
     private static final String DICE_ROLLING_DIR = "img/dice/rolling/";
-    private static IconFactory instance;
 
     //endregion
+
+    //region For piece abilities
+
+    /**
+     * Acknowledgement:
+     * Icons made by {
+     * Lorc, http://lorcblog.blogspot.com,
+     * Delapouite, http://delapouite.com,
+     * }
+     */
+    public static final String ABILITIES_DIR = "img/abilities/";
+    public static final String MODE_DIR = "img/mode/";
+
+    //endregion
+
     private final Map<String, IconFlyweight> icons;
 
     private IconFactory() {
@@ -120,13 +139,26 @@ public class IconFactory {
     }
 
     /**
+     * Returns the {@link Icon} of mode
+     *
+     * @param mode the mode name
+     * @return
+     * @see Constraints#OFFENSIVE_MODE
+     * @see Constraints#DEFENSIVE_MODE
+     */
+    public Icon getModeIcon(String mode) {
+        String path = MODE_DIR + mode + ".png";
+        return getIcon(path).getIcon();
+    }
+
+    /**
      * Returns shared {@link IconFlyweight}
      *
      * @param filename the specified icon filename
      * @return the flyweight icon
      * @Ensures <code>icons.containsKey(filename)</code>
      */
-    private IconFlyweight getIcon(String filename) {
+    public IconFlyweight getIcon(String filename) {
         IconFlyweight icon = icons.get(filename);
         if (icon == null) {
             icon = new IconImpl(filename);

@@ -6,17 +6,18 @@ import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 /**
  * @author Chenglong Ma
  */
-public class HealthBuff extends BuffDecorator {
+class HealthBuff extends BuffDecorator {
     private static final double MAX_GAIN = 10;
     private final double healthGained;
 
-    protected HealthBuff(CellEffect toDecorated) {
+    HealthBuff(CellEffect toDecorated) {
         super(toDecorated);
-        healthGained = MAX_GAIN * Math.random();
+        healthGained = MAX_GAIN * Math.random() + 1;
     }
 
     @Override
     public void affect(Piece piece) {
+        LOG.info("Gain health: " + healthGained);
         piece.increaseHealth(healthGained);
         super.affect(piece);
     }

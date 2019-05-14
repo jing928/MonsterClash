@@ -6,18 +6,19 @@ import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 /**
  * @author Chenglong Ma
  */
-public class PowerBuff extends BuffDecorator {
+class PowerBuff extends BuffDecorator {
     private static final double MAX_GAIN = 10;
     private final double powerGained;
 
-    protected PowerBuff(CellEffect toDecorated) {
+    PowerBuff(CellEffect toDecorated) {
         super(toDecorated);
-        powerGained = MAX_GAIN * Math.random();
+        powerGained = MAX_GAIN * Math.random() + 1;
     }
 
     @Override
     public void affect(Piece piece) {
-        double power = piece.getAttackPower();
+        LOG.info("Gain power: " + powerGained);
+        double power = piece.getOriginalAttackPower();
         power += powerGained;
         piece.setAttackPower(power);
         super.affect(piece);

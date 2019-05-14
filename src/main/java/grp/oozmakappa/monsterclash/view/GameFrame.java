@@ -1,11 +1,14 @@
 package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.Board;
+import grp.oozmakappa.monsterclash.model.Team;
+import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * The main view
@@ -63,23 +66,17 @@ public class GameFrame extends JFrame {
         mainPanel.add(boardPanel);
     }
 
-    @Deprecated
-    public void initPlayer1Panel() {
-        // TODO: hardcode
-        player1Panel = new JPanel();
-        player1Panel.setBackground(Color.RED);
-        player1Panel.setPreferredSize(new Dimension(300, 60));
+    public void initPlayer1Panel(List<Piece> pieces) {
+        player1Panel = new PlayerPanel(pieces, Team.OozmaKappa);
         mainPanel.add(player1Panel);
     }
 
     /**
+     * @param pieces
      * @Requires mainPanel.getComponentCount() > 0
      */
-    @Deprecated
-    public void initPlayer2Panel() {
-        player2Panel = new JPanel();
-        player2Panel.setBackground(Color.BLUE);
-        player2Panel.setPreferredSize(new Dimension(300, 60));
+    public void initPlayer2Panel(List<Piece> pieces) {
+        player2Panel = new PlayerPanel(pieces, Team.RoarOmegaRoar);
         mainPanel.add(player2Panel);
     }
 

@@ -6,17 +6,18 @@ import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 /**
  * @author Chenglong Ma
  */
-public class HealthDebuff extends DebuffDecorator {
+class HealthDebuff extends DebuffDecorator {
     private static final double MAX_LOSS = 10;
     private final double damage;
 
-    protected HealthDebuff(CellEffect toDecorated) {
+    HealthDebuff(CellEffect toDecorated) {
         super(toDecorated);
-        damage = MAX_LOSS * Math.random();
+        damage = MAX_LOSS * Math.random() + 1;
     }
 
     @Override
     public void affect(Piece piece) {
+        LOG.info("Get hurt: " + damage);
         piece.decreaseHealth(damage);
         super.affect(piece);
     }

@@ -10,15 +10,16 @@ public class RangeDebuff extends DebuffDecorator {
     private static final int MAX_LOSS = 10;
     private final int loss;
 
-    protected RangeDebuff(CellEffect toDecorated) {
+    RangeDebuff(CellEffect toDecorated) {
         super(toDecorated);
-        loss = (int) (MAX_LOSS * Math.random());
+        loss = (int) (MAX_LOSS * Math.random()) + 1;
     }
 
     @Override
     public void affect(Piece piece) {
-        int range = piece.getAttackRange();
-        piece.setAttackRange(range - loss);
+        LOG.info("Lost range: " + loss);
+        int range = piece.getCurrentReachableRange();
+        piece.setReachableRange(range - loss);
         super.affect(piece);
     }
 }
