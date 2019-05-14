@@ -200,6 +200,9 @@ public abstract class Piece implements DiceObserver {
     }
 
     public int getCurrentReachableRange() {
+        if (currAbility == null) {
+            return reachableRange;
+        }
         switch (currAbility) {
             default:
             case PLAIN_ATTACK:
