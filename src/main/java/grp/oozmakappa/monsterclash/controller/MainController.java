@@ -1,6 +1,5 @@
 package grp.oozmakappa.monsterclash.controller;
 
-import grp.oozmakappa.monsterclash.model.Board;
 import grp.oozmakappa.monsterclash.model.Dice;
 import grp.oozmakappa.monsterclash.model.Game;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
@@ -13,16 +12,11 @@ import javax.swing.*;
  */
 public class MainController {
 
-    /**
-     * @param board
-     * @return
-     */
-    private GameFrame initGameFrame(Board board) {
-        assert board != null;
+    private GameFrame initGameFrame(Game game) {
         GameFrame gameFrame = new GameFrame();
-        gameFrame.initPlayer1Panel();
-        gameFrame.initBoardPanel(board);
-        gameFrame.initPlayer2Panel();
+        gameFrame.initPlayer1Panel(game.getPieces());
+        gameFrame.initBoardPanel(game.getBoard());
+        gameFrame.initPlayer2Panel(game.getPieces());
         return gameFrame;
     }
 
@@ -38,7 +32,7 @@ public class MainController {
 
     public void run() {
         Game game = new Game();
-        GameFrame gameFrame = initGameFrame(game.getBoard());
+        GameFrame gameFrame = initGameFrame(game);
         initControllers(game, gameFrame);
         SwingUtilities.invokeLater(gameFrame::display);
     }
