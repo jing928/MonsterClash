@@ -91,7 +91,7 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         GameFrame.showMessage(this, msg, deltaValue > 0);
     }
 
-    private void changeBackgroud(Color backgroundColor) {
+    private void changeBackground(Color backgroundColor) {
         this.backgroundColor = backgroundColor;
         repaint();
     }
@@ -99,6 +99,7 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     @Override
     public void healthChanged(double deltaHealth) {
         notifyChange(deltaHealth, "health");
+        setEnabled(piece.getHealth() > 0);
     }
 
     @Override
@@ -122,7 +123,7 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         // the piece equals the attack range of the piece.
         if (notifyTeammate && canReach) {
             canPlaced = true;
-            changeBackgroud(notifiedColor);
+            changeBackground(notifiedColor);
             LOG.info("Reachable piece: " + piece);
         }
     }
@@ -130,6 +131,6 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     @Override
     public void afterActing(Piece pieceActed) {
         canPlaced = false;
-        changeBackgroud(DEF_COLOR);
+        changeBackground(DEF_COLOR);
     }
 }

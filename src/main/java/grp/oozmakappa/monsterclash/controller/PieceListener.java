@@ -1,8 +1,9 @@
 package grp.oozmakappa.monsterclash.controller;
 
+import grp.oozmakappa.monsterclash.controller.states.ModeSelectionState;
 import grp.oozmakappa.monsterclash.controller.states.PieceButtonState;
-import grp.oozmakappa.monsterclash.controller.states.VerifyingState;
-import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
+import grp.oozmakappa.monsterclash.model.Constraints;
+import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import grp.oozmakappa.monsterclash.view.PieceButton;
@@ -21,35 +22,44 @@ public class PieceListener extends MouseAdapter {
     private static final Logger LOG = LogManager.getLogger();
     private final BoardPanel boardPanel;
     private Point initMouseLocation;
-    //    private PieceButton currButton;
+    private PieceButton currButton;
     private PieceButtonState state;
 
-    PieceListener(BoardPanel boardPanel) {
+    public PieceListener(BoardPanel boardPanel) {
         this.boardPanel = boardPanel;
-        state = VerifyingState.getInstance(this);
+        state = ModeSelectionState.getInstance();
     }
 
     public void setState(PieceButtonState state) {
         this.state = state;
     }
 
-//    public PieceButton getButton() {
-//        return currButton;
-//    }
+    public PieceButton getButton() {
+        return currButton;
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (isInvalid(e)) {
+            return;
+        }
         initMouseLocation = e.getPoint();
-        state.todo(e);
+        state.todo(this);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        state.done(e);
+        if (isInvalid(e)) {
+            return;
+        }
+        state.done(this);
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        if (isInvalid(e)) {
+            return;
+        }
         // follow the mouse's movement
         Point piecePoint = e.getComponent().getLocation();
         int x = piecePoint.x + e.getX() - initMouseLocation.x;
@@ -90,6 +100,10 @@ public class PieceListener extends MouseAdapter {
      */
     public CellLabel getClosestCell(PieceButton button) {
         return boardPanel.getClosestCell(button);
+    }
+
+    public PieceButton getClosestPiece(PieceButton button) {
+        return boardPanel.getClosestPiece(button);
     }
 
 }

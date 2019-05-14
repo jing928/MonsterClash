@@ -15,26 +15,25 @@ import java.awt.*;
 /**
  * @author Chenglong Ma
  */
-public class MoveState extends PieceButtonState {
+public class MoveState implements PieceButtonState {
     private static final Logger LOG = LogManager.getLogger();
     private static MoveState instance;
     private Point initPieceLocation;
     private Thread timeOutThread;
 
-    private MoveState(PieceListener ctrl) {
-        super(ctrl);
+    private MoveState() {
     }
 
-    public static synchronized MoveState getInstance(Piece piece, PieceListener ctrl) {
+    public static MoveState getInstance(Piece piece) {
         if (instance == null) {
-            instance = new MoveState(ctrl);
+            instance = new MoveState();
         }
         piece.notifyMoving();
         return instance;
     }
 
     @Override
-    public void todo() {
+    public void todo(PieceListener ctrl) {
         PieceButton button = ctrl.getButton();
         button.addMouseMotionListener(ctrl);
         Piece piece = button.getPiece();
@@ -56,7 +55,7 @@ public class MoveState extends PieceButtonState {
     }
 
     @Override
-    public void done() {
+    public void done(PieceListener ctrl) {
         Cell newCell;
         Point newLoc;
         PieceButton button = ctrl.getButton();
@@ -67,7 +66,7 @@ public class MoveState extends PieceButtonState {
             newCell = cellLabel.getCell();
             newLoc = cellLabel.getLocation();
             timeOutThread.interrupt();
-            nextState = ActionState.getInstance(piece, ctrl);
+            nextState = ActionState.getInstance(piece);
             LOG.info("Piece has moved.");
         } else {
             // stay put
