@@ -3,6 +3,8 @@ package grp.oozmakappa.monsterclash.model.abstracts;
 import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
+import grp.oozmakappa.monsterclash.model.command.AttackCommand;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.model.rules.AbstractRuleFactory;
 import grp.oozmakappa.monsterclash.model.strategies.modes.DefaultMode;
@@ -361,7 +363,8 @@ public abstract class Piece implements DiceObserver {
         switch (currAbility) {
 
             case PLAIN_ATTACK:
-                attack(target);
+                CommandManager manager = CommandManager.getInstance();
+                manager.storeAndExecute(new AttackCommand(this, target));
                 break;
             case SPECIAL_ATTACK:
                 RULE.createAttackStrategy(this).attack(target);
