@@ -24,12 +24,11 @@ public class UndoButton extends JButton {
     }
 
     public int getChoice() {
-        Integer[] choices = {0, 1, 2, 3};
-        int input = JOptionPane.showOptionDialog(null,
+        Object[] choices = {"Cancel", 1, 2, 3};
+        return JOptionPane.showOptionDialog(null,
                 "How many turns do you want to undo?", "Undo?",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
                 null, choices, choices[0]);
-        return input;
     }
 
 }
