@@ -1,6 +1,8 @@
 package grp.oozmakappa.monsterclash.model.strategies.abilities;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.AttackCommand;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
 
 /**
  * @author Chenglong Ma
@@ -24,6 +26,7 @@ public class FartherAttack extends AbstractSpecialAbility implements AttackStrat
 
     @Override
     public void attack(Piece target) {
-        piece.attack(target);
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new AttackCommand(piece, target));
     }
 }
