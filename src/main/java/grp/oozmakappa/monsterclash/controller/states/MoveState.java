@@ -5,6 +5,7 @@ import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.model.command.StateChangeCommand;
 import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import grp.oozmakappa.monsterclash.view.PieceButton;
@@ -81,6 +82,7 @@ public class MoveState implements PieceButtonState {
         piece.setPosition(newCell);
         button.setLocation(newLoc);
         button.removeMouseMotionListener(ctrl);
-        ctrl.setState(nextState);
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new StateChangeCommand(ctrl, nextState));
     }
 }
