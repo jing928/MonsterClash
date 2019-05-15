@@ -4,6 +4,8 @@ import grp.oozmakappa.monsterclash.controller.PieceListener;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +45,8 @@ public class MoveState implements PieceButtonState {
             try {
                 Thread.sleep(Constraints.TIME_OUT);
                 LOG.info("Time out for this turn");
-                Constraints.getInstance().changeTurn();
+                CommandManager manager = CommandManager.getInstance();
+                manager.storeAndExecute(new TurnChangeCommand(Constraints.getInstance()));
                 piece.setPosition(piece.getPosition());
                 button.setLocation(initPieceLocation);
                 JOptionPane.showMessageDialog(button, "Time out for your turn.");

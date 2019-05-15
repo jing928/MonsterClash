@@ -18,7 +18,7 @@ public class TurnChangeCommand implements Command {
 
     @Override
     public void execute() {
-        constraints.changeTurnProcess();
+        constraints.changeTurn();
         logTurn();
     }
 
