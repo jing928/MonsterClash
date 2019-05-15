@@ -45,11 +45,12 @@ public abstract class Piece implements DiceObserver {
     private Mode mode;
     private boolean shouldNotify = true;
 
-    public Piece(Team team, Cell position, double health, double attackPower, int reachableRange) {
+    public Piece(Team team, Cell position, double health, double attackPower, double armor, int reachableRange) {
         this.team = team;
         this.position = position;
         this.health = health;
         this.attackPower = attackPower;
+        this.armor = armor;
         this.reachableRange = reachableRange;
         mode = DefaultMode.getInstance();
         posObservers = new HashSet<>();

@@ -16,9 +16,10 @@ public class RandallBoggs extends Piece {
     private static final double DEFAULTHEALTH = 100;
     private static final int DEFAULTATTACKPOWER = 10;
     private static final int DEFAULTATTACKRANGE = 3;
+    private static final double DEFAULT_ARMOR = 5;
 
     public RandallBoggs(Cell startingPos) {
-        super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
+        super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);
         setIcon(IconFactory.RANDALL_BOGGS);
         addSpecialAbility(Ability.SPECIAL_MOVE);
     }
