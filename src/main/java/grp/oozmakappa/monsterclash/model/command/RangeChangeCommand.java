@@ -10,19 +10,19 @@ public class RangeChangeCommand implements Command {
     public RangeChangeCommand(Piece piece, int rangeChange) {
         this.piece = piece;
         this.rangeChange = rangeChange;
-        this.prevRange = piece.getAttackRange();
+        this.prevRange = piece.getOriginalRange();
     }
 
     @Override
     public void execute() {
         int newRange = prevRange + rangeChange;
-        piece.setAttackRange(newRange);
+        piece.setReachableRange(newRange);
     }
 
     @Override
     public void undo() {
         piece.setUndoing(true);
-        piece.setAttackRange(prevRange);
+        piece.setReachableRange(prevRange);
         piece.setUndoing(false);
     }
 }
