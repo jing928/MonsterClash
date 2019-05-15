@@ -104,10 +104,10 @@ public class CellLabel extends JLabel implements PiecePositionObserver {
     }
 
     @Override
-    public void afterMove(Piece pieceLocated) {
+    public void afterMove(Piece pieceLocated, boolean shouldNotify) {
         setBackground(currentColor);
         canPlaced = false;
-        if (cell.distance(pieceLocated.getPosition()) == 0) {
+        if (cell.distance(pieceLocated.getPosition()) == 0 && shouldNotify) {
             listener.affect(cell, pieceLocated);
         }
     }

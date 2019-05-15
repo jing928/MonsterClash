@@ -3,26 +3,24 @@ package grp.oozmakappa.monsterclash.model.decorators;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.command.Command;
 import grp.oozmakappa.monsterclash.model.command.CommandManager;
-import grp.oozmakappa.monsterclash.model.command.HealthChangeCommand;
+import grp.oozmakappa.monsterclash.model.command.RangeChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 
-/**
- * @author Chenglong Ma
- */
-class HealthDebuff extends DebuffDecorator {
-    private static final double MAX_LOSS = 10;
-    private final double damage;
+public class RangeBuff extends BuffDecorator {
+    private static final int MAX_GAIN = 10;
+    private final int rangeGained;
 
-    HealthDebuff(CellEffect toDecorated) {
+    protected RangeBuff(CellEffect toDecorated) {
         super(toDecorated);
-        damage = MAX_LOSS * Math.random() + 1;
+        rangeGained = (int) (MAX_GAIN * Math.random()) + 1;
     }
 
     @Override
     public void affect(Piece piece) {
-        LOG.info("Get hurt: " + damage);
+        LOG.info("Gain range: " + rangeGained);
+        Command rangeChangeCmd = new RangeChangeCommand(piece, rangeGained);
         CommandManager manager = CommandManager.getInstance();
-        manager.storeAndExecute(new HealthChangeCommand(piece, -damage));
+        manager.storeAndExecute(rangeChangeCmd);
         super.affect(piece);
     }
 }

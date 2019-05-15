@@ -23,6 +23,7 @@ public class PieceListener extends MouseAdapter {
     private final BoardPanel boardPanel;
     private Point initMouseLocation;
     private PieceButton currButton;
+
     private PieceButtonState state;
 
     public PieceListener(BoardPanel boardPanel) {
@@ -32,6 +33,10 @@ public class PieceListener extends MouseAdapter {
 
     public void setState(PieceButtonState state) {
         this.state = state;
+    }
+
+    public PieceButtonState getState() {
+        return state;
     }
 
     public PieceButton getButton() {

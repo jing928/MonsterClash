@@ -22,6 +22,7 @@ public abstract class AbstractDecorator implements CellEffect {
     private static BuffDecorator getBuffDecorator(CellEffect toDecorated) {
         List<BuffDecorator> decorators = new ArrayList<>();
         decorators.add(new HealthBuff(toDecorated));
+        decorators.add(new RangeBuff(toDecorated));
         decorators.add(new PowerBuff(toDecorated));
         // TODO: add more
         int size = decorators.size();
@@ -32,13 +33,14 @@ public abstract class AbstractDecorator implements CellEffect {
         List<DebuffDecorator> decorators = new ArrayList<>();
         decorators.add(new HealthDebuff(toDecorated));
         decorators.add(new RangeDebuff(toDecorated));
+        decorators.add(new PowerDebuff(toDecorated));
         // TODO: add more
         int size = decorators.size();
         return decorators.get((int) (size * Math.random()));
     }
 
     public static CellEffect getDecorator(CellEffect toDecorated) {
-        int random = (int) (10 * Math.random());
+        int random = (int) (7 * Math.random());
         switch (random) {
 
             default:

@@ -3,6 +3,9 @@ package grp.oozmakappa.monsterclash.controller.states;
 import grp.oozmakappa.monsterclash.controller.PieceListener;
 import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.model.command.StateChangeCommand;
+import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.view.AbilityDialog;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 
@@ -55,16 +58,22 @@ public class ActionState implements PieceButtonState {
         if (targetButton != null) {
             Piece target = targetButton.getPiece();
             piece.act(target);
-            Constraints.getInstance().changeTurn();
+            changeTurn();
         } else if (askContinue(button)) {
             nextState = this;
         } else {
-            Constraints.getInstance().changeTurn();
+            changeTurn();
         }
         piece.setCurrentAbility(null);
         button.removeMouseMotionListener(ctrl);
         button.setLocation(initPieceLocation);
-        ctrl.setState(nextState);
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new StateChangeCommand(ctrl, nextState));
+    }
+
+    private void changeTurn() {
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new TurnChangeCommand(Constraints.getInstance()));
     }
 
     private boolean askContinue(Component component) {

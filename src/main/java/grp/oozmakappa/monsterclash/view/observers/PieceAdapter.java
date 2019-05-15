@@ -23,18 +23,18 @@ public abstract class PieceAdapter implements PieceActionObserver, PiecePosition
     }
 
     @Override
-    public void afterMove(Piece pieceLocated) {
+    public void afterMove(Piece pieceLocated, boolean shouldNotify) {
     }
 
     @Override
-    public void healthChanged(double deltaHealth) {
+    public void healthChanged(double deltaHealth, boolean shouldNotify) {
     }
 
     @Override
-    public void powerChanged(double deltaPower) {
+    public void powerChanged(double deltaPower, boolean shouldNotify) {
     }
 
     @Override
-    public void rangeChanged(int deltaRange) {
+    public void rangeChanged(int deltaRange, boolean shouldNotify) {
     }
 }

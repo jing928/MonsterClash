@@ -1,6 +1,7 @@
 package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.Ability;
+import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
@@ -54,6 +55,28 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         LOG.info("new position: " + p);
     }
 
+    public void move(Cell nextPos, Point nextLoc) {
+        piece.setPosition(nextPos);
+        setLocation(nextLoc);
+    }
+
+    public void move(Cell nextPos, Point nextLoc, boolean shouldNotify) {
+        if (shouldNotify) {
+            move(nextPos, nextLoc);
+        } else {
+            piece.setShouldNotify(false);
+            move(nextPos, nextLoc);
+            piece.setShouldNotify(true);
+        }
+    }
+
+    public void back(Point prevLoc) {
+        piece.setShouldNotify(false);
+        piece.setPosition(piece.getPosition());
+        piece.setShouldNotify(true);
+        setLocation(prevLoc);
+    }
+
     /**
      * Re-paints the icon of the button
      *
@@ -99,19 +122,25 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     }
 
     @Override
-    public void healthChanged(double deltaHealth) {
-        notifyChange(deltaHealth, "health");
+    public void healthChanged(double deltaHealth, boolean shouldNotify) {
+        if (shouldNotify) {
+            notifyChange(deltaHealth, "health");
+        }
         setEnabled(piece.getHealth() > 0);
     }
 
     @Override
-    public void powerChanged(double deltaPower) {
-        notifyChange(deltaPower, "attack power");
+    public void powerChanged(double deltaPower, boolean shouldNotify) {
+        if (shouldNotify) {
+            notifyChange(deltaPower, "attack power");
+        }
     }
 
     @Override
-    public void rangeChanged(int deltaRange) {
-        notifyChange(deltaRange, "range");
+    public void rangeChanged(int deltaRange, boolean shouldNotify) {
+        if (shouldNotify) {
+            notifyChange(deltaRange, "attack range");
+        }
     }
 
     @Override
@@ -135,4 +164,5 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         canPlaced = false;
         changeBackground(DEF_COLOR);
     }
+
 }

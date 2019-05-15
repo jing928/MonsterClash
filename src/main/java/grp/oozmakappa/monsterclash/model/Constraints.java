@@ -1,5 +1,7 @@
 package grp.oozmakappa.monsterclash.model;
 
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.model.rules.AbstractRuleFactory;
 
@@ -17,7 +19,7 @@ public class Constraints implements DiceObserver {
     public static final int BOARD_HEIGHT = 800;
     public static final int CELL_LENGTH = 60;
     public static final int PIECE_DIAMETER = 100;
-    public static final int TIME_OUT = 3000;
+    public static final int TIME_OUT = 30000;
     public static final String OFFENSIVE_MODE = "offensive";
     public static final String DEFENSIVE_MODE = "defensive";
     public static final Team INITIAL_TEAM = Team.OozmaKappa;
@@ -53,6 +55,7 @@ public class Constraints implements DiceObserver {
     }
 
     public void changeTurn() {
+        // To be called by TurnChangeCommand
         canMove = false;
         currentTeam = currentTeam == null
                 ? INITIAL_TEAM

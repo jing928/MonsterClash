@@ -3,6 +3,8 @@ package grp.oozmakappa.monsterclash.model.abstracts;
 import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
+import grp.oozmakappa.monsterclash.model.command.AttackCommand;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.model.rules.AbstractRuleFactory;
 import grp.oozmakappa.monsterclash.model.strategies.modes.DefaultMode;
@@ -12,8 +14,10 @@ import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
-
 import java.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.util.ArrayList;
 
 /**
  * @author Jing Li
@@ -38,6 +42,8 @@ public abstract class Piece implements DiceObserver {
     private double armor;
     private int nextMove;
     private Mode mode;
+    private boolean shouldNotify = true;
+    protected static final Logger LOG = LogManager.getLogger();
 
     public Piece(Team team, Cell position, double health, double attackPower, int reachableRange) {
         this.team = team;
@@ -122,10 +128,6 @@ public abstract class Piece implements DiceObserver {
         this.iconName = iconName;
     }
 
-    public void move(Cell newPos) {
-        setPosition(newPos);
-    }
-
     public boolean attack(Piece target) {
         double distance = getTargetDistance(target);
         if (getCurrentReachableRange() >= distance) {
@@ -153,8 +155,13 @@ public abstract class Piece implements DiceObserver {
         return health;
     }
 
+    /**
+     * @Requires health >= 0
+     */
     public void setHealth(double health) {
+        double delta = health - this.health;
         this.health = health;
+        notifyHealthChanged(delta);
     }
 
     /**
@@ -193,6 +200,9 @@ public abstract class Piece implements DiceObserver {
         return RULE.createAttackStrategy(this).getAttackPower(currPower);
     }
 
+    /**
+     * @Requires attackPower >= 0
+     */
     public void setAttackPower(double attackPower) {
         double delta = attackPower - this.attackPower;
         this.attackPower = attackPower;
@@ -215,6 +225,9 @@ public abstract class Piece implements DiceObserver {
         }
     }
 
+    /**
+     * @Requires reachableRange >= 0
+     */
     public void setReachableRange(int reachableRange) {
         int delta = reachableRange - this.reachableRange;
         this.reachableRange = reachableRange;
@@ -243,6 +256,13 @@ public abstract class Piece implements DiceObserver {
         return nextMove;
     }
 
+    public boolean getShouldNotify() {
+        return shouldNotify;
+    }
+
+    public void setShouldNotify(boolean shouldNotify) {
+        this.shouldNotify = shouldNotify;
+    }
 
     public void addPositionObserver(PiecePositionObserver observer) {
         posObservers.add(observer);
@@ -283,19 +303,37 @@ public abstract class Piece implements DiceObserver {
      * Notifies all observers when the piece has moved to new position.
      */
     private void notifyMoved() {
-        posObservers.forEach(o -> o.afterMove(this));
+        posObservers.forEach(o -> o.afterMove(this, shouldNotify));
     }
 
+    /**
+     * @Requires deltaHealth != 0
+     */
     private void notifyHealthChanged(double deltaHealth) {
-        pptObservers.forEach(o -> o.healthChanged(deltaHealth));
+        if (deltaHealth == 0) {
+            return;
+        }
+        pptObservers.forEach(o -> o.healthChanged(deltaHealth, shouldNotify));
     }
 
+    /**
+     * @Requires deltaPower != 0
+     */
     private void notifyPowerChanged(double deltaPower) {
-        pptObservers.forEach(o -> o.powerChanged(deltaPower));
+        if (deltaPower == 0) {
+            return;
+        }
+        pptObservers.forEach(o -> o.powerChanged(deltaPower, shouldNotify));
     }
 
+    /**
+     * @Requires deltaRange != 0
+     */
     private void notifyRangeChanged(int deltaRange) {
-        pptObservers.forEach(o -> o.rangeChanged(deltaRange));
+        if (deltaRange == 0) {
+            return;
+        }
+        pptObservers.forEach(o -> o.rangeChanged(deltaRange, shouldNotify));
     }
 
     @Override
@@ -323,7 +361,8 @@ public abstract class Piece implements DiceObserver {
         switch (currAbility) {
 
             case PLAIN_ATTACK:
-                attack(target);
+                CommandManager manager = CommandManager.getInstance();
+                manager.storeAndExecute(new AttackCommand(this, target));
                 break;
             case SPECIAL_ATTACK:
                 RULE.createAttackStrategy(this).attack(target);
