@@ -19,18 +19,17 @@ public class TurnChangeCommand implements Command {
     @Override
     public void execute() {
         constraints.changeTurn();
-        logTurn();
+        Logger log = LogManager.getLogger();
+        log.info("Executed: Turn Change Command");
+        log.info("Current turn: " + constraints.getCurrentTeam());
     }
 
     @Override
     public void undo() {
         constraints.setCurrentTeam(prevTeam);
         constraints.setCanMove(false);
-        logTurn();
-    }
-
-    private void logTurn() {
         Logger log = LogManager.getLogger();
+        log.info("Undid: Turn Change Command");
         log.info("Current turn: " + constraints.getCurrentTeam());
     }
 

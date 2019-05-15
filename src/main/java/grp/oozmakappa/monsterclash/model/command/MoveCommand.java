@@ -3,6 +3,8 @@ package grp.oozmakappa.monsterclash.model.command;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.view.PieceButton;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 
@@ -27,10 +29,14 @@ public class MoveCommand implements Command {
     @Override
     public void execute() {
         button.move(nextPosition, nextLocation);
+        Logger log = LogManager.getLogger();
+        log.info("Executed: Move Command");
     }
 
     @Override
     public void undo() {
         button.move(prevPosition, prevLocation, false);
+        Logger log = LogManager.getLogger();
+        log.info("Undid: Move Command");
     }
 }

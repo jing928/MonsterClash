@@ -1,6 +1,8 @@
 package grp.oozmakappa.monsterclash.model.command;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Chenglong Ma
@@ -19,6 +21,8 @@ public class AttackCommand implements Command {
     @Override
     public void execute() {
         me.attack(target);
+        Logger log = LogManager.getLogger();
+        log.info("Executed: Attack Command");
     }
 
     @Override
@@ -26,5 +30,7 @@ public class AttackCommand implements Command {
         target.setShouldNotify(false);
         target.setHealth(targetPrevHealth);
         target.setShouldNotify(true);
+        Logger log = LogManager.getLogger();
+        log.info("Undid: Attack Command");
     }
 }

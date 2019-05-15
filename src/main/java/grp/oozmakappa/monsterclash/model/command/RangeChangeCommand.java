@@ -1,6 +1,8 @@
 package grp.oozmakappa.monsterclash.model.command;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RangeChangeCommand implements Command {
     private final Piece piece;
@@ -18,6 +20,8 @@ public class RangeChangeCommand implements Command {
         int newRange = prevRange + rangeChange;
         newRange = newRange < 0 ? 0 : newRange;
         piece.setReachableRange(newRange);
+        Logger log = LogManager.getLogger();
+        log.info("Executed: Range Change Command");
     }
 
     @Override
@@ -25,5 +29,7 @@ public class RangeChangeCommand implements Command {
         piece.setShouldNotify(false);
         piece.setReachableRange(prevRange);
         piece.setShouldNotify(true);
+        Logger log = LogManager.getLogger();
+        log.info("Undid: Range Change Command");
     }
 }
