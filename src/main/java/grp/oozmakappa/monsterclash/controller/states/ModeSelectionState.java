@@ -2,6 +2,8 @@ package grp.oozmakappa.monsterclash.controller.states;
 
 import grp.oozmakappa.monsterclash.controller.PieceListener;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.model.command.StateChangeCommand;
 import grp.oozmakappa.monsterclash.model.strategies.modes.DefaultMode;
 import grp.oozmakappa.monsterclash.view.ModeDialog;
 import grp.oozmakappa.monsterclash.view.PieceButton;
@@ -37,7 +39,8 @@ public class ModeSelectionState implements PieceButtonState {
         PieceButtonState nextState = piece.getCurrMode() == DefaultMode.getInstance()
                 ? this
                 : MoveState.getInstance(piece);
-        ctrl.setState(nextState);
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new StateChangeCommand(ctrl, nextState));
     }
 
     @Override
