@@ -12,7 +12,7 @@ public class RangeBuff extends BuffDecorator {
 
     protected RangeBuff(CellEffect toDecorated) {
         super(toDecorated);
-        rangeGained = (int) (MAX_GAIN * Math.random());
+        rangeGained = (int) (MAX_GAIN * Math.random()) + 1;
     }
 
     @Override

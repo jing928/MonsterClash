@@ -12,11 +12,12 @@ public class PowerDebuff extends DebuffDecorator {
 
     protected PowerDebuff(CellEffect toDecorated) {
         super(toDecorated);
-        powerLost = MAX_LOSS * Math.random();
+        powerLost = MAX_LOSS * Math.random() + 1;
     }
 
     @Override
     public void affect(Piece piece) {
+        LOG.info("Lost power: " + -powerLost);
         Command powerChangeCmd = new PowerChangeCommand(piece, powerLost);
         CommandManager manager = CommandManager.getInstance();
         manager.storeAndExecute(powerChangeCmd);
