@@ -17,6 +17,7 @@ public class RangeBuff extends BuffDecorator {
 
     @Override
     public void affect(Piece piece) {
+        LOG.info("Gain range: " + rangeGained);
         Command rangeChangeCmd = new RangeChangeCommand(piece, rangeGained);
         CommandManager manager = CommandManager.getInstance();
         manager.storeAndExecute(rangeChangeCmd);
