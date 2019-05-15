@@ -2,6 +2,7 @@ package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.Board;
 import grp.oozmakappa.monsterclash.model.Cell;
+import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static grp.oozmakappa.monsterclash.model.Constraints.BOARD_HEIGHT;
 import static grp.oozmakappa.monsterclash.model.Constraints.BOARD_WIDTH;
@@ -49,19 +51,25 @@ public class BoardPanel extends JLayeredPane {
     }
 
     private void initializePiecePanel() {
-        piecePanel = new JPanel(layout);
+        piecePanel = new JPanel(null);
         piecePanel.setBounds(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
         piecePanel.setOpaque(false);
-        initPieces();
         add(piecePanel, MODAL_LAYER);
     }
 
     public void addPieceButton(PieceButton pieceButton) {
-        int order = pieceButton.getOrder();
-        piecePanel.remove(order);
-        piecePanel.add(pieceButton, order);
-        // indicate to update the piece button list
+        piecePanel.add(pieceButton);
+        CellLabel cell = getPoint(pieceButton.getPiece());
+        LOG.info(pieceButton.getPiece());
+        LOG.info("Find location: " + cell.getLocation());
+        pieceButton.setBounds(cell.getX(), cell.getY(), cell.getWidth(), cell.getHeight());
         updated = true;
+    }
+
+    private CellLabel getPoint(final Piece piece) {
+        List<CellLabel> cellLabels = getCellLabels();
+        Optional<CellLabel> opt = cellLabels.stream().filter(c -> c.getCell().equals(piece.getPosition())).findAny();
+        return opt.orElse(cellLabels.get(0));
     }
 
     /**

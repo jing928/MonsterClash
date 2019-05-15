@@ -17,6 +17,7 @@ public class MainController {
         gameFrame.initPlayer1Panel(game.getPieces());
         gameFrame.initBoardPanel(game.getBoard());
         gameFrame.initPlayer2Panel(game.getPieces());
+        gameFrame.pack();
         return gameFrame;
     }
 
