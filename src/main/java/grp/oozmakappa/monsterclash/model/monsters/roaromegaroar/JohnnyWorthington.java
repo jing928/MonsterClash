@@ -16,9 +16,10 @@ public class JohnnyWorthington extends Piece {
     private static final double DEFAULTHEALTH = 200;
     private static final int DEFAULTATTACKPOWER = 20;
     private static final int DEFAULTATTACKRANGE = 5;
+    private static final double DEFAULT_ARMOR = 2;
 
     public JohnnyWorthington(Cell startingPos) {
-        super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
+        super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);
         setIcon(IconFactory.JOHNNY_WORTHINGTON);
         addSpecialAbility(Ability.SPECIAL_HEALING);
         addSpecialAbility(Ability.SPECIAL_MOVE);

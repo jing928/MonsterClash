@@ -16,9 +16,10 @@ public class ChetAlexander extends Piece {
     private static final double DEFAULTHEALTH = 100;
     private static final int DEFAULTATTACKPOWER = 15;
     private static final int DEFAULTATTACKRANGE = 8;
+    private static final double DEFAULT_ARMOR = 3;
 
     public ChetAlexander(Cell startingPos) {
-        super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
+        super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);
         setIcon(IconFactory.CHET_ALEXANDER);
         addSpecialAbility(Ability.SPECIAL_ATTACK);
         addSpecialAbility(Ability.SPECIAL_MOVE);
