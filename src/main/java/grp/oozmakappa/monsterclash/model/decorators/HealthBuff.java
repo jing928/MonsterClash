@@ -21,11 +21,8 @@ class HealthBuff extends BuffDecorator {
     @Override
     public void affect(Piece piece) {
         LOG.info("Gain health: " + healthGained);
-        piece.increaseHealth(healthGained);
-        // TODO:
-//        Command healthChangeCmd = new HealthChangeCommand(piece, healthGained);
-//        CommandManager manager = CommandManager.getInstance();
-//        manager.storeAndExecute(healthChangeCmd);
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new HealthChangeCommand(piece, healthGained));
         super.affect(piece);
     }
 }

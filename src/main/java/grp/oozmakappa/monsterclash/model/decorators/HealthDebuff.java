@@ -21,11 +21,8 @@ class HealthDebuff extends DebuffDecorator {
     @Override
     public void affect(Piece piece) {
         LOG.info("Get hurt: " + damage);
-        piece.decreaseHealth(damage);
-        // TODO:
-//        Command healthChangeCmd = new HealthChangeCommand(piece, damage);
-//        CommandManager manager = CommandManager.getInstance();
-//        manager.storeAndExecute(healthChangeCmd);
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new HealthChangeCommand(piece, -damage));
         super.affect(piece);
     }
 }
