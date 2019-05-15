@@ -248,10 +248,6 @@ public abstract class Piece implements DiceObserver {
      * @param position
      */
     public void setPosition(Cell position, boolean shouldNotify) {
-        if (!position.equals(this.position)) {
-            // reset `nextMove` for next round.
-            nextMove = 0;
-        }
         this.position = position;
         notifyMoved(shouldNotify);
     }
