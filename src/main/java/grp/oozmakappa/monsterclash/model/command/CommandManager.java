@@ -41,14 +41,19 @@ public class CommandManager {
         Queue cmdList = new LinkedList<Command>();
         boolean turnStartFound = false;
         while (!turnStartFound) {
-            if (history.size() == 0 || turnChangeCounter == 2) {
+            if (history.size() == 0 || turnChangeCounter == 3) {
                 turnStartFound = true;
             } else {
                 Command lastCmd = history.removeLast();
                 if (lastCmd instanceof TurnChangeCommand) {
-                    turnChangeCounter++;
+                    if (++turnChangeCounter == 3) {
+                        history.add(lastCmd);
+                        lastCmd = null;
+                    }
                 }
-                cmdList.add(lastCmd);
+                if (lastCmd != null) {
+                    cmdList.add(lastCmd);
+                }
             }
         }
         for (Object object : cmdList) {
