@@ -33,7 +33,13 @@ public class CommandManager {
         cmd.execute();
     }
 
-    public void undoTurn() {
+    public void undoTurns(int number) {
+        for (int i = 0; i < number; i++) {
+            undoTurn();
+        }
+    }
+
+    private void undoTurn() {
         if (history.size() == 0) {
             LOG.info("No historical commands");
             return;
