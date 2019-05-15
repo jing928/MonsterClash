@@ -15,12 +15,12 @@ public class MoveCommand implements Command {
     private final Cell prevPosition, nextPosition;
     private final Point prevLocation, nextLocation;
 
-    public MoveCommand(PieceButton button, Cell nextPosition, Point nextLocation) {
+    public MoveCommand(PieceButton button, Cell nextPosition, Point nextLocation, Point prevLocation) {
         this.button = button;
         piece = button.getPiece();
         this.prevPosition = piece.getPosition();
         this.nextPosition = nextPosition;
-        this.prevLocation = button.getLocation();
+        this.prevLocation = prevLocation;
         this.nextLocation = nextLocation;
     }
 

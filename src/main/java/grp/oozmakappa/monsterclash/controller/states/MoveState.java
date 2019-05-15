@@ -72,7 +72,7 @@ public class MoveState implements PieceButtonState {
             timeOutThread.interrupt();
             nextState = ActionState.getInstance(piece);
             CommandManager manager = CommandManager.getInstance();
-            manager.storeAndExecute(new MoveCommand(button, newCell, newLoc));
+            manager.storeAndExecute(new MoveCommand(button, newCell, newLoc, initPieceLocation));
             LOG.info("Piece has moved.");
         } else {
             // stay put
