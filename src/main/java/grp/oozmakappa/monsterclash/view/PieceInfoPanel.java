@@ -58,17 +58,17 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
     }
 
     @Override
-    public void healthChanged(double deltaHealth, boolean isUndoing) {
+    public void healthChanged(double deltaHealth, boolean shouldNotify) {
         health.setText(FORMAT.format(piece.getHealth()));
     }
 
     @Override
-    public void powerChanged(double deltaPower, boolean isUndoing) {
+    public void powerChanged(double deltaPower, boolean shouldNotify) {
         power.setText(FORMAT.format(piece.getCurrentAttackPower()));
     }
 
     @Override
-    public void rangeChanged(int deltaRange, boolean isUndoing) {
+    public void rangeChanged(int deltaRange, boolean shouldNotify) {
         range.setText(String.valueOf(piece.getCurrentReachableRange()));
     }
 }
