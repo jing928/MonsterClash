@@ -5,6 +5,7 @@ import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.model.command.MoveCommand;
 import grp.oozmakappa.monsterclash.model.command.StateChangeCommand;
 import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.view.CellLabel;
@@ -46,10 +47,9 @@ public class MoveState implements PieceButtonState {
             try {
                 Thread.sleep(Constraints.TIME_OUT);
                 LOG.info("Time out for this turn");
+                button.back(initPieceLocation);
                 CommandManager manager = CommandManager.getInstance();
                 manager.storeAndExecute(new TurnChangeCommand(Constraints.getInstance()));
-                piece.setPosition(piece.getPosition());
-                button.setLocation(initPieceLocation);
                 JOptionPane.showMessageDialog(button, "Time out for your turn.");
             } catch (InterruptedException ex) {
                 LOG.info(ex.getMessage());
@@ -71,16 +71,15 @@ public class MoveState implements PieceButtonState {
             newLoc = cellLabel.getLocation();
             timeOutThread.interrupt();
             nextState = ActionState.getInstance(piece);
+            CommandManager manager = CommandManager.getInstance();
+            manager.storeAndExecute(new MoveCommand(button, newCell, newLoc));
             LOG.info("Piece has moved.");
         } else {
             // stay put
-            newCell = piece.getPosition();
-            newLoc = initPieceLocation;
             nextState = this;
+            button.back(initPieceLocation);
             LOG.info("Piece did not move.");
         }
-        piece.setPosition(newCell);
-        button.setLocation(newLoc);
         button.removeMouseMotionListener(ctrl);
         CommandManager manager = CommandManager.getInstance();
         manager.storeAndExecute(new StateChangeCommand(ctrl, nextState));

@@ -1,6 +1,7 @@
 package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.Ability;
+import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
@@ -52,6 +53,28 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     public void setLocation(Point p) {
         setBounds(p.x, p.y, getWidth(), getHeight());
         LOG.info("new position: " + p);
+    }
+
+    public void move(Cell nextPos, Point nextLoc) {
+        piece.setPosition(nextPos);
+        setLocation(nextLoc);
+    }
+
+    public void move(Cell nextPos, Point nextLoc, boolean shouldNotify) {
+        if (shouldNotify) {
+            move(nextPos, nextLoc);
+        } else {
+            piece.setShouldNotify(false);
+            move(nextPos, nextLoc);
+            piece.setShouldNotify(true);
+        }
+    }
+
+    public void back(Point prevLoc) {
+        piece.setShouldNotify(false);
+        piece.setPosition(piece.getPosition());
+        piece.setShouldNotify(true);
+        setLocation(prevLoc);
     }
 
     /**
