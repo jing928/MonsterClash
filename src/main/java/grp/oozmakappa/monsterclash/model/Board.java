@@ -78,10 +78,8 @@ public class Board {
      */
     private void initializeCells() {
         cells = new ArrayList<>();
-        int i = 0;
         for (int y = -1 * maxY; y <= maxY; y++) {
             for (int x = -1 * maxX; x <= maxX; x++) {
-                int order = i++;
                 Cell.Role role;
                 if (inBoard(x, y)) {
                     role = x == 0
@@ -91,7 +89,7 @@ public class Board {
                     role = Cell.Role.DISABLE;
                 }
                 // Board is the creator of cell.
-                cells.add(new Cell(x, y, order, role));
+                cells.add(new Cell(x, y, role));
             }
         }
     }

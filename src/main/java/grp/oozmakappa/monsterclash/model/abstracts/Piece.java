@@ -14,10 +14,10 @@ import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
-import java.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.util.ArrayList;
+
+import java.util.*;
 
 /**
  * @author Jing Li
@@ -27,6 +27,7 @@ import java.util.ArrayList;
  */
 public abstract class Piece implements DiceObserver {
 
+    protected static final Logger LOG = LogManager.getLogger();
     private static final AbstractRuleFactory RULE = AbstractRuleFactory.getRuleFactory();
     private final Team team;
     private final Set<PiecePositionObserver> posObservers;
@@ -43,7 +44,6 @@ public abstract class Piece implements DiceObserver {
     private int nextMove;
     private Mode mode;
     private boolean shouldNotify = true;
-    protected static final Logger LOG = LogManager.getLogger();
 
     public Piece(Team team, Cell position, double health, double attackPower, int reachableRange) {
         this.team = team;
@@ -238,18 +238,22 @@ public abstract class Piece implements DiceObserver {
         return position;
     }
 
+    public void setPosition(Cell position) {
+        setPosition(position, true);
+    }
+
     /**
      * Change the position of this piece and notify all observers.
      *
      * @param position
      */
-    public void setPosition(Cell position) {
+    public void setPosition(Cell position, boolean shouldNotify) {
         if (!position.equals(this.position)) {
             // reset `nextMove` for next round.
             nextMove = 0;
         }
         this.position = position;
-        notifyMoved();
+        notifyMoved(shouldNotify);
     }
 
     public int getNextMove() {
@@ -302,7 +306,7 @@ public abstract class Piece implements DiceObserver {
     /**
      * Notifies all observers when the piece has moved to new position.
      */
-    private void notifyMoved() {
+    private void notifyMoved(boolean shouldNotify) {
         posObservers.forEach(o -> o.afterMove(this, shouldNotify));
     }
 
