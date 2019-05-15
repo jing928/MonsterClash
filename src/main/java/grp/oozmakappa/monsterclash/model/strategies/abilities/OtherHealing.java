@@ -20,6 +20,7 @@ public class OtherHealing extends AbstractSpecialAbility implements HealStrategy
 
     @Override
     public void heal(Piece target) {
+        // TODO: use command
         double health = piece.getHealth();
         piece.setHealth(health * (1 - COST_RATE));
         target.increaseHealth(health * HEALING_RATE);
