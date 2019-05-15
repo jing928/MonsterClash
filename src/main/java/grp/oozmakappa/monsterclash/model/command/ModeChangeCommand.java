@@ -23,5 +23,5 @@ public class ModeChangeCommand implements Command {
     public void undo() {
         piece.setMode(prevMode);
     }
-    
+
 }

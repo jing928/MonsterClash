@@ -128,10 +128,6 @@ public abstract class Piece implements DiceObserver {
         this.iconName = iconName;
     }
 
-    public void move(Cell newPos) {
-        setPosition(newPos);
-    }
-
     public boolean attack(Piece target) {
         double distance = getTargetDistance(target);
         if (getCurrentReachableRange() >= distance) {
