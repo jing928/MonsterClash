@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.view;
 
+import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.command.CommandManager;
@@ -29,14 +30,26 @@ public class PlayerPanel extends JPanel implements ActionListener {
                 add(new PieceInfoPanel(piece));
             }
         }
-        JButton undoBtn = new JButton("Undo");
+        JButton undoBtn = new UndoButton(team);
         add(undoBtn);
         undoBtn.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        UndoButton button = (UndoButton) e.getSource();
+        Team currTeam = Constraints.getInstance().getCurrentTeam();
+        if (button.getTeam() != currTeam) {
+            JOptionPane.showMessageDialog(this, "Not your turn!", "Oops...",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        int numOfUndos = button.getChoice();
+        if (numOfUndos == 0) {
+            return;
+        }
         CommandManager cmdManager = CommandManager.getInstance();
-        cmdManager.undoTurn();
+        cmdManager.undoTurns(numOfUndos);
+        button.setUndoUsed();
     }
 }
