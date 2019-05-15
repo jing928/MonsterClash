@@ -1,6 +1,8 @@
 package grp.oozmakappa.monsterclash.model.command;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PowerChangeCommand implements Command {
     private final Piece piece;
@@ -18,6 +20,8 @@ public class PowerChangeCommand implements Command {
         double newPower = prevPower + powerChange;
         newPower = newPower < 0 ? 0 : newPower;
         piece.setAttackPower(newPower);
+        Logger log = LogManager.getLogger();
+        log.info("Executed: Power Change Command");
     }
 
     @Override
@@ -25,5 +29,7 @@ public class PowerChangeCommand implements Command {
         piece.setShouldNotify(false);
         piece.setAttackPower(prevPower);
         piece.setShouldNotify(true);
+        Logger log = LogManager.getLogger();
+        log.info("Undid: Power Change Command");
     }
 }
