@@ -159,7 +159,9 @@ public abstract class Piece implements DiceObserver {
      * @Requires health >= 0
      */
     public void setHealth(double health) {
+        double delta = health - this.health;
         this.health = health;
+        notifyHealthChanged(delta);
     }
 
     /**
