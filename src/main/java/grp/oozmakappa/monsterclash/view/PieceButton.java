@@ -48,8 +48,10 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         return piece;
     }
 
-    public int getOrder() {
-        return piece.getPosition().getOrder();
+    @Override
+    public void setLocation(Point p) {
+        setBounds(p.x, p.y, getWidth(), getHeight());
+        LOG.info("new position: " + p);
     }
 
     /**
