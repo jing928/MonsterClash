@@ -57,18 +57,44 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
         return panel;
     }
 
+    /**
+     * Creates 1s animation for value changing
+     *
+     * @param label      the {@link JLabel} with animation
+     * @param newValue   the updated value
+     * @param deltaValue the delta value
+     * @return the animation {@link Thread}
+     */
+    private Thread animation(final JLabel label, Number newValue, Number deltaValue) {
+        final String origText = label.getText();
+        final String operation = deltaValue.doubleValue() > 0 ? " + " : " - ";
+        final String newText = FORMAT.format(newValue);
+        return new Thread(() -> {
+            try {
+                label.setForeground(Color.RED);
+                label.setText(origText + operation + Math.abs(deltaValue.doubleValue()));
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                // ignore
+            } finally {
+                label.setText(newText);
+                label.setForeground(Color.WHITE);
+            }
+        });
+    }
+
     @Override
     public void healthChanged(double deltaHealth, boolean shouldNotify) {
-        health.setText(FORMAT.format(piece.getHealth()));
+        animation(health, piece.getHealth(), deltaHealth).start();
     }
 
     @Override
     public void powerChanged(double deltaPower, boolean shouldNotify) {
-        power.setText(FORMAT.format(piece.getCurrentAttackPower()));
+        animation(power, piece.getCurrentAttackPower(), deltaPower).start();
     }
 
     @Override
     public void rangeChanged(int deltaRange, boolean shouldNotify) {
-        range.setText(String.valueOf(piece.getCurrentReachableRange()));
+        animation(range, piece.getCurrentReachableRange(), deltaRange).start();
     }
 }
