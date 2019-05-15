@@ -85,8 +85,8 @@ public class GameFrame extends JFrame {
      */
     public void display() {
         // finish setup
-        pack();
         setMinimumSize(getSize());
+        setResizable(false);
 
         // centered on screen
         setLocationRelativeTo(null);
