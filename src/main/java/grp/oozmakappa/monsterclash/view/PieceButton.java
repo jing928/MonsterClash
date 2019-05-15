@@ -1,10 +1,10 @@
 package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.Ability;
-import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
+import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +19,7 @@ import static grp.oozmakappa.monsterclash.model.Constraints.PIECE_DIAMETER;
  * @Invariant piece != null
  * @Invariant icon != null
  */
-public class PieceButton extends JButton implements PieceActionObserver, PiecePropertyObserver {
+public class PieceButton extends JButton implements PieceActionObserver, PiecePropertyObserver, PiecePositionObserver {
 
     private static final Logger LOG = LogManager.getLogger();
     private static final Color DEF_COLOR = new Color(255, 255, 255, 128);
@@ -32,6 +32,7 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         this.piece = piece;
         piece.addPropertyObserver(this);
         piece.addActionObserver(this);
+        piece.addPositionObserver(this);
         setOpaque(false);
         setContentAreaFilled(false);
         setPreferredSize(new Dimension(PIECE_DIAMETER, PIECE_DIAMETER));
@@ -53,28 +54,6 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     public void setLocation(Point p) {
         setBounds(p.x, p.y, getWidth(), getHeight());
         LOG.info("new position: " + p);
-    }
-
-    public void move(Cell nextPos, Point nextLoc) {
-        piece.setPosition(nextPos);
-        setLocation(nextLoc);
-    }
-
-    public void move(Cell nextPos, Point nextLoc, boolean shouldNotify) {
-        if (shouldNotify) {
-            move(nextPos, nextLoc);
-        } else {
-            piece.setShouldNotify(false);
-            move(nextPos, nextLoc);
-            piece.setShouldNotify(true);
-        }
-    }
-
-    public void back(Point prevLoc) {
-        piece.setShouldNotify(false);
-        piece.setPosition(piece.getPosition());
-        piece.setShouldNotify(true);
-        setLocation(prevLoc);
     }
 
     /**
@@ -165,4 +144,14 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         changeBackground(DEF_COLOR);
     }
 
+    @Override
+    public void beforeMove(Piece pieceToMove) {
+        // do nothing
+    }
+
+    @Override
+    public void afterMove(Piece pieceLocated, boolean shouldNotify) {
+        Point loc = pieceLocated.getPosition().getLocation();
+        setLocation(loc);
+    }
 }

@@ -18,6 +18,11 @@ public class BoardController extends MouseAdapter {
 
     public BoardController(BoardPanel boardPanel) {
         this.boardPanel = boardPanel;
+        updateCellsLocation();
+    }
+
+    private void updateCellsLocation() {
+        boardPanel.getCellLabels().forEach(c -> c.getCell().setLocation(c.getLocation()));
     }
 
     /**

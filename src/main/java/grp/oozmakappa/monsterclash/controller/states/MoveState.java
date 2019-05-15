@@ -47,7 +47,7 @@ public class MoveState implements PieceButtonState {
             try {
                 Thread.sleep(Constraints.TIME_OUT);
                 LOG.info("Time out for this turn");
-                button.back(initPieceLocation);
+                button.setLocation(initPieceLocation);
                 CommandManager manager = CommandManager.getInstance();
                 manager.storeAndExecute(new TurnChangeCommand(Constraints.getInstance()));
                 JOptionPane.showMessageDialog(button, "Time out for your turn.");
@@ -61,23 +61,21 @@ public class MoveState implements PieceButtonState {
     @Override
     public void done(PieceListener ctrl) {
         Cell newCell;
-        Point newLoc;
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
         CellLabel cellLabel = ctrl.getClosestCell(button);
         PieceButtonState nextState;
         if (cellLabel != null) {
             newCell = cellLabel.getCell();
-            newLoc = cellLabel.getLocation();
             timeOutThread.interrupt();
             nextState = ActionState.getInstance(piece);
             CommandManager manager = CommandManager.getInstance();
-            manager.storeAndExecute(new MoveCommand(button, newCell, newLoc, initPieceLocation));
+            manager.storeAndExecute(new MoveCommand(piece, newCell));
             LOG.info("Piece has moved.");
         } else {
             // stay put
             nextState = this;
-            button.back(initPieceLocation);
+            button.setLocation(initPieceLocation);
             LOG.info("Piece did not move.");
         }
         button.removeMouseMotionListener(ctrl);

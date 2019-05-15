@@ -5,6 +5,8 @@ import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.decorators.AbstractDecorator;
 import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 
+import java.awt.*;
+
 import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
 
 /**
@@ -20,22 +22,12 @@ public final class Cell implements CellEffect {
     private final int x;
     private final int y;
     private final Role role;
-    /**
-     * The order in {@link grp.oozmakappa.monsterclash.model.Board}
-     */
-    @Deprecated
-    // TODO remove this
-    private final int order;
+    private Point location;
 
     protected Cell(int x, int y) {
         this.x = x;
         this.y = y;
-        order = -1;
-        role = Role.DISABLE;
-    }
-
-    protected Cell(int x, int y, int order) {
-        this(x, y, order, Role.NEUTRAL);
+        role = Role.NEUTRAL;
     }
 
     /**
@@ -46,19 +38,20 @@ public final class Cell implements CellEffect {
      *
      * @param x
      * @param y
-     * @param order
      * @param role
      */
-    protected Cell(int x, int y, int order, Role role) {
+    protected Cell(int x, int y, Role role) {
         this.x = x;
         this.y = y;
-        this.order = order;
         this.role = role;
     }
 
-    @Deprecated
-    public int getOrder() {
-        return order;
+    public Point getLocation() {
+        return location;
+    }
+
+    public void setLocation(Point location) {
+        this.location = location;
     }
 
     public Role getRole() {
@@ -72,7 +65,6 @@ public final class Cell implements CellEffect {
     public int getY() {
         return this.y;
     }
-
 
     /**
      * @param other another {@link Cell}
