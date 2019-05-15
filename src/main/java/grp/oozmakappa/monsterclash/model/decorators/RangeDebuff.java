@@ -15,7 +15,7 @@ public class RangeDebuff extends DebuffDecorator {
 
     RangeDebuff(CellEffect toDecorated) {
         super(toDecorated);
-        loss = (int) (MAX_LOSS * Math.random()) + 1;
+        loss = (int) (MAX_LOSS * Math.random()) - 1;
     }
 
     @Override
