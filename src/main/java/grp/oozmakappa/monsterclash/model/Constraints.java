@@ -55,11 +55,6 @@ public class Constraints implements DiceObserver {
     }
 
     public void changeTurn() {
-        CommandManager manager = CommandManager.getInstance();
-        manager.storeAndExecute(new TurnChangeCommand(this));
-    }
-
-    public void changeTurnProcess() {
         // To be called by TurnChangeCommand
         canMove = false;
         currentTeam = currentTeam == null
