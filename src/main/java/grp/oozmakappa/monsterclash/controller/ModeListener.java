@@ -1,6 +1,8 @@
 package grp.oozmakappa.monsterclash.controller;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.model.command.ModeChangeCommand;
 import grp.oozmakappa.monsterclash.model.strategies.modes.Mode;
 import grp.oozmakappa.monsterclash.view.AbstractDialog;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +28,8 @@ public class ModeListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand().toLowerCase();
         Mode mode = Mode.getMode(cmd);
-        piece.setMode(mode);
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new ModeChangeCommand(piece, mode));
         LOG.info("Selected Mode: " + cmd);
         dialog.close();
     }
