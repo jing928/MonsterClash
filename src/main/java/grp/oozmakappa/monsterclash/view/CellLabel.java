@@ -73,10 +73,10 @@ public class CellLabel extends JLabel implements PiecePositionObserver {
         setOpaque(true);
         switch (cell.getRole()) {
 
-            case TEAM_A:
+            case OozmaKappa:
                 currentColor = COLOR_A;
                 break;
-            case TEAM_B:
+            case RoarOmegaRoar:
                 currentColor = COLOR_B;
                 break;
             case DISABLE:
