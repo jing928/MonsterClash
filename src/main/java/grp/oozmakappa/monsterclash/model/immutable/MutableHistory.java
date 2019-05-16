@@ -15,6 +15,14 @@ public class MutableHistory implements History {
         this.versionNum = -1; // Initialize as negative
     }
 
+    public ImmutableHistory getVersion(int versionNum) {
+        return versions.get(versionNum);
+    }
+
+    public Command peekLast() {
+        return currentHistory.peekLast();
+    }
+
     @Override
     public synchronized void add(Command newCmd) {
         // Create immutable history with transformer and save to versions stack
