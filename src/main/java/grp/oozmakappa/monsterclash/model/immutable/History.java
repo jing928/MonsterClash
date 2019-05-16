@@ -12,4 +12,6 @@ public interface History {
     LinkedList<Command> getHistory();
 
     int size();
+
+    int getVersionNum();
 }
