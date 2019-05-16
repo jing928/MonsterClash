@@ -16,4 +16,7 @@ public interface History {
     int getVersionNum();
 
     Command peekLast();
+
+    ImmutableHistory getLatestVersion();
+
 }
