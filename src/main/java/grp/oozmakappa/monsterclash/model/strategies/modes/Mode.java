@@ -7,7 +7,7 @@ import grp.oozmakappa.monsterclash.model.Constraints;
  */
 public interface Mode {
     double DEFAULT_AMPLIFIER = 1.5;
-    double DEFAULT_ALLAYER = 0.8;
+    double DEFAULT_REDUCER = 0.8;
 
     /**
      * Returns concrete {@link Mode} by name

@@ -70,6 +70,18 @@ public abstract class Piece implements DiceObserver {
 
     public void setMode(Mode mode) {
         this.mode = mode;
+        double delta = mode.getAttackPower(attackPower) - attackPower;
+        notifyPowerChanged(delta);
+        delta = mode.getArmor(armor) - armor;
+        notifyArmorChanged(delta);
+    }
+
+    public void setMode() {
+        double deltaPower = attackPower - mode.getAttackPower(attackPower);
+        double deltaArmor = armor - mode.getArmor(armor);
+        this.mode = DefaultMode.getInstance();
+        notifyPowerChanged(deltaPower);
+        notifyArmorChanged(deltaArmor);
     }
 
     public Ability getCurrAbility() {
@@ -328,6 +340,17 @@ public abstract class Piece implements DiceObserver {
     }
 
     /**
+     * @param deltaArmor
+     * @Requires deltaArmor != 0
+     */
+    private void notifyArmorChanged(double deltaArmor) {
+        if (deltaArmor == 0) {
+            return;
+        }
+        pptObservers.forEach(o -> o.armorChanged(deltaArmor, shouldNotify));
+    }
+
+    /**
      * @Requires deltaRange != 0
      */
     private void notifyRangeChanged(int deltaRange) {
@@ -346,8 +369,14 @@ public abstract class Piece implements DiceObserver {
         return mode.getArmor(armor);
     }
 
+    /**
+     * @param armor
+     * @Requires armor >= 0
+     */
     public void setArmor(double armor) {
+        double delta = armor - this.armor;
         this.armor = armor;
+        notifyArmorChanged(delta);
     }
 
     public Mode getCurrMode() {
@@ -381,4 +410,9 @@ public abstract class Piece implements DiceObserver {
     public String toString() {
         return String.format("%s: Team: %s, Position: %s", getClass().getSimpleName(), team, getPosition());
     }
+
+    public double getCurrentArmor() {
+        return mode.getArmor(armor);
+    }
+
 }

@@ -12,6 +12,7 @@ public final class Dice {
     private static final int MAX_DICE = 6;
     private final List<DiceObserver> observers = new ArrayList<>();
     private static Dice dice;
+    private boolean canRoll = true;
 
     private Dice() {
         // cannot be instantiated
@@ -37,7 +38,15 @@ public final class Dice {
     public int roll() {
         int value = (int) (Math.random() * MAX_DICE) + 1;
         observers.forEach(o -> o.valueChanged(value));
+        canRoll = false;
         return value;
     }
 
+    public boolean canRoll() {
+        return canRoll;
+    }
+
+    public void setCanRoll(boolean canRoll) {
+        this.canRoll = canRoll;
+    }
 }

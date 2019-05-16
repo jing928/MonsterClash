@@ -8,6 +8,8 @@ public interface PiecePropertyObserver {
 
     void powerChanged(double deltaPower, boolean shouldNotify);
 
+    void armorChanged(double deltaArmor, boolean shouldNotify);
+
     void rangeChanged(int deltaRange, boolean shouldNotify);
 
 }

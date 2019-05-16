@@ -1,9 +1,8 @@
 package grp.oozmakappa.monsterclash.model.command;
 
-import grp.oozmakappa.monsterclash.controller.BoardController;
 import grp.oozmakappa.monsterclash.model.Constraints;
+import grp.oozmakappa.monsterclash.model.Dice;
 import grp.oozmakappa.monsterclash.model.Team;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,6 +27,7 @@ public class TurnChangeCommand implements Command {
     public void undo() {
         constraints.setCurrentTeam(prevTeam);
         constraints.setCanMove(false);
+        Dice.getInstance().setCanRoll(true);
         Logger log = LogManager.getLogger();
         log.info("Undid: Turn Change Command");
         log.info("Current turn: " + constraints.getCurrentTeam());

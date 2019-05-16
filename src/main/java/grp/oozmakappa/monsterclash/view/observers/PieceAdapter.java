@@ -35,6 +35,10 @@ public abstract class PieceAdapter implements PieceActionObserver, PiecePosition
     }
 
     @Override
+    public void armorChanged(double deltaArmor, boolean shouldNotify) {
+    }
+
+    @Override
     public void rangeChanged(int deltaRange, boolean shouldNotify) {
     }
 }
