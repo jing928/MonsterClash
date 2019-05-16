@@ -16,6 +16,10 @@ public final class Transformer {
         return output;
     }
 
+    public static <T> LinkedList<T> duplicate(LinkedList<T> input) {
+        return new LinkedList<>(input);
+    }
+
     public static void main(String[] args) {
         // TODO: remove this test method
         LinkedList<String> in = new LinkedList<>();
