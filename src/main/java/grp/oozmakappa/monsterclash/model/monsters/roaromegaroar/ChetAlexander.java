@@ -14,9 +14,9 @@ public class ChetAlexander extends Piece {
 
     private static final Team TEAM = Team.RoarOmegaRoar;
     private static final double DEFAULTHEALTH = 100;
-    private static final int DEFAULTATTACKPOWER = 15;
+    private static final int DEFAULTATTACKPOWER = 30;
     private static final int DEFAULTATTACKRANGE = 8;
-    private static final double DEFAULT_ARMOR = 3;
+    private static final double DEFAULT_ARMOR = 10;
 
     public ChetAlexander(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);

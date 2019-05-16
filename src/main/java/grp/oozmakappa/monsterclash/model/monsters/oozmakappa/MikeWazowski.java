@@ -14,9 +14,9 @@ public class MikeWazowski extends Piece {
 
     private static final Team TEAM = Team.OozmaKappa;
     private static final double DEFAULTHEALTH = 100;
-    private static final int DEFAULTATTACKPOWER = 10;
+    private static final int DEFAULTATTACKPOWER = 40;
     private static final int DEFAULTATTACKRANGE = 3;
-    private static final double DEFAULT_ARMOR = 4;
+    private static final double DEFAULT_ARMOR = 15;
 
     public MikeWazowski(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);
