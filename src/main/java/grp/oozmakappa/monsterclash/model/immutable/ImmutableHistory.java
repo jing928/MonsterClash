@@ -45,8 +45,18 @@ public final class ImmutableHistory implements History {
     }
 
     @Override
+    public ImmutableHistory getVersion(int versionNum) {
+        throw new UnsupportedOperationException("Unsupported.");
+    }
+
+    @Override
     public ImmutableHistory getLatestVersion() {
         return this;
+    }
+
+    @Override
+    public void setHistory(LinkedList<Command> history) {
+        throw new UnsupportedOperationException("This is immutable!");
     }
 
 }
