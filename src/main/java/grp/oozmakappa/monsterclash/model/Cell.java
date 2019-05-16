@@ -22,12 +22,15 @@ public final class Cell implements CellEffect {
     private final int x;
     private final int y;
     private final Role role;
+    private final boolean isHome;
     private Point location;
 
     protected Cell(int x, int y) {
-        this.x = x;
-        this.y = y;
-        role = Role.NEUTRAL;
+        this(x, y, Role.NEUTRAL, false);
+    }
+
+    protected Cell(int x, int y, Role role) {
+        this(x, y, role, false);
     }
 
     /**
@@ -39,11 +42,13 @@ public final class Cell implements CellEffect {
      * @param x
      * @param y
      * @param role
+     * @param isHome
      */
-    protected Cell(int x, int y, Role role) {
+    protected Cell(int x, int y, Role role, boolean isHome) {
         this.x = x;
         this.y = y;
         this.role = role;
+        this.isHome = isHome;
     }
 
     public Point getLocation() {
@@ -56,6 +61,20 @@ public final class Cell implements CellEffect {
 
     public Role getRole() {
         return role;
+    }
+
+    public Team getTeam() {
+        switch (role) {
+
+            default:
+            case NEUTRAL:
+            case DISABLE:
+                return null;
+            case OozmaKappa:
+                return Team.OozmaKappa;
+            case RoarOmegaRoar:
+                return Team.RoarOmegaRoar;
+        }
     }
 
     public int getX() {
@@ -135,7 +154,9 @@ public final class Cell implements CellEffect {
         }
     }
 
-    // TODO: to be checked.
+    public boolean isHome() {
+        return isHome;
+    }
 
     /**
      * The role of the cell.
@@ -144,8 +165,8 @@ public final class Cell implements CellEffect {
      * </p>
      */
     public enum Role {
-        TEAM_A,
-        TEAM_B,
+        OozmaKappa,
+        RoarOmegaRoar,
         NEUTRAL,
         DISABLE,
     }
