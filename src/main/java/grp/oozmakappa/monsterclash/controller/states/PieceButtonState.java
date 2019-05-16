@@ -9,7 +9,10 @@ import org.apache.logging.log4j.Logger;
  */
 public interface PieceButtonState {
     Logger LOG = LogManager.getLogger();
+
     void todo(PieceListener ctrl);
+
+    void doing(PieceListener ctrl);
 
     void done(PieceListener ctrl);
 }

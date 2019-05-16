@@ -2,7 +2,6 @@ package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
-import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
@@ -168,10 +167,8 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         Cell cell = pieceLocated.getPosition();
         Point loc = cell.getLocation();
         setLocation(loc);
-        Team pieceTeam = pieceLocated.getTeam();
-        Team cellTeam = cell.getTeam();
-        if (cell.isHome() && pieceTeam != cellTeam) {
-            String msg = pieceTeam + " Win!!";
+        if (pieceLocated.isWin()) {
+            String msg = pieceLocated.getTeam() + " Win!!";
             JOptionPane.showMessageDialog(null, msg, "Congrats!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
