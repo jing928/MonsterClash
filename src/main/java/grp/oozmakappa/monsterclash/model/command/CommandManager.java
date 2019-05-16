@@ -1,10 +1,13 @@
 package grp.oozmakappa.monsterclash.model.command;
 
 import grp.oozmakappa.monsterclash.model.immutable.History;
+import grp.oozmakappa.monsterclash.model.immutable.ImmutableHistory;
 import grp.oozmakappa.monsterclash.model.immutable.MutableHistory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -14,6 +17,7 @@ import java.util.Queue;
 public class CommandManager {
     private static final Logger LOG = LogManager.getLogger();
     private final History history;
+    private final Deque<ImmutableHistory> universes; // Stores multiple universes caused by time travel or undo
     private static CommandManager commandManager;
 
     /**
@@ -21,6 +25,7 @@ public class CommandManager {
      */
     private CommandManager() {
         history = new MutableHistory();
+        universes = new ArrayDeque<>();
     }
 
     public static synchronized CommandManager getInstance() {
@@ -36,6 +41,7 @@ public class CommandManager {
     }
 
     public void undoTurns(int number) {
+        saveUniverse();
         for (int i = 0; i < number; i++) {
             undoTurn();
         }
@@ -63,11 +69,15 @@ public class CommandManager {
                 cmdList.add(lastCmd);
             }
         }
-        
+
         for (Object object : cmdList) {
             Command cmd = (Command) object;
             cmd.undo();
         }
+    }
+
+    private void saveUniverse() {
+        universes.push(history.getLatestVersion());
     }
 
 }
