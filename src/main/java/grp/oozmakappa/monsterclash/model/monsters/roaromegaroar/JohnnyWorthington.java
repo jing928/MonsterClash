@@ -14,9 +14,9 @@ public class JohnnyWorthington extends Piece {
 
     private static final Team TEAM = Team.RoarOmegaRoar;
     private static final double DEFAULTHEALTH = 200;
-    private static final int DEFAULTATTACKPOWER = 20;
+    private static final int DEFAULTATTACKPOWER = 40;
     private static final int DEFAULTATTACKRANGE = 5;
-    private static final double DEFAULT_ARMOR = 2;
+    private static final double DEFAULT_ARMOR = 14;
 
     public JohnnyWorthington(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);

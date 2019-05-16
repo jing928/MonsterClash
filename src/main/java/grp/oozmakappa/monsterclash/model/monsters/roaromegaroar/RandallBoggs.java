@@ -14,9 +14,9 @@ public class RandallBoggs extends Piece {
 
     private static final Team TEAM = Team.RoarOmegaRoar;
     private static final double DEFAULTHEALTH = 100;
-    private static final int DEFAULTATTACKPOWER = 10;
+    private static final int DEFAULTATTACKPOWER = 20;
     private static final int DEFAULTATTACKRANGE = 3;
-    private static final double DEFAULT_ARMOR = 5;
+    private static final double DEFAULT_ARMOR = 12.5;
 
     public RandallBoggs(Cell startingPos) {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);
