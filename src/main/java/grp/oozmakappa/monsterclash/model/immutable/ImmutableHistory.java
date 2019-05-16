@@ -39,4 +39,9 @@ public final class ImmutableHistory implements History {
         return versionNum;
     }
 
+    @Override
+    public Command peekLast() {
+        throw new UnsupportedOperationException("Unsupported.");
+    }
+
 }

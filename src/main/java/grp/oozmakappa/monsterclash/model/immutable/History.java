@@ -14,4 +14,6 @@ public interface History {
     int size();
 
     int getVersionNum();
+
+    Command peekLast();
 }
