@@ -1,5 +1,7 @@
 package grp.oozmakappa.monsterclash.model.command;
 
+import grp.oozmakappa.monsterclash.model.immutable.History;
+import grp.oozmakappa.monsterclash.model.immutable.MutableHistory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,14 +13,14 @@ import java.util.Queue;
  */
 public class CommandManager {
     private static final Logger LOG = LogManager.getLogger();
-    private final LinkedList<Command> history;
+    private final History history;
     private static CommandManager commandManager;
 
     /**
      * private for singleton pattern
      */
     private CommandManager() {
-        history = new LinkedList<>();
+        history = new MutableHistory();
     }
 
     public static synchronized CommandManager getInstance() {
