@@ -24,7 +24,8 @@ public final class ImmutableHistory implements History {
 
     @Override
     public LinkedList<Command> getHistory() {
-        return (LinkedList<Command>) Collections.unmodifiableList(history);
+        // Create a new list reference to keep the original list intact
+        return new LinkedList<>(history);
     }
 
     @Override
