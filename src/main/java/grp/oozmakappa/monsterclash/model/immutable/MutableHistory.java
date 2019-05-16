@@ -19,6 +19,10 @@ public class MutableHistory implements History {
         return versions.get(versionNum);
     }
 
+    public ImmutableHistory getLatestVersion() {
+        return getVersion(versionNum);
+    }
+
     public Command peekLast() {
         return currentHistory.peekLast();
     }
