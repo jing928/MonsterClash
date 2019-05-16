@@ -13,6 +13,7 @@ public class MutableHistory implements History {
     public MutableHistory() {
         this.currentHistory = new LinkedList<>();
         this.versions = new ArrayDeque<>();
+        this.versionNum = -1; // Initialize as negative
     }
 
     @Override
@@ -41,5 +42,9 @@ public class MutableHistory implements History {
         return currentHistory.size();
     }
 
+    @Override
+    public int getVersionNum() {
+        return versionNum;
+    }
 
 }
