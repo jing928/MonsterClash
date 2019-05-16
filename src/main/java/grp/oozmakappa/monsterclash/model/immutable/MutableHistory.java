@@ -31,6 +31,7 @@ public class MutableHistory implements History {
         this.currentHistory = history;
     }
 
+    @Override
     public Command peekLast() {
         return currentHistory.peekLast();
     }
