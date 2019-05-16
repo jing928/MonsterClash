@@ -2,6 +2,7 @@ package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
+import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
@@ -14,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import static grp.oozmakappa.monsterclash.model.Constraints.PIECE_DIAMETER;
+import static grp.oozmakappa.monsterclash.utils.IconFactory.toGrey;
 
 /**
  * @author Chenglong Ma
@@ -76,6 +78,9 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         g.fillOval(0, 0, weight, height);
         // zoom the icon
         Image image = icon.getImage();
+        if (!isEnabled()) {
+            image = toGrey(image);
+        }
         g.drawImage(image, 0, 0, weight, height, this);
         super.paintComponent(g);
     }
@@ -163,8 +168,11 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         Cell cell = pieceLocated.getPosition();
         Point loc = cell.getLocation();
         setLocation(loc);
-        if (cell.isHome() && pieceLocated.getTeam() != cell.getTeam()) {
-            JOptionPane.showMessageDialog(this, "You Win!!", "Congrats!", JOptionPane.INFORMATION_MESSAGE);
+        Team pieceTeam = pieceLocated.getTeam();
+        Team cellTeam = cell.getTeam();
+        if (cell.isHome() && pieceTeam != cellTeam) {
+            String msg = pieceTeam + " Win!!";
+            JOptionPane.showMessageDialog(null, msg, "Congrats!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }

@@ -24,32 +24,15 @@ import static java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR;
  */
 public class IconFactory {
 
-    private static final Logger LOG = LogManager.getLogger();
-    private static IconFactory instance;
-    //region For Pieces
-
     // Oozma Kappa
     public static final String JAMES_P_SULLIVAN = "oozmakappa/james_p_sullivan.png";
     public static final String MIKE_WAZOWSKI = "oozmakappa/mike_wazowski.png";
+    //region For Pieces
     public static final String SQUISHY = "oozmakappa/squishy.png";
     // Roar Omega Roar
     public static final String CHET_ALEXANDER = "roaromegaroar/chet_alexander.png";
     public static final String JOHNNY_WORTHINGTON = "roaromegaroar/johnny_worthington.png";
     public static final String RANDALL_BOGGS = "roaromegaroar/randall_boggs.png";
-
-    private static final String MONSTERS_DIR = "img/monsters/";
-
-    //endregion
-
-    //region For Dice
-
-    private static final String DICE_VALUE_DIR = "img/dice/value/";
-    private static final String DICE_ROLLING_DIR = "img/dice/rolling/";
-
-    //endregion
-
-    //region For piece abilities
-
     /**
      * Acknowledgement:
      * Icons made by {
@@ -59,9 +42,21 @@ public class IconFactory {
      */
     public static final String ABILITIES_DIR = "img/abilities/";
     public static final String MODE_DIR = "img/mode/";
+    private static final Logger LOG = LogManager.getLogger();
 
     //endregion
 
+    //region For Dice
+    private static final String MONSTERS_DIR = "img/monsters/";
+    private static final String DICE_VALUE_DIR = "img/dice/value/";
+
+    //endregion
+
+    //region For piece abilities
+    private static final String DICE_ROLLING_DIR = "img/dice/rolling/";
+    private static IconFactory instance;
+
+    //endregion
     private final Map<String, IconFlyweight> icons;
 
     private IconFactory() {
@@ -110,6 +105,43 @@ public class IconFactory {
         g2d.drawImage(image, 0, 0, width, height, null);
         g2d.dispose();
         return resized;
+    }
+
+    /**
+     * Converts a given Image into a BufferedImage
+     *
+     * @param img The Image to be converted
+     * @return The converted BufferedImage
+     */
+    public static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+
+        // Create a buffered image with transparency
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Draw the image on to the buffered image
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        // Return the buffered image
+        return bimage;
+    }
+
+    public static Image toGrey(Image image) {
+        int width = image.getWidth(null);
+        int height = image.getHeight(null);
+        BufferedImage bimg = toBufferedImage(image);
+        BufferedImage grayImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int rgb = bimg.getRGB(i, j);
+                grayImage.setRGB(i, j, rgb);
+            }
+        }
+        return grayImage;
     }
 
     /**
