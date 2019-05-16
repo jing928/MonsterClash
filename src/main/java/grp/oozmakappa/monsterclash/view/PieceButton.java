@@ -84,55 +84,29 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         super.paintComponent(g);
     }
 
-    /**
-     * Shows message box
-     *
-     * @param deltaValue
-     * @param propertyName
-     * @Requires deltaValue != 0
-     */
-    @Deprecated
-    private void notifyChange(double deltaValue, String propertyName) {
-        assert deltaValue != 0D;
-        String msg = String.format("You %s %.2f %s!",
-                deltaValue > 0 ? "gained" : "lost",
-                Math.abs(deltaValue),
-                propertyName);
-        GameFrame.showMessage(this, msg, deltaValue > 0);
-    }
-
     private void changeBackground(Color backgroundColor) {
         this.backgroundColor = backgroundColor;
         repaint();
     }
 
     @Override
-    public void healthChanged(double deltaHealth, boolean shouldNotify) {
-        if (shouldNotify) {
-            notifyChange(deltaHealth, "health");
-        }
+    public void healthChanged(double currValue, double deltaHealth) {
         setEnabled(piece.getHealth() > 0);
     }
 
     @Override
-    public void powerChanged(double deltaPower, boolean shouldNotify) {
-        if (shouldNotify) {
-            notifyChange(deltaPower, "attack power");
-        }
+    public void powerChanged(double currValue, double deltaPower) {
+        // do nothing
     }
 
     @Override
-    public void armorChanged(double deltaArmor, boolean shouldNotify) {
-        if (shouldNotify) {
-            notifyChange(deltaArmor, "armor");
-        }
+    public void armorChanged(double currValue, double deltaArmor) {
+        // do nothing
     }
 
     @Override
-    public void rangeChanged(int deltaRange, boolean shouldNotify) {
-        if (shouldNotify) {
-            notifyChange(deltaRange, "attack range");
-        }
+    public void rangeChanged(int currValue, int deltaRange) {
+        // do nothing
     }
 
     @Override
