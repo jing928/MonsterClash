@@ -19,7 +19,7 @@ class DefensiveMode implements Mode {
 
     @Override
     public double getAttackPower(double defaultPower) {
-        return defaultPower * DEFAULT_ALLAYER;
+        return defaultPower * DEFAULT_REDUCER;
     }
 
     @Override

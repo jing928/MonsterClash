@@ -86,6 +86,7 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
      * @param propertyName
      * @Requires deltaValue != 0
      */
+    @Deprecated
     private void notifyChange(double deltaValue, String propertyName) {
         assert deltaValue != 0D;
         String msg = String.format("You %s %.2f %s!",
@@ -112,6 +113,13 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     public void powerChanged(double deltaPower, boolean shouldNotify) {
         if (shouldNotify) {
             notifyChange(deltaPower, "attack power");
+        }
+    }
+
+    @Override
+    public void armorChanged(double deltaArmor, boolean shouldNotify) {
+        if (shouldNotify) {
+            notifyChange(deltaArmor, "armor");
         }
     }
 

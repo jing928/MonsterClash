@@ -37,7 +37,7 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
         add(title);
         add(propertyLabel(health, "Health", piece.getHealth()));
         add(propertyLabel(power, "Attack Power", piece.getCurrentAttackPower()));
-        add(propertyLabel(armor, "Armor", piece.getArmor()));
+        add(propertyLabel(armor, "Armor", piece.getCurrentArmor()));
         add(propertyLabel(range, "Reachable Range", piece.getCurrentReachableRange()));
         add(propertyLabel(move, "Next move", piece.getNextMove()));
     }
@@ -72,7 +72,8 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
         return new Thread(() -> {
             try {
                 label.setForeground(Color.RED);
-                label.setText(origText + operation + Math.abs(deltaValue.doubleValue()));
+                String deltaString = FORMAT.format(Math.abs(deltaValue.doubleValue()));
+                label.setText(origText + operation + deltaString);
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 // ignore
@@ -91,6 +92,11 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
     @Override
     public void powerChanged(double deltaPower, boolean shouldNotify) {
         animation(power, piece.getCurrentAttackPower(), deltaPower).start();
+    }
+
+    @Override
+    public void armorChanged(double deltaArmor, boolean shouldNotify) {
+        animation(armor, piece.getCurrentArmor(), deltaArmor).start();
     }
 
     @Override

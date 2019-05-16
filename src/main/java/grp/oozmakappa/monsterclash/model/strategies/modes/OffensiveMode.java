@@ -24,6 +24,6 @@ class OffensiveMode implements Mode {
 
     @Override
     public double getArmor(double defaultArmor) {
-        return defaultArmor * DEFAULT_ALLAYER;
+        return defaultArmor * DEFAULT_REDUCER;
     }
 }

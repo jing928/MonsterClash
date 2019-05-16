@@ -23,7 +23,6 @@ public class Constraints implements DiceObserver {
     public static final String OFFENSIVE_MODE = "offensive";
     public static final String DEFENSIVE_MODE = "defensive";
     public static final Team INITIAL_TEAM = Team.OozmaKappa;
-
     private static Constraints instance;
     private AbstractRuleFactory.Rule currentRule;
     private Team currentTeam;
@@ -35,8 +34,8 @@ public class Constraints implements DiceObserver {
         dice.addObserver(this);
         // default settings
         currentRule = AbstractRuleFactory.Rule.A;
-        canMove = false;
-        currentTeam = INITIAL_TEAM;
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new TurnChangeCommand(this));
     }
 
     public static synchronized Constraints getInstance() {
@@ -47,6 +46,9 @@ public class Constraints implements DiceObserver {
     }
 
     public Team getCurrentTeam() {
+        if (currentTeam == null) {
+            return INITIAL_TEAM;
+        }
         return currentTeam;
     }
 
@@ -62,6 +64,7 @@ public class Constraints implements DiceObserver {
                 : currentTeam == Team.OozmaKappa
                 ? Team.RoarOmegaRoar
                 : Team.OozmaKappa;
+        Dice.getInstance().setCanRoll(true);
     }
 
     public AbstractRuleFactory.Rule getCurrentRule() {

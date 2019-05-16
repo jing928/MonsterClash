@@ -31,12 +31,12 @@ public class PieceListener extends MouseAdapter {
         state = ModeSelectionState.getInstance();
     }
 
-    public void setState(PieceButtonState state) {
-        this.state = state;
-    }
-
     public PieceButtonState getState() {
         return state;
+    }
+
+    public void setState(PieceButtonState state) {
+        this.state = state;
     }
 
     public PieceButton getButton() {
@@ -74,6 +74,9 @@ public class PieceListener extends MouseAdapter {
 
     private boolean isInvalid(MouseEvent e) {
         Component component = e.getComponent();
+        if (!component.isEnabled()) {
+            return true;
+        }
         Constraints constraints = Constraints.getInstance();
         if (!(component instanceof PieceButton)) {
             showMessage(component, "Invalid operation");
