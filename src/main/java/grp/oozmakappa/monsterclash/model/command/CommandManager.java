@@ -53,19 +53,17 @@ public class CommandManager {
         while (!turnStartFound) {
             if (history.size() == 0 || turnChangeCounter == 3) {
                 turnStartFound = true;
-            } else {
-                Command lastCmd = history.removeLast();
-                if (lastCmd instanceof TurnChangeCommand) {
-                    if (++turnChangeCounter == 3) {
-                        history.add(lastCmd);
-                        lastCmd = null;
-                    }
-                }
-                if (lastCmd != null) {
+            } else if (history.peekLast() instanceof TurnChangeCommand) {
+                if (++turnChangeCounter < 3) {
+                    Command lastCmd = history.removeLast();
                     cmdList.add(lastCmd);
                 }
+            } else {
+                Command lastCmd = history.removeLast();
+                cmdList.add(lastCmd);
             }
         }
+        
         for (Object object : cmdList) {
             Command cmd = (Command) object;
             cmd.undo();
