@@ -86,6 +86,10 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
 
     @Override
     public void healthChanged(double currValue, double deltaHealth) {
+        if (deltaHealth < 0) {
+            deltaHealth += piece.getCurrentArmor();
+            deltaHealth = Math.min(0, deltaHealth);
+        }
         animation(health, currValue, deltaHealth).start();
     }
 
