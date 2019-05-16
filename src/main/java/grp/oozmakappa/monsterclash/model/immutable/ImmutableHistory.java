@@ -44,4 +44,9 @@ public final class ImmutableHistory implements History {
         throw new UnsupportedOperationException("Unsupported.");
     }
 
+    @Override
+    public ImmutableHistory getLatestVersion() {
+        return this;
+    }
+
 }
