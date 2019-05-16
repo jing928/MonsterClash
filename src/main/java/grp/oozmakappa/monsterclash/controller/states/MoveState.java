@@ -28,16 +28,22 @@ public class MoveState implements PieceButtonState {
     private MoveState() {
     }
 
-    public static MoveState getInstance(Piece piece) {
+    public static MoveState getInstance() {
         if (instance == null) {
             instance = new MoveState();
         }
-        piece.notifyMoving();
         return instance;
     }
 
     @Override
     public void todo(PieceListener ctrl) {
+        PieceButton button = ctrl.getButton();
+        Piece piece = button.getPiece();
+        piece.notifyMoving();
+    }
+
+    @Override
+    public void doing(PieceListener ctrl) {
         PieceButton button = ctrl.getButton();
         button.addMouseMotionListener(ctrl);
         Piece piece = button.getPiece();
@@ -68,7 +74,7 @@ public class MoveState implements PieceButtonState {
         if (cellLabel != null) {
             newCell = cellLabel.getCell();
             timeOutThread.interrupt();
-            nextState = ActionState.getInstance(piece);
+            nextState = ActionState.getInstance();
             CommandManager manager = CommandManager.getInstance();
             manager.storeAndExecute(new MoveCommand(piece, newCell));
             LOG.info("Piece has moved.");
@@ -81,5 +87,8 @@ public class MoveState implements PieceButtonState {
         button.removeMouseMotionListener(ctrl);
         CommandManager manager = CommandManager.getInstance();
         manager.storeAndExecute(new StateChangeCommand(ctrl, nextState));
+        if (!piece.isWin()) {
+            nextState.todo(ctrl);
+        }
     }
 }

@@ -360,6 +360,10 @@ public abstract class Piece implements DiceObserver {
         pptObservers.forEach(o -> o.rangeChanged(deltaRange, shouldNotify));
     }
 
+    public boolean isWin() {
+        return position.isHome() && this.team != position.getTeam();
+    }
+
     @Override
     public void valueChanged(int value) {
         this.nextMove = value;

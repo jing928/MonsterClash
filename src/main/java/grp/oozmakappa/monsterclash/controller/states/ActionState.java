@@ -24,13 +24,9 @@ public class ActionState implements PieceButtonState {
         // for singleton pattern
     }
 
-    public static ActionState getInstance(Piece piece) {
+    public static ActionState getInstance() {
         if (instance == null) {
             instance = new ActionState();
-        }
-        new AbilityDialog(piece).display();
-        if (piece.getCurrAbility() != null) {
-            piece.notifyActing();
         }
         return instance;
     }
@@ -40,11 +36,32 @@ public class ActionState implements PieceButtonState {
     public void todo(PieceListener ctrl) {
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
+        new AbilityDialog(piece).display();
+        if (piece.getCurrAbility() != null) {
+            piece.notifyActing();
+        }
+        if (!ctrl.hasReachablePiece()) {
+            PieceButtonState nextState = askContinue(button) ? this : ModeSelectionState.getInstance();
+            ctrl.setState(nextState);
+            piece.setCurrentAbility(null);
+            changeTurn();
+        }
+    }
+
+    @Override
+    public void doing(PieceListener ctrl) {
+        PieceButton button = ctrl.getButton();
+        Piece piece = button.getPiece();
         if (piece.getCurrAbility() == null) {
-            new AbilityDialog(piece).display();
+            todo(ctrl);
             return;
         }
         piece.notifyActing();
+        if (!ctrl.hasReachablePiece()) {
+            PieceButtonState nextState = askContinue(button) ? this : ModeSelectionState.getInstance();
+            ctrl.setState(nextState);
+            return;
+        }
         button.addMouseMotionListener(ctrl);
         initPieceLocation = button.getLocation();
     }
@@ -59,16 +76,13 @@ public class ActionState implements PieceButtonState {
             Piece target = targetButton.getPiece();
             piece.act(target);
             changeTurn();
-        } else if (askContinue(button)) {
-            nextState = this;
-        } else {
-            changeTurn();
         }
         piece.setCurrentAbility(null);
         button.removeMouseMotionListener(ctrl);
         button.setLocation(initPieceLocation);
         CommandManager manager = CommandManager.getInstance();
         manager.storeAndExecute(new StateChangeCommand(ctrl, nextState));
+        nextState.todo(ctrl);
     }
 
     private void changeTurn() {

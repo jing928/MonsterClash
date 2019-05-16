@@ -49,7 +49,7 @@ public class PieceListener extends MouseAdapter {
             return;
         }
         initMouseLocation = e.getPoint();
-        state.todo(this);
+        state.doing(this);
     }
 
     @Override
@@ -112,6 +112,10 @@ public class PieceListener extends MouseAdapter {
 
     public PieceButton getClosestPiece(PieceButton button) {
         return boardPanel.getClosestPiece(button);
+    }
+
+    public boolean hasReachablePiece() {
+        return boardPanel.hasReachablePiece();
     }
 
 }

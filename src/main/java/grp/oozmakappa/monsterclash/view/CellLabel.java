@@ -17,8 +17,8 @@ import static grp.oozmakappa.monsterclash.model.Constraints.CELL_LENGTH;
  * @Invariant cell != null
  */
 public class CellLabel extends JLabel implements PiecePositionObserver {
-    private static final Color COLOR_A = Color.ORANGE;
-    private static final Color COLOR_B = Color.BLUE;
+    private static final Color COLOR_A = Color.BLUE;
+    private static final Color COLOR_B = Color.ORANGE;
     private static final Color COLOR_NEUTRAL = Color.DARK_GRAY;
     private static final Logger LOG = LogManager.getLogger();
     private final Cell cell;
@@ -107,7 +107,7 @@ public class CellLabel extends JLabel implements PiecePositionObserver {
     public void afterMove(Piece pieceLocated, boolean shouldNotify) {
         setBackground(currentColor);
         canPlaced = false;
-        if (cell.distance(pieceLocated.getPosition()) == 0 && shouldNotify) {
+        if (cell.equals(pieceLocated.getPosition()) && shouldNotify) {
             listener.affect(cell, pieceLocated);
         }
     }

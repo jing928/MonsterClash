@@ -32,15 +32,21 @@ public class ModeSelectionState implements PieceButtonState {
 
     @Override
     public void todo(PieceListener ctrl) {
+        // do nothing
+    }
+
+    @Override
+    public void doing(PieceListener ctrl) {
         PieceButton button = ctrl.getButton();
         button.removeMouseMotionListener(ctrl);
         Piece piece = button.getPiece();
         new ModeDialog(piece).display();
         PieceButtonState nextState = piece.getCurrMode() == DefaultMode.getInstance()
                 ? this
-                : MoveState.getInstance(piece);
+                : MoveState.getInstance();
         CommandManager manager = CommandManager.getInstance();
         manager.storeAndExecute(new StateChangeCommand(ctrl, nextState));
+        nextState.todo(ctrl);
     }
 
     @Override

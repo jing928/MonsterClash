@@ -22,7 +22,7 @@ public class PlayerPanel extends JPanel implements ActionListener {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         Color backgroundColor = team == Team.OozmaKappa ?
                 new Color(0X45A5FF) :
-                new Color(0XEC691E);
+                new Color(0XF7C527);
         setBackground(backgroundColor);
         setPreferredSize(new Dimension(300, 60));
         for (Piece piece : pieces) {
