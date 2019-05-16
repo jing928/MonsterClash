@@ -5,6 +5,8 @@ import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +18,10 @@ import java.util.List;
  * @author Chenglong Ma
  */
 public class PlayerPanel extends JPanel implements PiecePropertyObserver, ActionListener {
+    private static final Logger LOG = LogManager.getLogger();
     private final Team team;
-    private int numOfDeadPiece = 0;
+    private final int totalPieces;
+    private int numOfDeadPieces = 0;
 
     public PlayerPanel(List<Piece> pieces, Team team) {
         this.team = team;
@@ -27,11 +31,15 @@ public class PlayerPanel extends JPanel implements PiecePropertyObserver, Action
                 new Color(0XF7C527);
         setBackground(backgroundColor);
         setPreferredSize(new Dimension(300, 60));
+        int total = 0;
         for (Piece piece : pieces) {
             if (piece.getTeam() == team) {
                 add(new PieceInfoPanel(piece));
+                piece.addPropertyObserver(this);
+                total++;
             }
         }
+        totalPieces = total;
         JButton undoBtn = new UndoButton(team);
         add(undoBtn);
         undoBtn.addActionListener(this);
@@ -56,13 +64,18 @@ public class PlayerPanel extends JPanel implements PiecePropertyObserver, Action
     }
 
     @Override
-    public void healthChanged(double deltaHealth, boolean shouldNotify) {
-        if (deltaHealth <= 0) {
-            numOfDeadPiece++;
-        } else {
-            numOfDeadPiece--;
+    public void healthChanged(double currValue, double deltaHealth) {
+        // for normal progress
+        if (numOfDeadPieces < totalPieces && currValue <= 0) {
+            numOfDeadPieces++;
         }
-        if (numOfDeadPiece >= 3) {
+
+        // for `undo` operation
+        if (numOfDeadPieces >= totalPieces && currValue > 0) {
+            numOfDeadPieces--;
+        }
+        LOG.info("number of dead pieces: " + numOfDeadPieces);
+        if (numOfDeadPieces >= totalPieces) {
             Team rival = Team.getRivalTeam(team);
             String msg = rival + " Win!!";
             JOptionPane.showMessageDialog(null, msg, "Congrats!", JOptionPane.INFORMATION_MESSAGE);
@@ -70,17 +83,17 @@ public class PlayerPanel extends JPanel implements PiecePropertyObserver, Action
     }
 
     @Override
-    public void powerChanged(double deltaPower, boolean shouldNotify) {
+    public void powerChanged(double currValue, double deltaPower) {
         // do nothing
     }
 
     @Override
-    public void armorChanged(double deltaArmor, boolean shouldNotify) {
+    public void armorChanged(double currValue, double deltaArmor) {
         // do nothing
     }
 
     @Override
-    public void rangeChanged(int deltaRange, boolean shouldNotify) {
+    public void rangeChanged(int currValue, int deltaRange) {
         // do nothing
     }
 }

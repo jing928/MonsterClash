@@ -326,7 +326,7 @@ public abstract class Piece implements DiceObserver {
         if (deltaHealth == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.healthChanged(deltaHealth, shouldNotify));
+        pptObservers.forEach(o -> o.healthChanged(getHealth(), deltaHealth));
     }
 
     /**
@@ -336,7 +336,7 @@ public abstract class Piece implements DiceObserver {
         if (deltaPower == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.powerChanged(deltaPower, shouldNotify));
+        pptObservers.forEach(o -> o.powerChanged(getCurrentAttackPower(), deltaPower));
     }
 
     /**
@@ -347,7 +347,7 @@ public abstract class Piece implements DiceObserver {
         if (deltaArmor == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.armorChanged(deltaArmor, shouldNotify));
+        pptObservers.forEach(o -> o.armorChanged(getCurrentArmor(), deltaArmor));
     }
 
     /**
@@ -357,7 +357,7 @@ public abstract class Piece implements DiceObserver {
         if (deltaRange == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.rangeChanged(deltaRange, shouldNotify));
+        pptObservers.forEach(o -> o.rangeChanged(getCurrentReachableRange(), deltaRange));
     }
 
     public boolean isWin() {

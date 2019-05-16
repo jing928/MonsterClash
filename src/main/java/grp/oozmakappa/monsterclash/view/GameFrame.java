@@ -32,20 +32,6 @@ public class GameFrame extends JFrame {
         add(new DiceButton());
     }
 
-    /**
-     * Shows message dialog
-     *
-     * @param parent
-     * @param message the message to show
-     * @param good    is the message good or bad?
-     */
-    @Deprecated
-    public static void showMessage(Component parent, String message, boolean good) {
-        String title = good ? "Congrats!" : "Sorry...";
-        int type = good ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.WARNING_MESSAGE;
-//        JOptionPane.showMessageDialog(parent, message, title, type);
-    }
-
     public BoardPanel getBoardPanel() {
         return boardPanel;
     }

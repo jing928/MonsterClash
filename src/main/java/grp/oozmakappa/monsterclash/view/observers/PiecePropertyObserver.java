@@ -4,12 +4,12 @@ package grp.oozmakappa.monsterclash.view.observers;
  * @author Chenglong Ma
  */
 public interface PiecePropertyObserver {
-    void healthChanged(double deltaHealth, boolean shouldNotify);
+    void healthChanged(double currValue, double deltaHealth);
 
-    void powerChanged(double deltaPower, boolean shouldNotify);
+    void powerChanged(double currValue, double deltaPower);
 
-    void armorChanged(double deltaArmor, boolean shouldNotify);
+    void armorChanged(double currValue, double deltaArmor);
 
-    void rangeChanged(int deltaRange, boolean shouldNotify);
+    void rangeChanged(int currValue, int deltaRange);
 
 }

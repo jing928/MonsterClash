@@ -85,22 +85,22 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
     }
 
     @Override
-    public void healthChanged(double deltaHealth, boolean shouldNotify) {
-        animation(health, piece.getHealth(), deltaHealth).start();
+    public void healthChanged(double currValue, double deltaHealth) {
+        animation(health, currValue, deltaHealth).start();
     }
 
     @Override
-    public void powerChanged(double deltaPower, boolean shouldNotify) {
-        animation(power, piece.getCurrentAttackPower(), deltaPower).start();
+    public void powerChanged(double currValue, double deltaPower) {
+        animation(power, currValue, deltaPower).start();
     }
 
     @Override
-    public void armorChanged(double deltaArmor, boolean shouldNotify) {
-        animation(armor, piece.getCurrentArmor(), deltaArmor).start();
+    public void armorChanged(double currValue, double deltaArmor) {
+        animation(armor, currValue, deltaArmor).start();
     }
 
     @Override
-    public void rangeChanged(int deltaRange, boolean shouldNotify) {
-        animation(range, piece.getCurrentReachableRange(), deltaRange).start();
+    public void rangeChanged(int currValue, int deltaRange) {
+        animation(range, currValue, deltaRange).start();
     }
 }
