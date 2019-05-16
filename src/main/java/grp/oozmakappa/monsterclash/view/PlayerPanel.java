@@ -4,6 +4,7 @@ import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.command.CommandManager;
+import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,8 +15,9 @@ import java.util.List;
 /**
  * @author Chenglong Ma
  */
-public class PlayerPanel extends JPanel implements ActionListener {
+public class PlayerPanel extends JPanel implements PiecePropertyObserver, ActionListener {
     private final Team team;
+    private int numOfDeadPiece = 0;
 
     public PlayerPanel(List<Piece> pieces, Team team) {
         this.team = team;
@@ -51,5 +53,34 @@ public class PlayerPanel extends JPanel implements ActionListener {
         CommandManager cmdManager = CommandManager.getInstance();
         cmdManager.undoTurns(numOfUndos);
         button.setUndoUsed();
+    }
+
+    @Override
+    public void healthChanged(double deltaHealth, boolean shouldNotify) {
+        if (deltaHealth <= 0) {
+            numOfDeadPiece++;
+        } else {
+            numOfDeadPiece--;
+        }
+        if (numOfDeadPiece >= 3) {
+            Team rival = Team.getRivalTeam(team);
+            String msg = rival + " Win!!";
+            JOptionPane.showMessageDialog(null, msg, "Congrats!", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    @Override
+    public void powerChanged(double deltaPower, boolean shouldNotify) {
+        // do nothing
+    }
+
+    @Override
+    public void armorChanged(double deltaArmor, boolean shouldNotify) {
+        // do nothing
+    }
+
+    @Override
+    public void rangeChanged(int deltaRange, boolean shouldNotify) {
+        // do nothing
     }
 }

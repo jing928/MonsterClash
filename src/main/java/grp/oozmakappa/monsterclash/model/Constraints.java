@@ -61,9 +61,7 @@ public class Constraints implements DiceObserver {
         canMove = false;
         currentTeam = currentTeam == null
                 ? INITIAL_TEAM
-                : currentTeam == Team.OozmaKappa
-                ? Team.RoarOmegaRoar
-                : Team.OozmaKappa;
+                : Team.getRivalTeam(currentTeam);
         Dice.getInstance().setCanRoll(true);
     }
 
