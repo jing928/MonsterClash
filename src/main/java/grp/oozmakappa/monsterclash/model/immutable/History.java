@@ -17,6 +17,10 @@ public interface History {
 
     Command peekLast();
 
+    ImmutableHistory getVersion(int versionNum);
+
     ImmutableHistory getLatestVersion();
+
+    void setHistory(LinkedList<Command> history);
 
 }
