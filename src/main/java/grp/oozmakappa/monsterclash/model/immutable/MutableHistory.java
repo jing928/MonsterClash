@@ -15,12 +15,20 @@ public class MutableHistory implements History {
         this.versionNum = -1; // Initialize as negative
     }
 
+    @Override
     public ImmutableHistory getVersion(int versionNum) {
         return versions.get(versionNum);
     }
 
     public ImmutableHistory getLatestVersion() {
         return getVersion(versionNum);
+    }
+
+    @Override
+    public void setHistory(LinkedList<Command> history) {
+        ImmutableHistory next = new ImmutableHistory(++versionNum, Transformer.duplicate(history));
+        versions.add(next);
+        this.currentHistory = history;
     }
 
     public Command peekLast() {

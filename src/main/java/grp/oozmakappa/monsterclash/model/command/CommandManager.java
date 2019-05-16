@@ -47,6 +47,23 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Create a copy of the universes with the current history as the `universes` stack should be
+     * updated only when time travel or undo happens.
+     * @return a copy of universes plus the most recent history version.
+     */
+    public Deque<ImmutableHistory> viewUniverses() {
+        Deque<ImmutableHistory> universesCopy = new ArrayDeque<>(universes);
+        universesCopy.push(history.getLatestVersion());
+        return universesCopy;
+    }
+
+    public void timeTravel(int historyVersionNum, int numTurnsToUndo) {
+        saveUniverse();
+        history.setHistory(history.getVersion(historyVersionNum).getHistory());
+        undoTurns(numTurnsToUndo);
+    }
+
     private void undoTurn() {
         if (history.size() == 0) {
             LOG.info("No historical commands");
