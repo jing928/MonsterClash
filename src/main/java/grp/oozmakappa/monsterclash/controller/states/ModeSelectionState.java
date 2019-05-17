@@ -40,11 +40,10 @@ public class ModeSelectionState implements PieceButtonState {
         button.removeMouseMotionListener(ctrl);
         Piece piece = button.getPiece();
         new ModeDialog(piece).display();
-        PieceButtonState nextState = piece.getCurrMode() == DefaultMode.getInstance()
-                ? this
-                : MoveState.getInstance();
-        StateChangeCommand.setState(ctrl, nextState);
-        nextState.todo(ctrl);
+        if (piece.getCurrMode() != DefaultMode.getInstance()) {
+            PieceButtonState nextState = MoveState.getInstance();
+            StateChangeCommand.setState(ctrl, nextState);
+        }
     }
 
     @Override

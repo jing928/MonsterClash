@@ -83,8 +83,5 @@ public class MoveState implements PieceButtonState {
         }
         button.removeMouseMotionListener(ctrl);
         StateChangeCommand.setState(ctrl, nextState);
-        if (!piece.isWin()) {
-            nextState.todo(ctrl);
-        }
     }
 }
