@@ -25,6 +25,6 @@ public class StrongerAttack extends AbstractSpecialAbility implements AttackStra
 
     @Override
     public void attack(Piece target) {
-        AttackCommand.attact(piece, target);
+        AttackCommand.attack(piece, target);
     }
 }
