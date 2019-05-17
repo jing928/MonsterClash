@@ -37,6 +37,11 @@ public class PieceListener extends MouseAdapter {
 
     public void setState(PieceButtonState state) {
         this.state = state;
+        state.todo(this);
+    }
+
+    public void undoState(PieceButtonState prevState) {
+        this.state = prevState;
     }
 
     public PieceButton getButton() {
@@ -84,6 +89,9 @@ public class PieceListener extends MouseAdapter {
         }
         currButton = (PieceButton) component;
         Piece piece = currButton.getPiece();
+        if (piece.isWin()) {
+            return true;
+        }
         if (piece.getTeam() != constraints.getCurrentTeam()) {
             showMessage(currButton, "It's not your turn.");
             return true;

@@ -30,6 +30,7 @@ public class GameFrame extends JFrame {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
         add(mainPanel);
         add(new DiceButton());
+        JOptionPane.setRootFrame(this);
     }
 
     public BoardPanel getBoardPanel() {

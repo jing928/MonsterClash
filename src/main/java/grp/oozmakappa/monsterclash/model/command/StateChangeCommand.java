@@ -30,7 +30,7 @@ public class StateChangeCommand implements Command {
 
     @Override
     public void undo() {
-        pieceListener.setState(prevState);
+        pieceListener.undoState(prevState);
         Logger log = LogManager.getLogger();
         log.info("Undid: State Change Command");
     }
