@@ -1,6 +1,5 @@
 package grp.oozmakappa.monsterclash.model;
 
-import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.model.rules.AbstractRuleFactory;
@@ -34,8 +33,7 @@ public class Constraints implements DiceObserver {
         dice.addObserver(this);
         // default settings
         currentRule = AbstractRuleFactory.Rule.A;
-        CommandManager manager = CommandManager.getInstance();
-        manager.storeAndExecute(new TurnChangeCommand(this));
+        TurnChangeCommand.changeTurn(this);
     }
 
     public static synchronized Constraints getInstance() {

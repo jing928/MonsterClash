@@ -1,7 +1,6 @@
 package grp.oozmakappa.monsterclash.model.strategies.abilities;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.command.HealthChangeCommand;
 
 /**
@@ -24,11 +23,8 @@ public class OtherHealing extends AbstractSpecialAbility implements HealStrategy
     public void heal(Piece target) {
         double health = piece.getHealth();
         double cost = -health * COST_RATE;
-        piece.setShouldNotify(false);
-        CommandManager manager = CommandManager.getInstance();
-        manager.storeAndExecute(new HealthChangeCommand(piece, cost));
-        piece.setShouldNotify(true);
-        manager.storeAndExecute(new HealthChangeCommand(target, health * HEALING_RATE));
+        HealthChangeCommand.setHealth(piece, cost);
+        HealthChangeCommand.setHealth(target, health * HEALING_RATE);
         piece.notifyActed();
     }
 }

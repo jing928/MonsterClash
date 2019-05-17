@@ -1,8 +1,6 @@
 package grp.oozmakappa.monsterclash.model.decorators;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.command.Command;
-import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.command.RangeChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 
@@ -18,9 +16,7 @@ public class RangeBuff extends BuffDecorator {
     @Override
     public void affect(Piece piece) {
         LOG.info("Gain range: " + rangeGained);
-        Command rangeChangeCmd = new RangeChangeCommand(piece, rangeGained);
-        CommandManager manager = CommandManager.getInstance();
-        manager.storeAndExecute(rangeChangeCmd);
+        RangeChangeCommand.setRange(piece, rangeGained);
         super.affect(piece);
     }
 }

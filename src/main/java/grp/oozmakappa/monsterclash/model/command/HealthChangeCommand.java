@@ -9,10 +9,15 @@ public class HealthChangeCommand implements Command {
     private final double healthChange;
     private final double prevHealth;
 
-    public HealthChangeCommand(Piece piece, double healthChange) {
+    private HealthChangeCommand(Piece piece, double healthChange) {
         this.piece = piece;
         this.healthChange = healthChange;
         this.prevHealth = piece.getHealth();
+    }
+
+    public static void setHealth(Piece piece, double deltaHealth) {
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new HealthChangeCommand(piece, deltaHealth));
     }
 
     @Override
@@ -28,9 +33,7 @@ public class HealthChangeCommand implements Command {
 
     @Override
     public void undo() {
-        piece.setShouldNotify(false);
         piece.setHealth(prevHealth);
-        piece.setShouldNotify(true);
         Logger log = LogManager.getLogger();
         log.info("Undid: Health Change Command");
     }

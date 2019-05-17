@@ -12,10 +12,15 @@ public class AttackCommand implements Command {
     private final Piece target;
     private final double targetPrevHealth;
 
-    public AttackCommand(Piece me, Piece target) {
+    private AttackCommand(Piece me, Piece target) {
         this.me = me;
         this.target = target;
         targetPrevHealth = target.getHealth();
+    }
+
+    public static void attact(Piece source, Piece target) {
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new AttackCommand(source, target));
     }
 
     @Override

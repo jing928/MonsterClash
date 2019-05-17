@@ -10,10 +10,15 @@ public class StateChangeCommand implements Command {
     private final PieceButtonState newState;
     private final PieceButtonState prevState;
 
-    public StateChangeCommand(PieceListener pieceListener, PieceButtonState newState) {
+    private StateChangeCommand(PieceListener pieceListener, PieceButtonState newState) {
         this.pieceListener = pieceListener;
         this.newState = newState;
         this.prevState = pieceListener.getState();
+    }
+
+    public static void setState(PieceListener ctrl, PieceButtonState nextState) {
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new StateChangeCommand(ctrl, nextState));
     }
 
     @Override
