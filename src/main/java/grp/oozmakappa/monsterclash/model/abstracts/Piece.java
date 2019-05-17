@@ -394,7 +394,7 @@ public abstract class Piece implements DiceObserver {
         switch (currAbility) {
 
             case PLAIN_ATTACK:
-                AttackCommand.attact(this, target);
+                AttackCommand.attack(this, target);
                 break;
             case SPECIAL_ATTACK:
                 RULE.createAttackStrategy(this).attack(target);

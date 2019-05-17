@@ -25,6 +25,6 @@ public class FartherAttack extends AbstractSpecialAbility implements AttackStrat
 
     @Override
     public void attack(Piece target) {
-        AttackCommand.attact(piece, target);
+        AttackCommand.attack(piece, target);
     }
 }

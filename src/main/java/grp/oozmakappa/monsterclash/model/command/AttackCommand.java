@@ -18,7 +18,7 @@ public class AttackCommand implements Command {
         targetPrevHealth = target.getHealth();
     }
 
-    public static void attact(Piece source, Piece target) {
+    public static void attack(Piece source, Piece target) {
         CommandManager manager = CommandManager.getInstance();
         manager.storeAndExecute(new AttackCommand(source, target));
     }
