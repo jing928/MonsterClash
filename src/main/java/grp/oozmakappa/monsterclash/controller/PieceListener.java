@@ -31,12 +31,17 @@ public class PieceListener extends MouseAdapter {
         state = ModeSelectionState.getInstance();
     }
 
-    public void setState(PieceButtonState state) {
-        this.state = state;
-    }
-
     public PieceButtonState getState() {
         return state;
+    }
+
+    public void setState(PieceButtonState state) {
+        this.state = state;
+        state.todo(this);
+    }
+
+    public void undoState(PieceButtonState prevState) {
+        this.state = prevState;
     }
 
     public PieceButton getButton() {
@@ -49,7 +54,7 @@ public class PieceListener extends MouseAdapter {
             return;
         }
         initMouseLocation = e.getPoint();
-        state.todo(this);
+        state.doing(this);
     }
 
     @Override
@@ -74,6 +79,9 @@ public class PieceListener extends MouseAdapter {
 
     private boolean isInvalid(MouseEvent e) {
         Component component = e.getComponent();
+        if (!component.isEnabled()) {
+            return true;
+        }
         Constraints constraints = Constraints.getInstance();
         if (!(component instanceof PieceButton)) {
             showMessage(component, "Invalid operation");
@@ -81,6 +89,9 @@ public class PieceListener extends MouseAdapter {
         }
         currButton = (PieceButton) component;
         Piece piece = currButton.getPiece();
+        if (piece.isWin()) {
+            return true;
+        }
         if (piece.getTeam() != constraints.getCurrentTeam()) {
             showMessage(currButton, "It's not your turn.");
             return true;
@@ -109,6 +120,10 @@ public class PieceListener extends MouseAdapter {
 
     public PieceButton getClosestPiece(PieceButton button) {
         return boardPanel.getClosestPiece(button);
+    }
+
+    public boolean hasReachablePiece() {
+        return boardPanel.hasReachablePiece();
     }
 
 }

@@ -184,4 +184,11 @@ public class BoardPanel extends JLayeredPane {
         }
         return closestPiece;
     }
+
+    /**
+     * @return if there is any piece button can be placed.
+     */
+    public boolean hasReachablePiece() {
+        return getPieceButtons().stream().anyMatch(PieceButton::canPlaced);
+    }
 }

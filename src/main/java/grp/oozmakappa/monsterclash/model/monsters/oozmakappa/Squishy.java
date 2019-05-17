@@ -13,12 +13,13 @@ import grp.oozmakappa.monsterclash.utils.IconFactory;
 public class Squishy extends Piece {
 
     private static final Team TEAM = Team.OozmaKappa;
-    private static final double DEFAULTHEALTH = 100;
-    private static final int DEFAULTATTACKPOWER = 15;
+    private static final double DEFAULTHEALTH = 200;
+    private static final int DEFAULTATTACKPOWER = 50;
     private static final int DEFAULTATTACKRANGE = 8;
+    private static final double DEFAULT_ARMOR = 10;
 
     public Squishy(Cell startingPos) {
-        super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULTATTACKRANGE);
+        super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);
         setIcon(IconFactory.SQUISHY);
         addSpecialAbility(Ability.SPECIAL_ATTACK);
     }

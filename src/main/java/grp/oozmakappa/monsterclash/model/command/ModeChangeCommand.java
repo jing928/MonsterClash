@@ -8,12 +8,15 @@ import org.apache.logging.log4j.Logger;
 public class ModeChangeCommand implements Command {
     private final Piece piece;
     private final Mode newMode;
-    private final Mode prevMode;
 
-    public ModeChangeCommand(Piece piece, Mode newMode) {
+    private ModeChangeCommand(Piece piece, Mode newMode) {
         this.piece = piece;
         this.newMode = newMode;
-        this.prevMode = piece.getCurrMode();
+    }
+
+    public static void setMode(Piece piece, Mode mode) {
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new ModeChangeCommand(piece, mode));
     }
 
     @Override
@@ -25,7 +28,7 @@ public class ModeChangeCommand implements Command {
 
     @Override
     public void undo() {
-        piece.setMode(prevMode);
+        piece.setMode();
         Logger log = LogManager.getLogger();
         log.info("Undid: Mode Change Command");
     }

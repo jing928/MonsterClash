@@ -78,20 +78,19 @@ public class Board {
      */
     private void initializeCells() {
         cells = new ArrayList<>();
-        int i = 0;
         for (int y = -1 * maxY; y <= maxY; y++) {
             for (int x = -1 * maxX; x <= maxX; x++) {
-                int order = i++;
                 Cell.Role role;
+                boolean isHome = Math.abs(x) == maxX;
                 if (inBoard(x, y)) {
                     role = x == 0
                             ? Cell.Role.NEUTRAL
-                            : (x > 0 ? Cell.Role.TEAM_A : Cell.Role.TEAM_B);
+                            : (x < 0 ? Cell.Role.OozmaKappa : Cell.Role.RoarOmegaRoar);
                 } else {
                     role = Cell.Role.DISABLE;
                 }
                 // Board is the creator of cell.
-                cells.add(new Cell(x, y, order, role));
+                cells.add(new Cell(x, y, role, isHome));
             }
         }
     }

@@ -4,7 +4,6 @@ import grp.oozmakappa.monsterclash.controller.PieceListener;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.command.MoveCommand;
 import grp.oozmakappa.monsterclash.model.command.StateChangeCommand;
 import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
@@ -28,16 +27,22 @@ public class MoveState implements PieceButtonState {
     private MoveState() {
     }
 
-    public static MoveState getInstance(Piece piece) {
+    public static MoveState getInstance() {
         if (instance == null) {
             instance = new MoveState();
         }
-        piece.notifyMoving();
         return instance;
     }
 
     @Override
     public void todo(PieceListener ctrl) {
+        PieceButton button = ctrl.getButton();
+        Piece piece = button.getPiece();
+        piece.notifyMoving();
+    }
+
+    @Override
+    public void doing(PieceListener ctrl) {
         PieceButton button = ctrl.getButton();
         button.addMouseMotionListener(ctrl);
         Piece piece = button.getPiece();
@@ -47,9 +52,8 @@ public class MoveState implements PieceButtonState {
             try {
                 Thread.sleep(Constraints.TIME_OUT);
                 LOG.info("Time out for this turn");
-                button.back(initPieceLocation);
-                CommandManager manager = CommandManager.getInstance();
-                manager.storeAndExecute(new TurnChangeCommand(Constraints.getInstance()));
+                button.setLocation(initPieceLocation);
+                TurnChangeCommand.changeTurn();
                 JOptionPane.showMessageDialog(button, "Time out for your turn.");
             } catch (InterruptedException ex) {
                 LOG.info(ex.getMessage());
@@ -61,27 +65,23 @@ public class MoveState implements PieceButtonState {
     @Override
     public void done(PieceListener ctrl) {
         Cell newCell;
-        Point newLoc;
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
         CellLabel cellLabel = ctrl.getClosestCell(button);
         PieceButtonState nextState;
         if (cellLabel != null) {
             newCell = cellLabel.getCell();
-            newLoc = cellLabel.getLocation();
             timeOutThread.interrupt();
-            nextState = ActionState.getInstance(piece);
-            CommandManager manager = CommandManager.getInstance();
-            manager.storeAndExecute(new MoveCommand(button, newCell, newLoc, initPieceLocation));
+            nextState = ActionState.getInstance();
+            MoveCommand.move(piece, newCell);
             LOG.info("Piece has moved.");
         } else {
             // stay put
             nextState = this;
-            button.back(initPieceLocation);
+            button.setLocation(initPieceLocation);
             LOG.info("Piece did not move.");
         }
         button.removeMouseMotionListener(ctrl);
-        CommandManager manager = CommandManager.getInstance();
-        manager.storeAndExecute(new StateChangeCommand(ctrl, nextState));
+        StateChangeCommand.setState(ctrl, nextState);
     }
 }

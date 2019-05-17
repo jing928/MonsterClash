@@ -3,6 +3,7 @@ package grp.oozmakappa.monsterclash.controller;
 import grp.oozmakappa.monsterclash.model.Dice;
 import grp.oozmakappa.monsterclash.view.DiceButton;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,6 +20,11 @@ public class DiceListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        diceButton.updateIcon(Dice.getInstance().roll());
+        Dice dice = Dice.getInstance();
+        if (dice.canRoll()) {
+            diceButton.updateIcon(dice.roll());
+        } else {
+            JOptionPane.showMessageDialog(diceButton, "You cannot roll dice until next turn.");
+        }
     }
 }

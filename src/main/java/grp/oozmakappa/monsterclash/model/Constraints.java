@@ -1,6 +1,5 @@
 package grp.oozmakappa.monsterclash.model;
 
-import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.model.rules.AbstractRuleFactory;
@@ -23,7 +22,6 @@ public class Constraints implements DiceObserver {
     public static final String OFFENSIVE_MODE = "offensive";
     public static final String DEFENSIVE_MODE = "defensive";
     public static final Team INITIAL_TEAM = Team.OozmaKappa;
-
     private static Constraints instance;
     private AbstractRuleFactory.Rule currentRule;
     private Team currentTeam;
@@ -35,8 +33,7 @@ public class Constraints implements DiceObserver {
         dice.addObserver(this);
         // default settings
         currentRule = AbstractRuleFactory.Rule.A;
-        canMove = false;
-        currentTeam = INITIAL_TEAM;
+        TurnChangeCommand.changeTurn(this);
     }
 
     public static synchronized Constraints getInstance() {
@@ -47,6 +44,9 @@ public class Constraints implements DiceObserver {
     }
 
     public Team getCurrentTeam() {
+        if (currentTeam == null) {
+            return INITIAL_TEAM;
+        }
         return currentTeam;
     }
 
@@ -59,9 +59,8 @@ public class Constraints implements DiceObserver {
         canMove = false;
         currentTeam = currentTeam == null
                 ? INITIAL_TEAM
-                : currentTeam == Team.OozmaKappa
-                ? Team.RoarOmegaRoar
-                : Team.OozmaKappa;
+                : Team.getRivalTeam(currentTeam);
+        Dice.getInstance().setCanRoll(true);
     }
 
     public AbstractRuleFactory.Rule getCurrentRule() {

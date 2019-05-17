@@ -1,8 +1,6 @@
 package grp.oozmakappa.monsterclash.model.decorators;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.command.Command;
-import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.command.HealthChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 
@@ -21,8 +19,7 @@ class HealthDebuff extends DebuffDecorator {
     @Override
     public void affect(Piece piece) {
         LOG.info("Get hurt: " + damage);
-        CommandManager manager = CommandManager.getInstance();
-        manager.storeAndExecute(new HealthChangeCommand(piece, -damage));
+        HealthChangeCommand.setHealth(piece, -damage);
         super.affect(piece);
     }
 }

@@ -37,7 +37,7 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
         add(title);
         add(propertyLabel(health, "Health", piece.getHealth()));
         add(propertyLabel(power, "Attack Power", piece.getCurrentAttackPower()));
-        add(propertyLabel(armor, "Armor", piece.getArmor()));
+        add(propertyLabel(armor, "Armor", piece.getCurrentArmor()));
         add(propertyLabel(range, "Reachable Range", piece.getCurrentReachableRange()));
         add(propertyLabel(move, "Next move", piece.getNextMove()));
     }
@@ -57,18 +57,54 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
         return panel;
     }
 
-    @Override
-    public void healthChanged(double deltaHealth, boolean shouldNotify) {
-        health.setText(FORMAT.format(piece.getHealth()));
+    /**
+     * Creates 1s animation for value changing
+     *
+     * @param label      the {@link JLabel} with animation
+     * @param newValue   the updated value
+     * @param deltaValue the delta value
+     * @return the animation {@link Thread}
+     */
+    private Thread animation(final JLabel label, Number newValue, Number deltaValue) {
+        final String origText = label.getText();
+        final String operation = deltaValue.doubleValue() > 0 ? " + " : " - ";
+        final String newText = FORMAT.format(newValue);
+        return new Thread(() -> {
+            try {
+                label.setForeground(Color.RED);
+                String deltaString = FORMAT.format(Math.abs(deltaValue.doubleValue()));
+                label.setText(origText + operation + deltaString);
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                // ignore
+            } finally {
+                label.setText(newText);
+                label.setForeground(Color.WHITE);
+            }
+        });
     }
 
     @Override
-    public void powerChanged(double deltaPower, boolean shouldNotify) {
-        power.setText(FORMAT.format(piece.getCurrentAttackPower()));
+    public void healthChanged(double currValue, double deltaHealth) {
+        if (deltaHealth < 0) {
+            deltaHealth += piece.getCurrentArmor();
+            deltaHealth = Math.min(0, deltaHealth);
+        }
+        animation(health, currValue, deltaHealth).start();
     }
 
     @Override
-    public void rangeChanged(int deltaRange, boolean shouldNotify) {
-        range.setText(String.valueOf(piece.getCurrentReachableRange()));
+    public void powerChanged(double currValue, double deltaPower) {
+        animation(power, currValue, deltaPower).start();
+    }
+
+    @Override
+    public void armorChanged(double currValue, double deltaArmor) {
+        animation(armor, currValue, deltaArmor).start();
+    }
+
+    @Override
+    public void rangeChanged(int currValue, int deltaRange) {
+        animation(range, currValue, deltaRange).start();
     }
 }

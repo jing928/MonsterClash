@@ -30,19 +30,7 @@ public class GameFrame extends JFrame {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
         add(mainPanel);
         add(new DiceButton());
-    }
-
-    /**
-     * Shows message dialog
-     *
-     * @param parent
-     * @param message the message to show
-     * @param good    is the message good or bad?
-     */
-    public static void showMessage(Component parent, String message, boolean good) {
-        String title = good ? "Congrats!" : "Sorry...";
-        int type = good ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.WARNING_MESSAGE;
-        JOptionPane.showMessageDialog(parent, message, title, type);
+        JOptionPane.setRootFrame(this);
     }
 
     public BoardPanel getBoardPanel() {

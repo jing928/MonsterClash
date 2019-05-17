@@ -4,7 +4,6 @@ import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.command.AttackCommand;
-import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.model.rules.AbstractRuleFactory;
 import grp.oozmakappa.monsterclash.model.strategies.modes.DefaultMode;
@@ -14,10 +13,10 @@ import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
-import java.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.util.ArrayList;
+
+import java.util.*;
 
 /**
  * @author Jing Li
@@ -27,6 +26,7 @@ import java.util.ArrayList;
  */
 public abstract class Piece implements DiceObserver {
 
+    protected static final Logger LOG = LogManager.getLogger();
     private static final AbstractRuleFactory RULE = AbstractRuleFactory.getRuleFactory();
     private final Team team;
     private final Set<PiecePositionObserver> posObservers;
@@ -43,13 +43,13 @@ public abstract class Piece implements DiceObserver {
     private int nextMove;
     private Mode mode;
     private boolean shouldNotify = true;
-    protected static final Logger LOG = LogManager.getLogger();
 
-    public Piece(Team team, Cell position, double health, double attackPower, int reachableRange) {
+    public Piece(Team team, Cell position, double health, double attackPower, double armor, int reachableRange) {
         this.team = team;
         this.position = position;
         this.health = health;
         this.attackPower = attackPower;
+        this.armor = armor;
         this.reachableRange = reachableRange;
         mode = DefaultMode.getInstance();
         posObservers = new HashSet<>();
@@ -69,6 +69,18 @@ public abstract class Piece implements DiceObserver {
 
     public void setMode(Mode mode) {
         this.mode = mode;
+        double delta = mode.getAttackPower(attackPower) - attackPower;
+        notifyPowerChanged(delta);
+        delta = mode.getArmor(armor) - armor;
+        notifyArmorChanged(delta);
+    }
+
+    public void setMode() {
+        double deltaPower = attackPower - mode.getAttackPower(attackPower);
+        double deltaArmor = armor - mode.getArmor(armor);
+        this.mode = DefaultMode.getInstance();
+        notifyPowerChanged(deltaPower);
+        notifyArmorChanged(deltaArmor);
     }
 
     public Ability getCurrAbility() {
@@ -238,18 +250,18 @@ public abstract class Piece implements DiceObserver {
         return position;
     }
 
+    public void setPosition(Cell position) {
+        setPosition(position, true);
+    }
+
     /**
      * Change the position of this piece and notify all observers.
      *
      * @param position
      */
-    public void setPosition(Cell position) {
-        if (!position.equals(this.position)) {
-            // reset `nextMove` for next round.
-            nextMove = 0;
-        }
+    public void setPosition(Cell position, boolean shouldNotify) {
         this.position = position;
-        notifyMoved();
+        notifyMoved(shouldNotify);
     }
 
     public int getNextMove() {
@@ -302,7 +314,7 @@ public abstract class Piece implements DiceObserver {
     /**
      * Notifies all observers when the piece has moved to new position.
      */
-    private void notifyMoved() {
+    private void notifyMoved(boolean shouldNotify) {
         posObservers.forEach(o -> o.afterMove(this, shouldNotify));
     }
 
@@ -313,7 +325,7 @@ public abstract class Piece implements DiceObserver {
         if (deltaHealth == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.healthChanged(deltaHealth, shouldNotify));
+        pptObservers.forEach(o -> o.healthChanged(getHealth(), deltaHealth));
     }
 
     /**
@@ -323,7 +335,18 @@ public abstract class Piece implements DiceObserver {
         if (deltaPower == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.powerChanged(deltaPower, shouldNotify));
+        pptObservers.forEach(o -> o.powerChanged(getCurrentAttackPower(), deltaPower));
+    }
+
+    /**
+     * @param deltaArmor
+     * @Requires deltaArmor != 0
+     */
+    private void notifyArmorChanged(double deltaArmor) {
+        if (deltaArmor == 0) {
+            return;
+        }
+        pptObservers.forEach(o -> o.armorChanged(getCurrentArmor(), deltaArmor));
     }
 
     /**
@@ -333,7 +356,11 @@ public abstract class Piece implements DiceObserver {
         if (deltaRange == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.rangeChanged(deltaRange, shouldNotify));
+        pptObservers.forEach(o -> o.rangeChanged(getCurrentReachableRange(), deltaRange));
+    }
+
+    public boolean isWin() {
+        return position.isHome() && this.team != position.getTeam();
     }
 
     @Override
@@ -345,8 +372,14 @@ public abstract class Piece implements DiceObserver {
         return mode.getArmor(armor);
     }
 
+    /**
+     * @param armor
+     * @Requires armor >= 0
+     */
     public void setArmor(double armor) {
+        double delta = armor - this.armor;
         this.armor = armor;
+        notifyArmorChanged(delta);
     }
 
     public Mode getCurrMode() {
@@ -361,8 +394,7 @@ public abstract class Piece implements DiceObserver {
         switch (currAbility) {
 
             case PLAIN_ATTACK:
-                CommandManager manager = CommandManager.getInstance();
-                manager.storeAndExecute(new AttackCommand(this, target));
+                AttackCommand.attack(this, target);
                 break;
             case SPECIAL_ATTACK:
                 RULE.createAttackStrategy(this).attack(target);
@@ -380,4 +412,9 @@ public abstract class Piece implements DiceObserver {
     public String toString() {
         return String.format("%s: Team: %s, Position: %s", getClass().getSimpleName(), team, getPosition());
     }
+
+    public double getCurrentArmor() {
+        return mode.getArmor(armor);
+    }
+
 }

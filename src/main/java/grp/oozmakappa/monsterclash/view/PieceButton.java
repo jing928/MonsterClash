@@ -2,9 +2,11 @@ package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
+import grp.oozmakappa.monsterclash.model.Dice;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
+import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,13 +15,14 @@ import javax.swing.*;
 import java.awt.*;
 
 import static grp.oozmakappa.monsterclash.model.Constraints.PIECE_DIAMETER;
+import static grp.oozmakappa.monsterclash.utils.IconFactory.toGrey;
 
 /**
  * @author Chenglong Ma
  * @Invariant piece != null
  * @Invariant icon != null
  */
-public class PieceButton extends JButton implements PieceActionObserver, PiecePropertyObserver {
+public class PieceButton extends JButton implements PieceActionObserver, PiecePropertyObserver, PiecePositionObserver {
 
     private static final Logger LOG = LogManager.getLogger();
     private static final Color DEF_COLOR = new Color(255, 255, 255, 128);
@@ -32,6 +35,7 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         this.piece = piece;
         piece.addPropertyObserver(this);
         piece.addActionObserver(this);
+        piece.addPositionObserver(this);
         setOpaque(false);
         setContentAreaFilled(false);
         setPreferredSize(new Dimension(PIECE_DIAMETER, PIECE_DIAMETER));
@@ -55,28 +59,6 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         LOG.info("new position: " + p);
     }
 
-    public void move(Cell nextPos, Point nextLoc) {
-        piece.setPosition(nextPos);
-        setLocation(nextLoc);
-    }
-
-    public void move(Cell nextPos, Point nextLoc, boolean shouldNotify) {
-        if (shouldNotify) {
-            move(nextPos, nextLoc);
-        } else {
-            piece.setShouldNotify(false);
-            move(nextPos, nextLoc);
-            piece.setShouldNotify(true);
-        }
-    }
-
-    public void back(Point prevLoc) {
-        piece.setShouldNotify(false);
-        piece.setPosition(piece.getPosition());
-        piece.setShouldNotify(true);
-        setLocation(prevLoc);
-    }
-
     /**
      * Re-paints the icon of the button
      *
@@ -96,24 +78,11 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         g.fillOval(0, 0, weight, height);
         // zoom the icon
         Image image = icon.getImage();
+        if (!isEnabled()) {
+            image = toGrey(image);
+        }
         g.drawImage(image, 0, 0, weight, height, this);
         super.paintComponent(g);
-    }
-
-    /**
-     * Shows message box
-     *
-     * @param deltaValue
-     * @param propertyName
-     * @Requires deltaValue != 0
-     */
-    private void notifyChange(double deltaValue, String propertyName) {
-        assert deltaValue != 0D;
-        String msg = String.format("You %s %.2f %s!",
-                deltaValue > 0 ? "gained" : "lost",
-                Math.abs(deltaValue),
-                propertyName);
-        GameFrame.showMessage(this, msg, deltaValue > 0);
     }
 
     private void changeBackground(Color backgroundColor) {
@@ -122,25 +91,23 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     }
 
     @Override
-    public void healthChanged(double deltaHealth, boolean shouldNotify) {
-        if (shouldNotify) {
-            notifyChange(deltaHealth, "health");
-        }
+    public void healthChanged(double currValue, double deltaHealth) {
         setEnabled(piece.getHealth() > 0);
     }
 
     @Override
-    public void powerChanged(double deltaPower, boolean shouldNotify) {
-        if (shouldNotify) {
-            notifyChange(deltaPower, "attack power");
-        }
+    public void powerChanged(double currValue, double deltaPower) {
+        // do nothing
     }
 
     @Override
-    public void rangeChanged(int deltaRange, boolean shouldNotify) {
-        if (shouldNotify) {
-            notifyChange(deltaRange, "attack range");
-        }
+    public void armorChanged(double currValue, double deltaArmor) {
+        // do nothing
+    }
+
+    @Override
+    public void rangeChanged(int currValue, int deltaRange) {
+        // do nothing
     }
 
     @Override
@@ -165,4 +132,20 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         changeBackground(DEF_COLOR);
     }
 
+    @Override
+    public void beforeMove(Piece pieceToMove) {
+        // do nothing
+    }
+
+    @Override
+    public void afterMove(Piece pieceLocated, boolean shouldNotify) {
+        Cell cell = pieceLocated.getPosition();
+        Point loc = cell.getLocation();
+        setLocation(loc);
+        if (pieceLocated.isWin()) {
+            Dice.getInstance().setCanRoll(false);
+            String msg = pieceLocated.getTeam() + " Win!!";
+            JOptionPane.showMessageDialog(null, msg, "Congrats!", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
 }

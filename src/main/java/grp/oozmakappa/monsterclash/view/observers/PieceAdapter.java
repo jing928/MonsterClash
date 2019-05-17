@@ -27,14 +27,18 @@ public abstract class PieceAdapter implements PieceActionObserver, PiecePosition
     }
 
     @Override
-    public void healthChanged(double deltaHealth, boolean shouldNotify) {
+    public void healthChanged(double currValue, double deltaHealth) {
     }
 
     @Override
-    public void powerChanged(double deltaPower, boolean shouldNotify) {
+    public void powerChanged(double currValue, double deltaPower) {
     }
 
     @Override
-    public void rangeChanged(int deltaRange, boolean shouldNotify) {
+    public void armorChanged(double currValue, double deltaArmor) {
+    }
+
+    @Override
+    public void rangeChanged(int currValue, int deltaRange) {
     }
 }
