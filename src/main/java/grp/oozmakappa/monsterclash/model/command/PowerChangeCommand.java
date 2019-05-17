@@ -9,10 +9,15 @@ public class PowerChangeCommand implements Command {
     private final double powerChange;
     private final double prevPower;
 
-    public PowerChangeCommand(Piece piece, double powerChange) {
+    private PowerChangeCommand(Piece piece, double powerChange) {
         this.piece = piece;
         this.powerChange = powerChange;
         this.prevPower = piece.getOriginalAttackPower();
+    }
+
+    public static void setPower(Piece piece, double deltaPower) {
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new PowerChangeCommand(piece, deltaPower));
     }
 
     @Override
@@ -26,9 +31,7 @@ public class PowerChangeCommand implements Command {
 
     @Override
     public void undo() {
-        piece.setShouldNotify(false);
         piece.setAttackPower(prevPower);
-        piece.setShouldNotify(true);
         Logger log = LogManager.getLogger();
         log.info("Undid: Power Change Command");
     }

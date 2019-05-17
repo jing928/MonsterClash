@@ -1,8 +1,6 @@
 package grp.oozmakappa.monsterclash.model.decorators;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.command.Command;
-import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.command.PowerChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 
@@ -18,9 +16,7 @@ public class PowerDebuff extends DebuffDecorator {
     @Override
     public void affect(Piece piece) {
         LOG.info("Lost power: " + -powerLost);
-        Command powerChangeCmd = new PowerChangeCommand(piece, powerLost);
-        CommandManager manager = CommandManager.getInstance();
-        manager.storeAndExecute(powerChangeCmd);
+        PowerChangeCommand.setPower(piece, -powerLost);
         super.affect(piece);
     }
 }

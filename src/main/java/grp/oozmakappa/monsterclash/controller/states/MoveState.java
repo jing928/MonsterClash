@@ -4,7 +4,6 @@ import grp.oozmakappa.monsterclash.controller.PieceListener;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.command.MoveCommand;
 import grp.oozmakappa.monsterclash.model.command.StateChangeCommand;
 import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
@@ -54,8 +53,7 @@ public class MoveState implements PieceButtonState {
                 Thread.sleep(Constraints.TIME_OUT);
                 LOG.info("Time out for this turn");
                 button.setLocation(initPieceLocation);
-                CommandManager manager = CommandManager.getInstance();
-                manager.storeAndExecute(new TurnChangeCommand(Constraints.getInstance()));
+                TurnChangeCommand.changeTurn();
                 JOptionPane.showMessageDialog(button, "Time out for your turn.");
             } catch (InterruptedException ex) {
                 LOG.info(ex.getMessage());
@@ -75,8 +73,7 @@ public class MoveState implements PieceButtonState {
             newCell = cellLabel.getCell();
             timeOutThread.interrupt();
             nextState = ActionState.getInstance();
-            CommandManager manager = CommandManager.getInstance();
-            manager.storeAndExecute(new MoveCommand(piece, newCell));
+            MoveCommand.move(piece, newCell);
             LOG.info("Piece has moved.");
         } else {
             // stay put
@@ -85,8 +82,7 @@ public class MoveState implements PieceButtonState {
             LOG.info("Piece did not move.");
         }
         button.removeMouseMotionListener(ctrl);
-        CommandManager manager = CommandManager.getInstance();
-        manager.storeAndExecute(new StateChangeCommand(ctrl, nextState));
+        StateChangeCommand.setState(ctrl, nextState);
         if (!piece.isWin()) {
             nextState.todo(ctrl);
         }

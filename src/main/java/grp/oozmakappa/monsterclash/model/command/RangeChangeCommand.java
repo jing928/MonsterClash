@@ -9,10 +9,15 @@ public class RangeChangeCommand implements Command {
     private final int rangeChange;
     private final int prevRange;
 
-    public RangeChangeCommand(Piece piece, int rangeChange) {
+    private RangeChangeCommand(Piece piece, int rangeChange) {
         this.piece = piece;
         this.rangeChange = rangeChange;
         this.prevRange = piece.getOriginalRange();
+    }
+
+    public static void setRange(Piece piece, int deltaRange) {
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new RangeChangeCommand(piece, deltaRange));
     }
 
     @Override
@@ -26,9 +31,7 @@ public class RangeChangeCommand implements Command {
 
     @Override
     public void undo() {
-        piece.setShouldNotify(false);
         piece.setReachableRange(prevRange);
-        piece.setShouldNotify(true);
         Logger log = LogManager.getLogger();
         log.info("Undid: Range Change Command");
     }

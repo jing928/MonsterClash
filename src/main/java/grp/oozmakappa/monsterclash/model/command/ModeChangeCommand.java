@@ -9,9 +9,14 @@ public class ModeChangeCommand implements Command {
     private final Piece piece;
     private final Mode newMode;
 
-    public ModeChangeCommand(Piece piece, Mode newMode) {
+    private ModeChangeCommand(Piece piece, Mode newMode) {
         this.piece = piece;
         this.newMode = newMode;
+    }
+
+    public static void setMode(Piece piece, Mode mode) {
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new ModeChangeCommand(piece, mode));
     }
 
     @Override

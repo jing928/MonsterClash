@@ -1,7 +1,6 @@
 package grp.oozmakappa.monsterclash.model.strategies.abilities;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.command.HealthChangeCommand;
 
 /**
@@ -22,8 +21,7 @@ public class SelfHealing extends AbstractSpecialAbility implements HealStrategy 
 
     @Override
     public void heal(Piece target) {
-        CommandManager manager = CommandManager.getInstance();
-        manager.storeAndExecute(new HealthChangeCommand(piece, piece.getHealth() * HEALING_RATE));
+        HealthChangeCommand.setHealth(piece, piece.getHealth() * HEALING_RATE);
         piece.notifyActed();
     }
 }

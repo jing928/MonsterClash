@@ -12,10 +12,15 @@ public class MoveCommand implements Command {
     private final Piece piece;
     private final Cell prevPosition, nextPosition;
 
-    public MoveCommand(Piece piece, Cell nextPosition) {
+    private MoveCommand(Piece piece, Cell nextPosition) {
         this.piece = piece;
         this.prevPosition = piece.getPosition();
         this.nextPosition = nextPosition;
+    }
+
+    public static void move(Piece piece, Cell newCell) {
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new MoveCommand(piece, newCell));
     }
 
     @Override
