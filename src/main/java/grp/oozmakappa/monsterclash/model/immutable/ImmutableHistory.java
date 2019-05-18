@@ -10,7 +10,7 @@ public final class ImmutableHistory implements History {
 
     public ImmutableHistory(int versionNum, LinkedList<Command> history) {
         this.versionNum = versionNum;
-        this.history = history;
+        this.history = new LinkedList<>(history);
     }
 
     @Override
