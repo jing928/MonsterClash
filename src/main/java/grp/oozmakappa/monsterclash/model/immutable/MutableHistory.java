@@ -15,6 +15,10 @@ public class MutableHistory implements History {
         this.versionNum = -1; // Initialize as negative
     }
 
+    /**
+     * @param versionNum
+     * @Requires versionNum < versions.size() && versionNum >= 0
+     */
     @Override
     public ImmutableHistory getVersion(int versionNum) {
         return versions.get(versionNum);
