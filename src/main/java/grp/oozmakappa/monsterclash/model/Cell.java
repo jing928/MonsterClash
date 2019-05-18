@@ -6,6 +6,7 @@ import grp.oozmakappa.monsterclash.model.decorators.AbstractDecorator;
 import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 
 import java.awt.*;
+import java.util.Map;
 
 import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
 
@@ -16,6 +17,7 @@ import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
  * @author Chenglong Ma
  */
 public final class Cell implements CellEffect {
+    private static Map<String, Cell> cellMap;
     /**
      * The coordinate of cell will not be changed once set.
      */
@@ -25,11 +27,11 @@ public final class Cell implements CellEffect {
     private final boolean isHome;
     private Point location;
 
-    protected Cell(int x, int y) {
+    private Cell(int x, int y) {
         this(x, y, Role.NEUTRAL, false);
     }
 
-    protected Cell(int x, int y, Role role) {
+    private Cell(int x, int y, Role role) {
         this(x, y, role, false);
     }
 
@@ -44,11 +46,25 @@ public final class Cell implements CellEffect {
      * @param role
      * @param isHome
      */
-    protected Cell(int x, int y, Role role, boolean isHome) {
+    private Cell(int x, int y, Role role, boolean isHome) {
         this.x = x;
         this.y = y;
         this.role = role;
         this.isHome = isHome;
+    }
+
+    public static Cell getCell(int x, int y) {
+        return getCell(x, y, Role.NEUTRAL, false);
+    }
+
+    static Cell getCell(int x, int y, Role role, boolean isHome) {
+        String key = String.format("%d,%d", x, y);
+        Cell cell = cellMap.get(key);
+        if (cell == null) {
+            cell = new Cell(x, y, role, isHome);
+            cellMap.put(key, cell);
+        }
+        return cell;
     }
 
     public Point getLocation() {

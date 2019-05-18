@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static grp.oozmakappa.monsterclash.utils.NumberUtil.between;
@@ -53,22 +54,7 @@ public class Board {
     }
 
     public List<Cell> getCells() {
-        return cells;
-    }
-
-    /**
-     * Gets the non-disabled {@link Cell} in the board.
-     *
-     * @param x
-     * @param y
-     * @return
-     */
-    public Cell getCell(int x, int y) {
-        return cells
-                .stream()
-                .filter(c -> c.equals(x, y) && c.getRole() != Cell.Role.DISABLE)
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid coordinate"));
+        return Collections.unmodifiableList(cells);
     }
 
     /**
@@ -90,7 +76,7 @@ public class Board {
                     role = Cell.Role.DISABLE;
                 }
                 // Board is the creator of cell.
-                cells.add(new Cell(x, y, role, isHome));
+                cells.add(Cell.getCell(x, y, role, isHome));
             }
         }
     }
