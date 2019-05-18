@@ -45,12 +45,12 @@ public class Game {
      */
     private void initPieces() {
         // TODO hardcode
-        pieces.add(new JamesPSullivan(board.getCell(-MAX_X, 4)));
-        pieces.add(new MikeWazowski(board.getCell(-MAX_X, 3)));
-        pieces.add(new Squishy(board.getCell(-MAX_X, 2)));
+        pieces.add(new JamesPSullivan(Cell.getCell(-MAX_X, 2)));
+        pieces.add(new MikeWazowski(Cell.getCell(-MAX_X, 3)));
+        pieces.add(new Squishy(Cell.getCell(-MAX_X, 3)));
 
-        pieces.add(new ChetAlexander(board.getCell(MAX_X, 4)));
-        pieces.add(new JohnnyWorthington(board.getCell(MAX_X, 3)));
-        pieces.add(new RandallBoggs(board.getCell(MAX_X, 2)));
+        pieces.add(new ChetAlexander(Cell.getCell(MAX_X, 2)));
+        pieces.add(new JohnnyWorthington(Cell.getCell(MAX_X, 3)));
+        pieces.add(new RandallBoggs(Cell.getCell(MAX_X, 4)));
     }
 }
