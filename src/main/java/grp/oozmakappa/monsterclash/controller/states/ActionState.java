@@ -1,6 +1,7 @@
 package grp.oozmakappa.monsterclash.controller.states;
 
 import grp.oozmakappa.monsterclash.controller.PieceListener;
+import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.command.StateChangeCommand;
 import grp.oozmakappa.monsterclash.view.AbilityDialog;
@@ -83,6 +84,7 @@ public class ActionState implements PieceButtonState {
         button.setLocation(initPieceLocation);
         PieceButtonState nextState = ModeSelectionState.getInstance();
         StateChangeCommand.setState(ctrl, nextState);
+        Constraints.getInstance().setActivePiece(null);
     }
 
     private boolean askContinue(Component component) {
