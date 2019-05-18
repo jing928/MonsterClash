@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.model;
 
+import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.model.rules.AbstractRuleFactory;
@@ -26,6 +27,7 @@ public class Constraints implements DiceObserver {
     private AbstractRuleFactory.Rule currentRule;
     private Team currentTeam;
     private boolean canMove;
+    private Piece activePiece;
 
     private Constraints() {
         // for singleton pattern
@@ -82,5 +84,18 @@ public class Constraints implements DiceObserver {
     @Override
     public void valueChanged(int value) {
         canMove = true;
+    }
+
+    public Piece getActivePiece() {
+        return activePiece;
+    }
+
+    /**
+     * @param activePiece
+     * @Requires activePiece == null || activePiece.getTeam() == this.currentTeam
+     */
+    public void setActivePiece(Piece activePiece) {
+        assert activePiece == null || activePiece.getTeam() == this.currentTeam;
+        this.activePiece = activePiece;
     }
 }

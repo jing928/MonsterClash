@@ -59,6 +59,10 @@ public abstract class Piece implements DiceObserver {
         abilities.add(Ability.PLAIN_ATTACK);
     }
 
+    public String getName() {
+        return this.getClass().getSimpleName();
+    }
+
     public int getOriginalRange() {
         return reachableRange;
     }
@@ -410,7 +414,7 @@ public abstract class Piece implements DiceObserver {
 
     @Override
     public String toString() {
-        return String.format("%s: Team: %s, Position: %s", getClass().getSimpleName(), team, getPosition());
+        return String.format("%s: Team: %s, Position: %s", getName(), team, getPosition());
     }
 
     public double getCurrentArmor() {

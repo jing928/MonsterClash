@@ -89,6 +89,11 @@ public class PieceListener extends MouseAdapter {
         }
         currButton = (PieceButton) component;
         Piece piece = currButton.getPiece();
+        Piece activePiece = constraints.getActivePiece();
+        if (activePiece != null && activePiece != piece) {
+            showMessage(currButton, "You can only move " + activePiece.getName());
+            return true;
+        }
         if (piece.isWin()) {
             return true;
         }
