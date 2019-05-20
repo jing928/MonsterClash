@@ -29,7 +29,7 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
     }
 
     private void initView() {
-        String name = piece.getClass().getSimpleName();
+        String name = piece.getName();
         Icon icon = piece.getIcon().getResizedIcon(50, 50);
         JLabel title = new JLabel(name, icon, SwingConstants.LEFT);
         title.setAlignmentX(CENTER_ALIGNMENT);

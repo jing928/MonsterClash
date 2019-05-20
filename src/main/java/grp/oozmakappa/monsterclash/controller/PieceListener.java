@@ -101,6 +101,11 @@ public class PieceListener extends MouseAdapter {
             showMessage(component, "Cannot move, Please roll dice first.");
             return true;
         }
+        Piece activePiece = constraints.getActivePiece();
+        if (activePiece != null && activePiece != piece) {
+            showMessage(currButton, "You can only move " + activePiece.getName());
+            return true;
+        }
         return false;
     }
 
