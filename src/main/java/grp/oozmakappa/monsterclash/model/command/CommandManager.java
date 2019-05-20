@@ -1,8 +1,13 @@
 package grp.oozmakappa.monsterclash.model.command;
 
+import grp.oozmakappa.monsterclash.model.immutable.History;
+import grp.oozmakappa.monsterclash.model.immutable.ImmutableHistory;
+import grp.oozmakappa.monsterclash.model.immutable.MutableHistory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -11,14 +16,16 @@ import java.util.Queue;
  */
 public class CommandManager {
     private static final Logger LOG = LogManager.getLogger();
-    private final LinkedList<Command> history;
+    private final History history;
+    private final Deque<ImmutableHistory> universes; // Stores multiple universes caused by time travel or undo
     private static CommandManager commandManager;
 
     /**
      * private for singleton pattern
      */
     private CommandManager() {
-        history = new LinkedList<>();
+        history = new MutableHistory();
+        universes = new ArrayDeque<>();
     }
 
     public static synchronized CommandManager getInstance() {
@@ -34,9 +41,27 @@ public class CommandManager {
     }
 
     public void undoTurns(int number) {
+        saveUniverse();
         for (int i = 0; i < number; i++) {
             undoTurn();
         }
+    }
+
+    /**
+     * Create a copy of the universes with the current history as the `universes` stack should be
+     * updated only when time travel or undo happens.
+     * @return a copy of universes plus the most recent history version.
+     */
+    public Deque<ImmutableHistory> viewUniverses() {
+        Deque<ImmutableHistory> universesCopy = new ArrayDeque<>(universes);
+        universesCopy.push(history.getLatestVersion());
+        return universesCopy;
+    }
+
+    public void timeTravel(int historyVersionNum, int numTurnsToUndo) {
+        saveUniverse();
+        history.setHistory(history.getVersion(historyVersionNum).getHistory());
+        undoTurns(numTurnsToUndo);
     }
 
     private void undoTurn() {
@@ -51,23 +76,25 @@ public class CommandManager {
         while (!turnStartFound) {
             if (history.size() == 0 || turnChangeCounter == 3) {
                 turnStartFound = true;
-            } else {
-                Command lastCmd = history.removeLast();
-                if (lastCmd instanceof TurnChangeCommand) {
-                    if (++turnChangeCounter == 3) {
-                        history.add(lastCmd);
-                        lastCmd = null;
-                    }
-                }
-                if (lastCmd != null) {
+            } else if (history.peekLast() instanceof TurnChangeCommand) {
+                if (++turnChangeCounter < 3) {
+                    Command lastCmd = history.removeLast();
                     cmdList.add(lastCmd);
                 }
+            } else {
+                Command lastCmd = history.removeLast();
+                cmdList.add(lastCmd);
             }
         }
+
         for (Object object : cmdList) {
             Command cmd = (Command) object;
             cmd.undo();
         }
+    }
+
+    private void saveUniverse() {
+        universes.push(history.getLatestVersion());
     }
 
 }
