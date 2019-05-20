@@ -89,11 +89,6 @@ public class PieceListener extends MouseAdapter {
         }
         currButton = (PieceButton) component;
         Piece piece = currButton.getPiece();
-        Piece activePiece = constraints.getActivePiece();
-        if (activePiece != null && activePiece != piece) {
-            showMessage(currButton, "You can only move " + activePiece.getName());
-            return true;
-        }
         if (piece.isWin()) {
             return true;
         }
@@ -104,6 +99,11 @@ public class PieceListener extends MouseAdapter {
         boolean canMove = constraints.canMove();
         if (!canMove) {
             showMessage(component, "Cannot move, Please roll dice first.");
+            return true;
+        }
+        Piece activePiece = constraints.getActivePiece();
+        if (activePiece != null && activePiece != piece) {
+            showMessage(currButton, "You can only move " + activePiece.getName());
             return true;
         }
         return false;
