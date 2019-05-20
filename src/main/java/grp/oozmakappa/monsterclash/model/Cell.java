@@ -6,6 +6,7 @@ import grp.oozmakappa.monsterclash.model.decorators.AbstractDecorator;
 import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 
 import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
@@ -59,6 +60,9 @@ public final class Cell implements CellEffect {
 
     static Cell getCell(int x, int y, Role role, boolean isHome) {
         String key = String.format("%d,%d", x, y);
+        if (cellMap == null) {
+            cellMap = new HashMap<>();
+        }
         Cell cell = cellMap.get(key);
         if (cell == null) {
             cell = new Cell(x, y, role, isHome);
