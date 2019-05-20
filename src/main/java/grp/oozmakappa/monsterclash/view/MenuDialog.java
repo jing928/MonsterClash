@@ -1,5 +1,7 @@
 package grp.oozmakappa.monsterclash.view;
 
+import java.awt.GridLayout;
+
 import javax.swing.*;
 
 public class MenuDialog extends JPanel {
@@ -14,6 +16,8 @@ public class MenuDialog extends JPanel {
 
 	private void createDialog()
 	{
+		GridLayout layout = new GridLayout(0,2);
+		thisPanel.setLayout(layout);
 		//Create text label and checkbox and place them inside a panel
 		JLabel text = new JLabel("Enable Trap Cells?");
 		JCheckBox box = new JCheckBox();
