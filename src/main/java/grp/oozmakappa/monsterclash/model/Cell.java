@@ -55,7 +55,7 @@ public final class Cell implements CellEffect {
     }
 
     public static Cell getCell(int x, int y) {
-        return getCell(x, y, Role.NEUTRAL, false);
+        return getCell(x, y, Role.DISABLE, false);
     }
 
     static Cell getCell(int x, int y, Role role, boolean isHome) {
