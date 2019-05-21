@@ -10,9 +10,9 @@ import grp.oozmakappa.monsterclash.model.monsters.roaromegaroar.RandallBoggs;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
-import static grp.oozmakappa.monsterclash.model.Constraints.*;
 
 /**
  * The main model
@@ -20,10 +20,16 @@ import static grp.oozmakappa.monsterclash.model.Constraints.*;
  * @author Chenglong Ma
  */
 public class Game {
+    private static final Constraints CONSTRAINTS = Constraints.getInstance();
+    private final int maxX, maxY, cornerX, cornerY;
     private Board board;
     private List<Piece> pieces = new ArrayList<>();
 
     public Game() {
+        maxX = CONSTRAINTS.getMaxX();
+        maxY = CONSTRAINTS.getMaxY();
+        cornerX = CONSTRAINTS.getCornerX();
+        cornerY = CONSTRAINTS.getCornerY();
         initBoard();
         initPieces();
     }
@@ -33,7 +39,7 @@ public class Game {
     }
 
     private void initBoard() {
-        board = new Board(MAX_X, MAX_Y, CORNER_X, CORNER_Y);
+        board = new Board(maxX, maxY, cornerX, cornerY);
     }
 
     public Board getBoard() {
@@ -44,13 +50,21 @@ public class Game {
      * Initializes the {@link Piece}s.
      */
     private void initPieces() {
-        // TODO hardcode
-        pieces.add(new JamesPSullivan(Cell.getCell(-MAX_X, 2)));
-        pieces.add(new MikeWazowski(Cell.getCell(-MAX_X, 3)));
-        pieces.add(new Squishy(Cell.getCell(-MAX_X, 4)));
+        int n = CONSTRAINTS.getNumOfPieces();
 
-        pieces.add(new ChetAlexander(Cell.getCell(MAX_X, 2)));
-        pieces.add(new JohnnyWorthington(Cell.getCell(MAX_X, 3)));
-        pieces.add(new RandallBoggs(Cell.getCell(MAX_X, 4)));
+        LinkedList<Piece> oozma = new LinkedList<>();
+        int maxY = this.maxY;
+        oozma.add(new JamesPSullivan(Cell.getCell(-maxX, maxY--)));
+        oozma.add(new MikeWazowski(Cell.getCell(-maxX, maxY--)));
+        oozma.add(new Squishy(Cell.getCell(-maxX, maxY)));
+        maxY = this.maxY;
+        LinkedList<Piece> roar = new LinkedList<>();
+        roar.add(new ChetAlexander(Cell.getCell(maxX, maxY--)));
+        roar.add(new JohnnyWorthington(Cell.getCell(maxX, maxY--)));
+        roar.add(new RandallBoggs(Cell.getCell(maxX, maxY)));
+        for (int i = 0; i < n; i += 2) {
+            pieces.add(oozma.remove());
+            pieces.add(roar.remove());
+        }
     }
 }

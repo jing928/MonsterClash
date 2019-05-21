@@ -15,13 +15,9 @@ public class TurnChangeCommand implements Command {
         this.prevTeam = constraints.getCurrentTeam();
     }
 
-    public static void changeTurn(Constraints constraints) {
-        CommandManager manager = CommandManager.getInstance();
-        manager.storeAndExecute(new TurnChangeCommand(constraints));
-    }
-
     public static void changeTurn() {
-        changeTurn(Constraints.getInstance());
+        CommandManager manager = CommandManager.getInstance();
+        manager.storeAndExecute(new TurnChangeCommand(Constraints.getInstance()));
     }
 
     @Override
