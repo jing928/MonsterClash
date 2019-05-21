@@ -4,6 +4,7 @@ import grp.oozmakappa.monsterclash.model.Dice;
 import grp.oozmakappa.monsterclash.model.Game;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.view.GameFrame;
+import grp.oozmakappa.monsterclash.view.MenuDialog;
 
 import javax.swing.*;
 
@@ -12,7 +13,7 @@ import javax.swing.*;
  */
 public class MainController {
 
-    private GameFrame initGameFrame(Game game) {
+    private static GameFrame initGameFrame(Game game) {
         GameFrame gameFrame = new GameFrame();
         gameFrame.initPlayer1Panel(game.getPieces());
         gameFrame.initBoardPanel(game.getBoard());
@@ -21,7 +22,7 @@ public class MainController {
         return gameFrame;
     }
 
-    private void initControllers(Game model, GameFrame view) {
+    private static void initControllers(Game model, GameFrame view) {
         assert model != null && view != null;
         Dice dice = Dice.getInstance();
         BoardController boardController = new BoardController(view.getBoardPanel());
@@ -31,7 +32,11 @@ public class MainController {
         }
     }
 
-    public void run() {
+    public static void launch() {
+        SwingUtilities.invokeLater(MenuDialog::new);
+    }
+
+    public static void startGame() {
         Game game = new Game();
         GameFrame gameFrame = initGameFrame(game);
         initControllers(game, gameFrame);
