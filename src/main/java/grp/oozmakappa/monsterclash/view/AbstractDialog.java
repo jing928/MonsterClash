@@ -12,6 +12,7 @@ public abstract class AbstractDialog extends JDialog {
         super((Frame) null, true);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setUndecorated(true);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     public void display() {
