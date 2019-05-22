@@ -62,8 +62,6 @@ public class BoardPanel extends JLayeredPane {
     public void addPieceButton(PieceButton pieceButton) {
         piecePanel.add(pieceButton);
         CellLabel cell = getPoint(pieceButton.getPiece());
-        LOG.info(pieceButton.getPiece());
-        LOG.info("Find location: " + cell.getLocation());
         pieceButton.setBounds(cell.getX(), cell.getY(), cell.getWidth(), cell.getHeight());
         updated = true;
     }
@@ -122,19 +120,6 @@ public class BoardPanel extends JLayeredPane {
                 cellLabel.setColor(Color.BLACK);
             }
             cellPanel.add(cellLabel);
-        }
-    }
-
-    /**
-     * Initializes the piece for {@link #piecePanel}.
-     * <br>
-     * Using transparent {@link JLabel} as placeholder for {@link PieceButton}.
-     */
-    private void initPieces() {
-        for (int i = 0; i < cellPanel.getComponentCount(); i++) {
-            JLabel placeHolder = new JLabel();
-            placeHolder.setOpaque(false);
-            piecePanel.add(placeHolder);
         }
     }
 

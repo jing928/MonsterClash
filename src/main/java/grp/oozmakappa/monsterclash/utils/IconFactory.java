@@ -196,7 +196,6 @@ public class IconFactory {
         if (icon == null) {
             icon = new IconImpl(filename);
             icons.put(filename, icon);
-            LOG.info("Load new icon from " + filename);
         }
         return icon;
     }
