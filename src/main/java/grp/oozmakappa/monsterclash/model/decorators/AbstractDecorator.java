@@ -54,10 +54,11 @@ public abstract class AbstractDecorator implements CellEffect {
     }
 
     @Override
-    public void affect(Piece piece) {
+    public boolean affect(Piece piece) {
         // forward operation
         if (toDecorated != null) {
             toDecorated.affect(piece);
         }
+        return true;
     }
 }

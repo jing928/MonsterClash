@@ -42,9 +42,10 @@ public class CellListener extends MouseAdapter {
      * @param pieceLocated
      * @Requires cell.distance(pieceLocated.getPosition ()) == 0
      */
-    public void affect(Cell cell, Piece pieceLocated) {
+    public boolean affect(Cell cell, Piece pieceLocated) {
         if (Constraints.getInstance().isEnableObstacle()) {
-            cell.affect(pieceLocated);
+            return cell.affect(pieceLocated);
         }
+        return false;
     }
 }

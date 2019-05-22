@@ -17,9 +17,9 @@ class HealthDebuff extends DebuffDecorator {
     }
 
     @Override
-    public void affect(Piece piece) {
+    public boolean affect(Piece piece) {
         LOG.info("Get hurt: " + damage);
         HealthChangeCommand.setHealth(piece, -damage);
-        super.affect(piece);
+        return super.affect(piece);
     }
 }

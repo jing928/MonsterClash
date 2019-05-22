@@ -17,9 +17,9 @@ class PowerBuff extends BuffDecorator {
     }
 
     @Override
-    public void affect(Piece piece) {
+    public boolean affect(Piece piece) {
         LOG.info("Gain power: " + powerGained);
         PowerChangeCommand.setPower(piece, powerGained);
-        super.affect(piece);
+        return super.affect(piece);
     }
 }

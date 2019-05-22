@@ -143,7 +143,7 @@ public final class Cell implements CellEffect {
 
     @Override
     public String toString() {
-        return String.format("Cell: [ %d , %d ]", getX(), getY());
+        return String.format("Cell: [%d,%d], %s", getX(), getY(), getRole());
     }
 
     /**
@@ -164,14 +164,16 @@ public final class Cell implements CellEffect {
      * </p>
      *
      * @param pieceLocated
+     * @return if {@link Piece} was affected.
      * @Requires cell.distance(pieceLocated.getPosition ()) == 0
      */
     @Override
-    public void affect(Piece pieceLocated) {
+    public boolean affect(Piece pieceLocated) {
         CellEffect decorator = AbstractDecorator.getDecorator(this);
         if (decorator != null) {
-            decorator.affect(pieceLocated);
+            return decorator.affect(pieceLocated);
         }
+        return false;
     }
 
     public boolean isHome() {

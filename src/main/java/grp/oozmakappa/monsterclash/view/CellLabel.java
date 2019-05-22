@@ -3,6 +3,8 @@ package grp.oozmakappa.monsterclash.view;
 import grp.oozmakappa.monsterclash.controller.CellListener;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.utils.IconFactory;
+import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import static grp.oozmakappa.monsterclash.model.Constraints.CELL_LENGTH;
+import static grp.oozmakappa.monsterclash.utils.IconFactory.TRAP_CELL;
 
 /**
  * @author Chenglong Ma
@@ -108,7 +111,13 @@ public class CellLabel extends JLabel implements PiecePositionObserver {
         setBackground(currentColor);
         canPlaced = false;
         if (cell.equals(pieceLocated.getPosition()) && shouldNotify) {
-            listener.affect(cell, pieceLocated);
+            if (listener.affect(cell, pieceLocated)) {
+                IconFlyweight icon = IconFactory.getInstance().getIcon(TRAP_CELL);
+                setIcon(icon.getResizedIcon(getWidth(), getHeight()));
+            } else {
+                setIcon(null);
+            }
         }
     }
+
 }

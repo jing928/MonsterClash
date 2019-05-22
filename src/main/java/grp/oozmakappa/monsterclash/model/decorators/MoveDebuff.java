@@ -24,10 +24,10 @@ public class MoveDebuff extends DebuffDecorator {
     }
 
     @Override
-    public void affect(Piece piece) {
+    public boolean affect(Piece piece) {
         Cell cell = nextCell();
         MoveCommand.move(piece, cell);
         LOG.info("To new position: " + cell);
-        super.affect(piece);
+        return super.affect(piece);
     }
 }

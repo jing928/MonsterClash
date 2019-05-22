@@ -13,8 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static grp.oozmakappa.monsterclash.model.Constraints.BOARD_HEIGHT;
-import static grp.oozmakappa.monsterclash.model.Constraints.BOARD_WIDTH;
+import static grp.oozmakappa.monsterclash.model.Constraints.CELL_LENGTH;
 import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
 
 /**
@@ -25,6 +24,7 @@ public class BoardPanel extends JLayeredPane {
     private static final Logger LOG = LogManager.getLogger();
     private final Board board;
     private final GridLayout layout;
+    private final int boardWidth, boardHeight;
     private List<CellLabel> cellLabels;
     private List<PieceButton> pieceButtons;
     private JPanel cellPanel, piecePanel;
@@ -33,11 +33,13 @@ public class BoardPanel extends JLayeredPane {
 
     public BoardPanel(Board board) {
         this.board = board;
-        int x = board.getWidth();
-        int y = board.getHeight();
+        int rows = board.getHeight();
+        int cols = board.getWidth();
         int gap = 2;
-        layout = new GridLayout(x, y, gap, gap);
-        setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
+        layout = new GridLayout(rows, cols, gap, gap);
+        boardWidth = cols * CELL_LENGTH + gap * (cols + 1);
+        boardHeight = rows * CELL_LENGTH + gap * (rows + 1);
+        setPreferredSize(new Dimension(boardWidth, boardHeight));
         initializeCellPanel();
         initializePiecePanel();
         setBorder(BorderFactory.createLoweredBevelBorder());
@@ -45,14 +47,14 @@ public class BoardPanel extends JLayeredPane {
 
     private void initializeCellPanel() {
         cellPanel = new JPanel(layout);
-        cellPanel.setBounds(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
+        cellPanel.setBounds(0, 0, boardWidth, boardHeight);
         initCells();
         add(cellPanel, DEFAULT_LAYER);
     }
 
     private void initializePiecePanel() {
         piecePanel = new JPanel(null);
-        piecePanel.setBounds(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
+        piecePanel.setBounds(0, 0, boardWidth, boardHeight);
         piecePanel.setOpaque(false);
         add(piecePanel, MODAL_LAYER);
     }

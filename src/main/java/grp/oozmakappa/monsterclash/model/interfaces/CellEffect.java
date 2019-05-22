@@ -10,5 +10,5 @@ import org.apache.logging.log4j.Logger;
 public interface CellEffect {
     Logger LOG = LogManager.getLogger();
 
-    void affect(Piece piece);
+    boolean affect(Piece piece);
 }
