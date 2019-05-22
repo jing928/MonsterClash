@@ -143,7 +143,7 @@ public final class Cell implements CellEffect {
 
     @Override
     public String toString() {
-        return String.format("Cell: [ %d , %d ]", getX(), getY());
+        return String.format("Cell: [%d,%d], %s", getX(), getY(), getRole());
     }
 
     /**
