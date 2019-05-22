@@ -72,6 +72,7 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
         return new Thread(() -> {
             try {
                 label.setForeground(Color.RED);
+                label.setFont(label.getFont().deriveFont(20f));
                 String deltaString = FORMAT.format(Math.abs(deltaValue.doubleValue()));
                 label.setText(origText + operation + deltaString);
                 Thread.sleep(1000);
@@ -80,6 +81,8 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
             } finally {
                 label.setText(newText);
                 label.setForeground(Color.WHITE);
+                label.setFont(label.getFont().deriveFont(14f));
+
             }
         });
     }

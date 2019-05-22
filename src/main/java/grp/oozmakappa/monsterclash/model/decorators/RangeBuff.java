@@ -14,9 +14,9 @@ public class RangeBuff extends BuffDecorator {
     }
 
     @Override
-    public void affect(Piece piece) {
+    public boolean affect(Piece piece) {
         LOG.info("Gain range: " + rangeGained);
         RangeChangeCommand.setRange(piece, rangeGained);
-        super.affect(piece);
+        return super.affect(piece);
     }
 }

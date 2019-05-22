@@ -17,9 +17,9 @@ public class RangeDebuff extends DebuffDecorator {
     }
 
     @Override
-    public void affect(Piece piece) {
+    public boolean affect(Piece piece) {
         LOG.info("Lost range: " + -loss);
         RangeChangeCommand.setRange(piece, loss);
-        super.affect(piece);
+        return super.affect(piece);
     }
 }

@@ -42,22 +42,23 @@ public class IconFactory {
      */
     public static final String ABILITIES_DIR = "img/abilities/";
     public static final String MODE_DIR = "img/mode/";
-    private static final Logger LOG = LogManager.getLogger();
+    //region For trap cell
+    public static final String TRAP_CELL = "img/cell/trap.png";
 
     //endregion
-
+    private static final Logger LOG = LogManager.getLogger();
     //region For Dice
     private static final String MONSTERS_DIR = "img/monsters/";
-    private static final String DICE_VALUE_DIR = "img/dice/value/";
 
     //endregion
-
+    private static final String DICE_VALUE_DIR = "img/dice/value/";
+    //endregion
     //region For piece abilities
     private static final String DICE_ROLLING_DIR = "img/dice/rolling/";
-    private static IconFactory instance;
-
     //endregion
+    private static IconFactory instance;
     private final Map<String, IconFlyweight> icons;
+
 
     private IconFactory() {
         // for singleton pattern
@@ -221,7 +222,11 @@ public class IconFactory {
 
         @Override
         public ImageIcon getResizedIcon(int width, int height) {
-            Image image = getImage();
+            ImageIcon icon = getIcon();
+            if (icon.getIconWidth() == width && icon.getIconHeight() == height) {
+                return icon;
+            }
+            Image image = icon.getImage();
             image = image.getScaledInstance(width, height, SCALE_SMOOTH);
             return new ImageIcon(image);
         }

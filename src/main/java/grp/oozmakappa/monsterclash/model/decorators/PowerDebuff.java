@@ -14,9 +14,9 @@ public class PowerDebuff extends DebuffDecorator {
     }
 
     @Override
-    public void affect(Piece piece) {
+    public boolean affect(Piece piece) {
         LOG.info("Lost power: " + -powerLost);
         PowerChangeCommand.setPower(piece, -powerLost);
-        super.affect(piece);
+        return super.affect(piece);
     }
 }
