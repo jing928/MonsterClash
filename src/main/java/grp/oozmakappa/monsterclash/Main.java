@@ -8,7 +8,6 @@ public class Main {
     private static final Logger LOG = LogManager.getLogger();
 
     public static void main(String[] args) {
-        MainController controller = new MainController();
-        controller.run();
+        MainController.launch();
     }
 }
