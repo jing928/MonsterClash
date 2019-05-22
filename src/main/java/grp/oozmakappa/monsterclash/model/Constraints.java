@@ -1,7 +1,6 @@
 package grp.oozmakappa.monsterclash.model;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.model.rules.AbstractRuleFactory;
 
@@ -22,20 +21,37 @@ public class Constraints implements DiceObserver {
     public static final int TIME_OUT = 30000;
     public static final String OFFENSIVE_MODE = "offensive";
     public static final String DEFENSIVE_MODE = "defensive";
-    public static final Team INITIAL_TEAM = Team.OozmaKappa;
+    public static final int NUM_OF_PIECES = 6;
     private static Constraints instance;
-    private AbstractRuleFactory.Rule currentRule;
+    private String currentRule;
     private Team currentTeam;
     private boolean canMove;
     private Piece activePiece;
+    private boolean enableObstacle;
+    private int numOfPieces;
+    private Team initialTeam;
+    private int timeOut;
+    private int maxX;
+    private int maxY;
+    private int cornerX;
+    private int cornerY;
 
     private Constraints() {
         // for singleton pattern
         Dice dice = Dice.getInstance();
         dice.addObserver(this);
+
         // default settings
-        currentRule = AbstractRuleFactory.Rule.A;
-        TurnChangeCommand.changeTurn(this);
+        currentRule = AbstractRuleFactory.RULE_A;
+        initialTeam = Team.OozmaKappa;
+        timeOut = TIME_OUT;
+        numOfPieces = NUM_OF_PIECES;
+        enableObstacle = true;
+        canMove = false;
+        maxX = MAX_X;
+        maxY = MAX_Y;
+        cornerX = CORNER_X;
+        cornerY = CORNER_Y;
     }
 
     public static synchronized Constraints getInstance() {
@@ -45,9 +61,61 @@ public class Constraints implements DiceObserver {
         return instance;
     }
 
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public void setMaxX(int maxX) {
+        this.maxX = maxX;
+    }
+
+    public int getMaxY() {
+        return maxY;
+    }
+
+    public void setMaxY(int maxY) {
+        this.maxY = maxY;
+    }
+
+    public int getCornerX() {
+        return cornerX;
+    }
+
+    public void setCornerX(int cornerX) {
+        this.cornerX = cornerX;
+    }
+
+    public int getCornerY() {
+        return cornerY;
+    }
+
+    public void setCornerY(int cornerY) {
+        this.cornerY = cornerY;
+    }
+
+    public int getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(int time) {
+        this.timeOut = time;
+    }
+
+    public int getNumOfPieces() {
+        return numOfPieces;
+    }
+
+    public void setNumOfPieces(int number) {
+        this.numOfPieces = number;
+    }
+
+    public boolean isEnableObstacle() {
+        return enableObstacle;
+    }
+
     public Team getCurrentTeam() {
         if (currentTeam == null) {
-            return INITIAL_TEAM;
+            return initialTeam;
         }
         return currentTeam;
     }
@@ -60,16 +128,16 @@ public class Constraints implements DiceObserver {
         // To be called by TurnChangeCommand
         canMove = false;
         currentTeam = currentTeam == null
-                ? INITIAL_TEAM
+                ? initialTeam
                 : Team.getRivalTeam(currentTeam);
         Dice.getInstance().setCanRoll(true);
     }
 
-    public AbstractRuleFactory.Rule getCurrentRule() {
+    public String getCurrentRule() {
         return currentRule;
     }
 
-    public void setCurrentRule(AbstractRuleFactory.Rule currentRule) {
+    public void setCurrentRule(String currentRule) {
         this.currentRule = currentRule;
     }
 
@@ -97,5 +165,13 @@ public class Constraints implements DiceObserver {
     public void setActivePiece(Piece activePiece) {
         assert activePiece == null || activePiece.getTeam() == this.currentTeam;
         this.activePiece = activePiece;
+    }
+
+    public void enableObstacle(boolean enable) {
+        this.enableObstacle = enable;
+    }
+
+    public void setInitialTeam(Team initTeam) {
+        this.initialTeam = initTeam;
     }
 }

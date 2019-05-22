@@ -10,19 +10,21 @@ import grp.oozmakappa.monsterclash.model.strategies.abilities.MoveStrategy;
  * @author Chenglong Ma
  */
 public abstract class AbstractRuleFactory {
+    public static final String RULE_A = "A";
+    public static final String RULE_B = "B";
 
     /**
-     * Create {@link AbstractRuleFactory} by specified {@link Rule}.
+     * Create {@link AbstractRuleFactory} by specified Rule.
      *
      * @return concrete rule factory
      */
     public static AbstractRuleFactory getRuleFactory() {
-        Rule rule = Constraints.getInstance().getCurrentRule();
+        String rule = Constraints.getInstance().getCurrentRule();
         switch (rule) {
             default:
-            case A:
+            case RULE_A:
                 return new RuleAFactory();
-            case B:
+            case RULE_B:
                 return new RuleBFactory();
         }
     }
@@ -32,9 +34,4 @@ public abstract class AbstractRuleFactory {
     public abstract HealStrategy createHealStrategy(Piece piece);
 
     public abstract MoveStrategy createMoveStrategy(Piece piece);
-
-    public enum Rule {
-        A,
-        B
-    }
 }

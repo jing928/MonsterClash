@@ -50,7 +50,7 @@ public class MoveState implements PieceButtonState {
         piece.notifyMoving();
         timeOutThread = new Thread(() -> {
             try {
-                Thread.sleep(Constraints.TIME_OUT);
+                Thread.sleep(Constraints.getInstance().getTimeOut());
                 LOG.info("Time out for this turn");
                 button.setLocation(initPieceLocation);
                 TurnChangeCommand.changeTurn();

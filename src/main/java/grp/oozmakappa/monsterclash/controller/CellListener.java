@@ -1,6 +1,7 @@
 package grp.oozmakappa.monsterclash.controller;
 
 import grp.oozmakappa.monsterclash.model.Cell;
+import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import org.apache.logging.log4j.LogManager;
@@ -42,6 +43,8 @@ public class CellListener extends MouseAdapter {
      * @Requires cell.distance(pieceLocated.getPosition ()) == 0
      */
     public void affect(Cell cell, Piece pieceLocated) {
-        cell.affect(pieceLocated);
+        if (Constraints.getInstance().isEnableObstacle()) {
+            cell.affect(pieceLocated);
+        }
     }
 }
