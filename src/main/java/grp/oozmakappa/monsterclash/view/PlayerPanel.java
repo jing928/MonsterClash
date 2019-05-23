@@ -74,7 +74,6 @@ public class PlayerPanel extends JPanel implements PiecePropertyObserver, Action
         if (numOfDeadPieces >= totalPieces && currValue > 0) {
             numOfDeadPieces--;
         }
-        LOG.info("number of dead pieces: " + numOfDeadPieces);
         if (numOfDeadPieces >= totalPieces) {
             Team rival = Team.getRivalTeam(team);
             String msg = rival + " Win!!";

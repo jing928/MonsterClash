@@ -4,17 +4,21 @@ import grp.oozmakappa.monsterclash.controller.HistoryListener;
 import grp.oozmakappa.monsterclash.model.command.Command;
 import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.immutable.ImmutableHistory;
+import grp.oozmakappa.monsterclash.utils.IconFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Enumeration;
 import java.util.List;
+
+import static grp.oozmakappa.monsterclash.utils.IconFactory.TREE_NODE;
 
 /**
  * @author Chenglong Ma
@@ -44,8 +48,22 @@ public class HistoryDialog extends JDialog {
         setVisible(true);
     }
 
+    private static void setUI(JTree tree) {
+
+        Icon icon = IconFactory.getInstance().getIcon(TREE_NODE).getIcon();
+
+        DefaultTreeCellRenderer render = (DefaultTreeCellRenderer) (tree.getCellRenderer());
+        render.setLeafIcon(icon);
+        render.setClosedIcon(icon);
+        render.setOpenIcon(icon);
+
+//        BasicTreeUI ui=(BasicTreeUI)(tree.getUI());
+//        ui.setCollapsedIcon(CollapsedIcon);
+    }
+
     private void initView() {
         tree = new JTree(initTree());
+        setUI(tree);
         tree.addTreeSelectionListener(listener);
         // expand tree for easy selection
         for (int i = 0; i < tree.getRowCount(); i++)
