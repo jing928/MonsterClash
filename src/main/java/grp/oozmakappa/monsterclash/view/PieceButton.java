@@ -55,7 +55,6 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     @Override
     public void setLocation(Point p) {
         setBounds(p.x, p.y, getWidth(), getHeight());
-        LOG.info("new position: " + p);
     }
 
     /**
@@ -121,7 +120,6 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         if (notifyTeammate && canReach) {
             canPlaced = true;
             changeBackground(notifiedColor);
-            LOG.info("Reachable piece: " + piece);
         }
     }
 

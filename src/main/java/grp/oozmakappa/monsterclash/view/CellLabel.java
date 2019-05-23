@@ -114,10 +114,31 @@ public class CellLabel extends JLabel implements PiecePositionObserver {
             if (listener.affect(cell, pieceLocated)) {
                 IconFlyweight icon = IconFactory.getInstance().getIcon(TRAP_CELL);
                 setIcon(icon.getResizedIcon(getWidth(), getHeight()));
+                vibrate();
             } else {
                 setIcon(null);
             }
         }
+    }
+
+    /**
+     * vibrates the cell
+     */
+    private void vibrate() {
+        new Thread(() -> {
+            Point pos = getLocation();
+            for (int i = 0; i < 5; i++) {
+                int offsetX = 20 - (int) (40 * Math.random());
+                int offsetY = 20 - (int) (40 * Math.random());
+                setLocation(pos.x + offsetX, pos.y + offsetY);
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    //ignore
+                }
+            }
+            setLocation(pos);
+        }).start();
     }
 
 }
