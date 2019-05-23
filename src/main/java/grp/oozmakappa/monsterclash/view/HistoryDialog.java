@@ -1,10 +1,12 @@
 package grp.oozmakappa.monsterclash.view;
 
+import grp.oozmakappa.monsterclash.controller.HistoryListener;
 import grp.oozmakappa.monsterclash.model.command.Command;
 import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.immutable.ImmutableHistory;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,20 +18,24 @@ import java.util.List;
  * @author Chenglong Ma
  */
 public class HistoryDialog extends JDialog {
+    public static final String TIME_TRAVEL = "Time Travel";
+    public static final String CANCEL = "Cancel";
     private final Deque<ImmutableHistory> universes;
+    private final HistoryListener listener;
     private List<DefaultMutableTreeNode> forest;
 
     public HistoryDialog() {
         super((Frame) null, true);
         universes = CommandManager.getInstance().getUniverses();
+        listener = new HistoryListener();
         setLayout(new BorderLayout(2, 2));
 
         initView();
         setPreferredSize(new Dimension(600, 400));
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
@@ -39,6 +45,7 @@ public class HistoryDialog extends JDialog {
         for (int i = 0; i < tree.getRowCount(); i++)
             tree.expandRow(i);
         add(tree, BorderLayout.CENTER);
+        addButtons();
     }
 
     /**
@@ -121,6 +128,21 @@ public class HistoryDialog extends JDialog {
             }
         }
         return shadow;
+    }
+
+    private void addButtons() {
+        JPanel panel = new JPanel();
+        Border padding = BorderFactory.createEmptyBorder(5, 50, 5, 50);
+        panel.setBorder(padding);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        JButton start = new JButton(TIME_TRAVEL);
+        start.addActionListener(listener);
+        JButton cancel = new JButton(CANCEL);
+        cancel.addActionListener(listener);
+        panel.add(start);
+        panel.add(Box.createHorizontalGlue());
+        panel.add(cancel);
+        add(panel, BorderLayout.SOUTH);
     }
 
     /**
