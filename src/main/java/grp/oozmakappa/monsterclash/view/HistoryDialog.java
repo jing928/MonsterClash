@@ -4,6 +4,8 @@ import grp.oozmakappa.monsterclash.controller.HistoryListener;
 import grp.oozmakappa.monsterclash.model.command.Command;
 import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.model.immutable.ImmutableHistory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,14 +22,17 @@ import java.util.List;
 public class HistoryDialog extends JDialog {
     public static final String TIME_TRAVEL = "Time Travel";
     public static final String CANCEL = "Cancel";
+    private static final Logger LOG = LogManager.getLogger();
     private final Deque<ImmutableHistory> universes;
     private final HistoryListener listener;
     private List<DefaultMutableTreeNode> forest;
+    private JTree tree;
+    private JButton start;
 
     public HistoryDialog() {
         super((Frame) null, true);
         universes = CommandManager.getInstance().getUniverses();
-        listener = new HistoryListener();
+        listener = new HistoryListener(this);
         setLayout(new BorderLayout(2, 2));
 
         initView();
@@ -40,7 +45,8 @@ public class HistoryDialog extends JDialog {
     }
 
     private void initView() {
-        JTree tree = new JTree(initTree());
+        tree = new JTree(initTree());
+        tree.addTreeSelectionListener(listener);
         // expand tree for easy selection
         for (int i = 0; i < tree.getRowCount(); i++)
             tree.expandRow(i);
@@ -135,7 +141,8 @@ public class HistoryDialog extends JDialog {
         Border padding = BorderFactory.createEmptyBorder(5, 50, 5, 50);
         panel.setBorder(padding);
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        JButton start = new JButton(TIME_TRAVEL);
+        start = new JButton(TIME_TRAVEL);
+        start.setEnabled(false);
         start.addActionListener(listener);
         JButton cancel = new JButton(CANCEL);
         cancel.addActionListener(listener);
@@ -145,21 +152,33 @@ public class HistoryDialog extends JDialog {
         add(panel, BorderLayout.SOUTH);
     }
 
+    public void enableTravelButton(boolean enabled) {
+        start.setEnabled(enabled);
+    }
+
     /**
      * A wrapper class for {@link Command}
      */
-    static class Node {
-        final int versionNum;
-        final Command command;
+    public static class Node {
+        private final int versionNum;
+        private final Command command;
 
         private Node(int versionNum, Command command) {
             this.versionNum = versionNum;
             this.command = command;
         }
 
+        public Command getCommand() {
+            return command;
+        }
+
         @Override
         public String toString() {
             return command.toString();
+        }
+
+        public int getVersionNum() {
+            return versionNum;
         }
     }
 }
