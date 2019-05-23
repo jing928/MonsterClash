@@ -42,13 +42,14 @@ public class HistoryDialog extends JDialog {
         forest = new ArrayList<>();
         Deque<ImmutableHistory> uni = CommandManager.getInstance().getUniverses();
         for (ImmutableHistory history : uni) {
+            int versionNum = history.getVersionNum();
             DefaultMutableTreeNode prev = null, tree = null;
             for (Command command : history.getHistory()) {
                 if (prev == null) {
-                    prev = new DefaultMutableTreeNode(command);
+                    prev = new DefaultMutableTreeNode(new Node(versionNum, command));
                     tree = prev;
                 } else {
-                    DefaultMutableTreeNode curr = new DefaultMutableTreeNode(command);
+                    DefaultMutableTreeNode curr = new DefaultMutableTreeNode(new Node(versionNum, command));
                     prev.add(curr);
                     prev = curr;
                 }
@@ -72,7 +73,8 @@ public class HistoryDialog extends JDialog {
             DefaultMutableTreeNode prevNode = null;
             while (secondEnumeration.hasMoreElements()) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) secondEnumeration.nextElement();
-                DefaultMutableTreeNode parent = findParent(firstEnumeration, node.getUserObject());
+                Command cmd = ((Node) node.getUserObject()).command;
+                DefaultMutableTreeNode parent = findParent(firstEnumeration, cmd);
                 if (parent == null && prevNode != null) {
                     prevNode.add(node);
                     break;
@@ -88,7 +90,7 @@ public class HistoryDialog extends JDialog {
         DefaultMutableTreeNode node = null;
         while (tree.hasMoreElements()) {
             DefaultMutableTreeNode curr = (DefaultMutableTreeNode) tree.nextElement();
-            if (curr.getUserObject() == cmd) {
+            if (((Node) curr.getUserObject()).command == cmd) {
                 node = curr;
                 break;
             }
@@ -96,4 +98,13 @@ public class HistoryDialog extends JDialog {
         return node;
     }
 
+    static class Node {
+        final int versionNum;
+        final Command command;
+
+        private Node(int versionNum, Command command) {
+            this.versionNum = versionNum;
+            this.command = command;
+        }
+    }
 }
