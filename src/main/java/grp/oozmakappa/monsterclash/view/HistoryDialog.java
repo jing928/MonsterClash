@@ -16,17 +16,20 @@ import java.util.List;
  * @author Chenglong Ma
  */
 public class HistoryDialog extends JDialog {
+    private final Deque<ImmutableHistory> universes;
     private List<DefaultMutableTreeNode> forest;
 
     public HistoryDialog() {
         super((Frame) null, true);
-        setLayout(new BorderLayout());
+        universes = CommandManager.getInstance().getUniverses();
+        setLayout(new BorderLayout(2, 2));
 
         initView();
         setPreferredSize(new Dimension(600, 400));
 
-        pack();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        pack();
         setVisible(true);
     }
 
@@ -38,10 +41,14 @@ public class HistoryDialog extends JDialog {
         add(tree, BorderLayout.CENTER);
     }
 
+    /**
+     * Transfers universes to {@link DefaultMutableTreeNode}
+     *
+     * @Ensures forest.size() == universes.size()
+     */
     private void plantForest() {
         forest = new ArrayList<>();
-        Deque<ImmutableHistory> uni = CommandManager.getInstance().getUniverses();
-        for (ImmutableHistory history : uni) {
+        for (ImmutableHistory history : universes) {
             int versionNum = history.getVersionNum();
             DefaultMutableTreeNode prev = null, tree = null;
             for (Command command : history.getHistory()) {
@@ -58,46 +65,67 @@ public class HistoryDialog extends JDialog {
         }
     }
 
+    /**
+     * Prunes {@link #forest} to tree
+     *
+     * @return a pruned tree
+     */
     private DefaultMutableTreeNode initTree() {
         if (forest == null) {
             plantForest();
         }
-        if (forest.size() == 1) {
-            return forest.get(0);
+        if (forest.isEmpty()) {
+            return null;
         }
         DefaultMutableTreeNode firstTree = forest.get(0);
+        if (forest.size() == 1) {
+            return firstTree;
+        }
+        // traverses from the second tree
         for (int i = 1; i < forest.size(); i++) {
-            DefaultMutableTreeNode secondTree = forest.get(i);
-            Enumeration firstEnumeration = firstTree.preorderEnumeration();
-            Enumeration secondEnumeration = secondTree.preorderEnumeration();
+            DefaultMutableTreeNode currTree = forest.get(i);
+            Enumeration currEnum = currTree.preorderEnumeration();
             DefaultMutableTreeNode prevNode = null;
-            while (secondEnumeration.hasMoreElements()) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) secondEnumeration.nextElement();
-                Command cmd = ((Node) node.getUserObject()).command;
-                DefaultMutableTreeNode parent = findParent(firstEnumeration, cmd);
-                if (parent == null && prevNode != null) {
-                    prevNode.add(node);
+            // adds the node without shadow to the pruned tree
+            while (currEnum.hasMoreElements()) {
+                DefaultMutableTreeNode currNode = (DefaultMutableTreeNode) currEnum.nextElement();
+                DefaultMutableTreeNode shadow = findShadow(firstTree, currNode);
+                if (shadow == null && prevNode != null) {
+                    prevNode.add(currNode);
                     break;
-                } else {
-                    prevNode = parent;
                 }
+                prevNode = shadow;
             }
+            // as least ONE shadow node exists
+            assert prevNode != null;
         }
         return firstTree;
     }
 
-    private DefaultMutableTreeNode findParent(Enumeration tree, Object cmd) {
-        DefaultMutableTreeNode node = null;
-        while (tree.hasMoreElements()) {
-            DefaultMutableTreeNode curr = (DefaultMutableTreeNode) tree.nextElement();
+    /**
+     * Finds the first shadow node on pruned tree
+     *
+     * @param tree the tree to be added
+     * @param node the node pointer
+     * @return the shadow node on tree if existed.
+     */
+    private DefaultMutableTreeNode findShadow(DefaultMutableTreeNode tree, DefaultMutableTreeNode node) {
+        Enumeration enums = tree.preorderEnumeration();
+        DefaultMutableTreeNode shadow = null;
+        Command cmd = ((Node) node.getUserObject()).command;
+        while (enums.hasMoreElements()) {
+            DefaultMutableTreeNode curr = (DefaultMutableTreeNode) enums.nextElement();
             if (((Node) curr.getUserObject()).command == cmd) {
-                node = curr;
+                shadow = curr;
                 break;
             }
         }
-        return node;
+        return shadow;
     }
 
+    /**
+     * A wrapper class for {@link Command}
+     */
     static class Node {
         final int versionNum;
         final Command command;
@@ -105,6 +133,11 @@ public class HistoryDialog extends JDialog {
         private Node(int versionNum, Command command) {
             this.versionNum = versionNum;
             this.command = command;
+        }
+
+        @Override
+        public String toString() {
+            return command.toString();
         }
     }
 }
