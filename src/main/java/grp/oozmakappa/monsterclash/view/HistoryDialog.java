@@ -7,12 +7,17 @@ import grp.oozmakappa.monsterclash.model.immutable.ImmutableHistory;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * @author Chenglong Ma
  */
 public class HistoryDialog extends JDialog {
+    private List<DefaultMutableTreeNode> forest;
+
     public HistoryDialog() {
         super((Frame) null, true);
         setLayout(new BorderLayout());
@@ -27,29 +32,68 @@ public class HistoryDialog extends JDialog {
 
     private void initView() {
         JTree tree = new JTree(initTree());
+        // expand tree for easy selection
+        for (int i = 0; i < tree.getRowCount(); i++)
+            tree.expandRow(i);
         add(tree, BorderLayout.CENTER);
     }
 
-    private DefaultMutableTreeNode initTree() {
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-        Deque<ImmutableHistory> uni = CommandManager.getInstance().viewUniverses();
-        ImmutableHistory prev = null;
-        DefaultMutableTreeNode prevNode = null;
+    private void plantForest() {
+        forest = new ArrayList<>();
+        Deque<ImmutableHistory> uni = CommandManager.getInstance().getUniverses();
         for (ImmutableHistory history : uni) {
-            if (prev == null) {
-                prev = history;
-                for (Command command : prev.getHistory()) {
-                    if (prevNode == null) {
-                        prevNode = new DefaultMutableTreeNode(command);
-                        node.add(prevNode);
-                    } else {
-                        DefaultMutableTreeNode curr = new DefaultMutableTreeNode(command);
-                        prevNode.add(curr);
-                        prevNode = curr;
-                    }
+            DefaultMutableTreeNode prev = null, tree = null;
+            for (Command command : history.getHistory()) {
+                if (prev == null) {
+                    prev = new DefaultMutableTreeNode(command);
+                    tree = prev;
+                } else {
+                    DefaultMutableTreeNode curr = new DefaultMutableTreeNode(command);
+                    prev.add(curr);
+                    prev = curr;
                 }
+            }
+            forest.add(tree);
+        }
+    }
+
+    private DefaultMutableTreeNode initTree() {
+        if (forest == null) {
+            plantForest();
+        }
+        if (forest.size() == 1) {
+            return forest.get(0);
+        }
+        DefaultMutableTreeNode firstTree = forest.get(0);
+        for (int i = 1; i < forest.size(); i++) {
+            DefaultMutableTreeNode secondTree = forest.get(i);
+            Enumeration firstEnumeration = firstTree.preorderEnumeration();
+            Enumeration secondEnumeration = secondTree.preorderEnumeration();
+            DefaultMutableTreeNode prevNode = null;
+            while (secondEnumeration.hasMoreElements()) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) secondEnumeration.nextElement();
+                DefaultMutableTreeNode parent = findParent(firstEnumeration, node.getUserObject());
+                if (parent == null && prevNode != null) {
+                    prevNode.add(node);
+                    break;
+                } else {
+                    prevNode = parent;
+                }
+            }
+        }
+        return firstTree;
+    }
+
+    private DefaultMutableTreeNode findParent(Enumeration tree, Object cmd) {
+        DefaultMutableTreeNode node = null;
+        while (tree.hasMoreElements()) {
+            DefaultMutableTreeNode curr = (DefaultMutableTreeNode) tree.nextElement();
+            if (curr.getUserObject() == cmd) {
+                node = curr;
+                break;
             }
         }
         return node;
     }
+
 }

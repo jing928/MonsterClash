@@ -33,6 +33,7 @@ public class TurnChangeCommand implements Command {
         constraints.setCurrentTeam(prevTeam);
         constraints.setCanMove(false);
         Dice.getInstance().setCanRoll(true);
+        constraints.setActivePiece(null);
         Logger log = LogManager.getLogger();
         log.info("Undid: Turn Change Command");
         log.info("Current turn: " + constraints.getCurrentTeam());
