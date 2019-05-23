@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 /**
@@ -20,12 +22,11 @@ public class GameFrame extends JFrame {
     private JPanel mainPanel;
     // sub views
     private BoardPanel boardPanel;
-    private JPanel player1Panel;
-    private JPanel player2Panel;
 
     public GameFrame() throws HeadlessException {
         super("Monster Clash");
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        initMenuBar();
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
         add(mainPanel);
@@ -35,14 +36,6 @@ public class GameFrame extends JFrame {
 
     public BoardPanel getBoardPanel() {
         return boardPanel;
-    }
-
-    public JPanel getPlayer1Panel() {
-        return player1Panel;
-    }
-
-    public JPanel getPlayer2Panel() {
-        return player2Panel;
     }
 
     /**
@@ -55,7 +48,7 @@ public class GameFrame extends JFrame {
     }
 
     public void initPlayer1Panel(List<Piece> pieces) {
-        player1Panel = new PlayerPanel(pieces, Team.OozmaKappa);
+        JPanel player1Panel = new PlayerPanel(pieces, Team.OozmaKappa);
         mainPanel.add(player1Panel);
     }
 
@@ -64,8 +57,42 @@ public class GameFrame extends JFrame {
      * @Requires mainPanel.getComponentCount() > 0
      */
     public void initPlayer2Panel(List<Piece> pieces) {
-        player2Panel = new PlayerPanel(pieces, Team.RoarOmegaRoar);
+        JPanel player2Panel = new PlayerPanel(pieces, Team.RoarOmegaRoar);
         mainPanel.add(player2Panel);
+    }
+
+    private void initMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(createFileMenu());
+        setJMenuBar(menuBar);
+    }
+
+    private JMenu createFileMenu() {
+        JMenu fileMenu = new JMenu("File");
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+        fileMenu.add(createHistoryMenuItem());
+        fileMenu.add(createExitMenuItem());
+        return fileMenu;
+    }
+
+    private JMenuItem createHistoryMenuItem() {
+        JMenuItem history = new JMenuItem("Show History");
+        history.setMnemonic(KeyEvent.VK_H);
+        history.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_H, InputEvent.CTRL_MASK
+        ));
+        history.addActionListener(e -> new HistoryDialog());
+        return history;
+    }
+
+    private JMenuItem createExitMenuItem() {
+        JMenuItem exit = new JMenuItem("Exit");
+        exit.setMnemonic(KeyEvent.VK_E);
+        exit.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_Q, InputEvent.CTRL_MASK
+        ));
+        exit.addActionListener(e -> System.exit(0));
+        return exit;
     }
 
     /**
