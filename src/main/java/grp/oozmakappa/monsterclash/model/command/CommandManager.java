@@ -72,7 +72,8 @@ public class CommandManager {
     }
 
     private void undoAll() {
-        for (int i = 0; i < history.size() - 1; i++) {
+        int size = history.size();
+        for (int i = 0; i < size - 1; i++) {
             history.removeLast().undo();
         }
     }
