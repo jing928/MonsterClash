@@ -4,12 +4,13 @@ import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class RangeChangeCommand implements Command {
+public class RangeChangeCommand extends AbstractCommand {
     private final Piece piece;
     private final int rangeChange;
     private final int prevRange;
 
     private RangeChangeCommand(Piece piece, int rangeChange) {
+        super("Range Changed - " + piece.getName());
         this.piece = piece;
         this.rangeChange = rangeChange;
         this.prevRange = piece.getOriginalRange();

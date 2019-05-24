@@ -4,12 +4,13 @@ import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class PowerChangeCommand implements Command {
+public class PowerChangeCommand extends AbstractCommand {
     private final Piece piece;
     private final double powerChange;
     private final double prevPower;
 
     private PowerChangeCommand(Piece piece, double powerChange) {
+        super("Power Changed - " + piece.getName());
         this.piece = piece;
         this.powerChange = powerChange;
         this.prevPower = piece.getOriginalAttackPower();

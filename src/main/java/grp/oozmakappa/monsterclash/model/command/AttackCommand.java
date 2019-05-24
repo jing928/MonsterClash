@@ -7,12 +7,13 @@ import org.apache.logging.log4j.Logger;
 /**
  * @author Chenglong Ma
  */
-public class AttackCommand implements Command {
+public class AttackCommand extends AbstractCommand {
     private final Piece me;
     private final Piece target;
     private final double targetPrevHealth;
 
     private AttackCommand(Piece me, Piece target) {
+        super("Attack - " + me.getName());
         this.me = me;
         this.target = target;
         targetPrevHealth = target.getHealth();

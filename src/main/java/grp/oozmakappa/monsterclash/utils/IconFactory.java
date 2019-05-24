@@ -56,6 +56,9 @@ public class IconFactory {
     //region For piece abilities
     private static final String DICE_ROLLING_DIR = "img/dice/rolling/";
     //endregion
+
+    public static final String TREE_NODE = "img/tree/node.png";
+
     private static IconFactory instance;
     private final Map<String, IconFlyweight> icons;
 

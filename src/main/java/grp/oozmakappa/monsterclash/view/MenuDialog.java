@@ -36,8 +36,8 @@ public class MenuDialog extends JDialog {
         addButtons();
         // setup
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 

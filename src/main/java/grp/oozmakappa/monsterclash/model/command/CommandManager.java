@@ -16,9 +16,9 @@ import java.util.Queue;
  */
 public class CommandManager {
     private static final Logger LOG = LogManager.getLogger();
+    private static CommandManager commandManager;
     private final History history;
     private final Deque<ImmutableHistory> universes; // Stores multiple universes caused by time travel or undo
-    private static CommandManager commandManager;
 
     /**
      * private for singleton pattern
@@ -50,18 +50,32 @@ public class CommandManager {
     /**
      * Create a copy of the universes with the current history as the `universes` stack should be
      * updated only when time travel or undo happens.
+     *
      * @return a copy of universes plus the most recent history version.
      */
-    public Deque<ImmutableHistory> viewUniverses() {
+    public Deque<ImmutableHistory> getUniverses() {
         Deque<ImmutableHistory> universesCopy = new ArrayDeque<>(universes);
-        universesCopy.push(history.getLatestVersion());
+        universesCopy.addLast(history.getLatestVersion());
         return universesCopy;
     }
 
-    public void timeTravel(int historyVersionNum, int numTurnsToUndo) {
+    public void timeTravel(int historyVersionNum, Command destCommand) {
         saveUniverse();
-        history.setHistory(history.getVersion(historyVersionNum).getHistory());
-        undoTurns(numTurnsToUndo);
+        undoAll();
+        LinkedList<Command> targetHistory = history.getVersion(historyVersionNum).getHistory();
+        for (Command cmd : targetHistory) {
+            storeAndExecute(cmd);
+            if (cmd == destCommand) {
+                return;
+            }
+        }
+    }
+
+    private void undoAll() {
+        int size = history.size();
+        for (int i = 0; i < size; i++) {
+            history.removeLast().undo();
+        }
     }
 
     private void undoTurn() {
@@ -74,7 +88,7 @@ public class CommandManager {
         Queue cmdList = new LinkedList<Command>();
         boolean turnStartFound = false;
         while (!turnStartFound) {
-            if (history.size() == 0 || turnChangeCounter == 3) {
+            if (history.size() == 1 || turnChangeCounter == 3) {
                 turnStartFound = true;
             } else if (history.peekLast() instanceof TurnChangeCommand) {
                 if (++turnChangeCounter < 3) {
@@ -94,7 +108,7 @@ public class CommandManager {
     }
 
     private void saveUniverse() {
-        universes.push(history.getLatestVersion());
+        universes.addLast(history.getLatestVersion());
     }
 
 }

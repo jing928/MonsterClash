@@ -8,11 +8,12 @@ import org.apache.logging.log4j.Logger;
 /**
  * @author Chenglong Ma
  */
-public class MoveCommand implements Command {
+public class MoveCommand extends AbstractCommand {
     private final Piece piece;
     private final Cell prevPosition, nextPosition;
 
     private MoveCommand(Piece piece, Cell nextPosition) {
+        super("Move - " + piece.getName());
         this.piece = piece;
         this.prevPosition = piece.getPosition();
         this.nextPosition = nextPosition;

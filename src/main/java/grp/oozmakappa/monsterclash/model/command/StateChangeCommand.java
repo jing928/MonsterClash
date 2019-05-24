@@ -5,12 +5,13 @@ import grp.oozmakappa.monsterclash.controller.states.PieceButtonState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class StateChangeCommand implements Command {
+public class StateChangeCommand extends AbstractCommand {
     private final PieceListener pieceListener;
     private final PieceButtonState newState;
     private final PieceButtonState prevState;
 
     private StateChangeCommand(PieceListener pieceListener, PieceButtonState newState) {
+        super("State Changed - " + newState.getClass().getSimpleName());
         this.pieceListener = pieceListener;
         this.newState = newState;
         this.prevState = pieceListener.getState();
