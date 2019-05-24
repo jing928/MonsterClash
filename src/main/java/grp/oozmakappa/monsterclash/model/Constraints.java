@@ -114,9 +114,6 @@ public class Constraints implements DiceObserver {
     }
 
     public Team getCurrentTeam() {
-        if (currentTeam == null) {
-            return initialTeam;
-        }
         return currentTeam;
     }
 
