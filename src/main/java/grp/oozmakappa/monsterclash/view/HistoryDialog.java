@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -29,19 +30,19 @@ public class HistoryDialog extends JDialog {
     private static final Logger LOG = LogManager.getLogger();
     private final Deque<ImmutableHistory> universes;
     private final HistoryListener listener;
-    private List<DefaultMutableTreeNode> forest;
     private final JScrollPane scrollPane = new JScrollPane();
-    private JTree tree;
+    private List<DefaultMutableTreeNode> forest;
     private JButton start;
 
     public HistoryDialog() {
         super((Frame) null, true);
+        setTitle("History");
         universes = CommandManager.getInstance().getUniverses();
         listener = new HistoryListener(this);
         setLayout(new BorderLayout(2, 2));
 
         initView();
-        setPreferredSize(new Dimension(600, 400));
+        setPreferredSize(new Dimension(1000, 800));
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
@@ -50,20 +51,17 @@ public class HistoryDialog extends JDialog {
     }
 
     private static void setUI(JTree tree) {
-
         Icon icon = IconFactory.getInstance().getIcon(TREE_NODE).getIcon();
-
         DefaultTreeCellRenderer render = (DefaultTreeCellRenderer) (tree.getCellRenderer());
         render.setLeafIcon(icon);
         render.setClosedIcon(icon);
         render.setOpenIcon(icon);
-
-//        BasicTreeUI ui=(BasicTreeUI)(tree.getUI());
-//        ui.setCollapsedIcon(CollapsedIcon);
     }
 
     private void initView() {
-        tree = new JTree(initTree());
+        JTree tree = new JTree(initTree());
+        tree.setAutoscrolls(true);
+        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         setUI(tree);
         tree.addTreeSelectionListener(listener);
         // expand tree for easy selection
@@ -196,7 +194,7 @@ public class HistoryDialog extends JDialog {
 
         @Override
         public String toString() {
-            return command.toString();
+            return String.format("%s v_%d.0", command, versionNum);
         }
 
         public int getVersionNum() {
