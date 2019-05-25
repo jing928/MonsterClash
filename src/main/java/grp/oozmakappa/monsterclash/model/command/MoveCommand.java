@@ -1,6 +1,7 @@
 package grp.oozmakappa.monsterclash.model.command;
 
 import grp.oozmakappa.monsterclash.model.Cell;
+import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 
 /**
@@ -25,15 +26,16 @@ public class MoveCommand extends AbstractCommand {
     @Override
     public void execute() {
         piece.setPosition(nextPosition);
-
         LOG.info("Executed: Move Command");
     }
 
     @Override
     public void undo() {
-        piece.setPosition(prevPosition, false);
-//        button.move(prevPosition, prevLocation, false);
-
+        Constraints constraints = Constraints.getInstance();
+        boolean enabled = constraints.isEnableObstacle();
+        constraints.enableObstacle(false);
+        piece.setPosition(prevPosition);
+        constraints.enableObstacle(enabled);
         LOG.info("Undid: Move Command");
     }
 }

@@ -30,9 +30,7 @@ public class AttackCommand extends AbstractCommand {
 
     @Override
     public void undo() {
-        target.setShouldNotify(false);
         target.setHealth(targetPrevHealth);
-        target.setShouldNotify(true);
         LOG.info("Undid: Attack Command");
     }
 }

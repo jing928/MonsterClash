@@ -135,7 +135,7 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     }
 
     @Override
-    public void afterMove(Piece pieceLocated, boolean shouldNotify) {
+    public void afterMove(Piece pieceLocated) {
         Cell cell = pieceLocated.getPosition();
         Point loc = cell.getLocation();
         setLocation(loc);

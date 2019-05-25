@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.model.command;
 
+import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.immutable.History;
 import grp.oozmakappa.monsterclash.model.immutable.ImmutableHistory;
 import grp.oozmakappa.monsterclash.model.immutable.MutableHistory;
@@ -60,6 +61,9 @@ public class CommandManager {
     }
 
     public void timeTravel(int historyVersionNum, Command destCommand) {
+        Constraints constraints = Constraints.getInstance();
+        boolean enabled = constraints.isEnableObstacle();
+        constraints.enableObstacle(false);
         saveUniverse();
         undoAll();
         LinkedList<Command> targetHistory = history.getVersion(historyVersionNum).getHistory();
@@ -69,6 +73,7 @@ public class CommandManager {
                 return;
             }
         }
+        constraints.enableObstacle(enabled);
     }
 
     private void undoAll() {

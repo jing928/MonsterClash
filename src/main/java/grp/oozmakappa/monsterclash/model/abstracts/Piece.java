@@ -42,7 +42,6 @@ public abstract class Piece implements DiceObserver {
     private double armor;
     private int nextMove;
     private Mode mode;
-    private boolean shouldNotify = true;
 
     public Piece(Team team, Cell position, double health, double attackPower, double armor, int reachableRange) {
         this.team = team;
@@ -144,15 +143,13 @@ public abstract class Piece implements DiceObserver {
         this.iconName = iconName;
     }
 
-    public boolean attack(Piece target) {
+    public void attack(Piece target) {
         double distance = getTargetDistance(target);
         if (getCurrentReachableRange() >= distance) {
             double damage = getCurrentAttackPower();
             target.decreaseHealth(damage);
             notifyActed();
-            return true;
         }
-        return false;
     }
 
     public int getTargetDistance(Piece target) {
@@ -254,30 +251,18 @@ public abstract class Piece implements DiceObserver {
         return position;
     }
 
-    public void setPosition(Cell position) {
-        setPosition(position, true);
-    }
-
     /**
      * Change the position of this piece and notify all observers.
      *
      * @param position
      */
-    public void setPosition(Cell position, boolean shouldNotify) {
+    public void setPosition(Cell position) {
         this.position = position;
-        notifyMoved(shouldNotify);
+        notifyMoved();
     }
 
     public int getNextMove() {
         return nextMove;
-    }
-
-    public boolean getShouldNotify() {
-        return shouldNotify;
-    }
-
-    public void setShouldNotify(boolean shouldNotify) {
-        this.shouldNotify = shouldNotify;
     }
 
     public void addPositionObserver(PiecePositionObserver observer) {
@@ -318,8 +303,8 @@ public abstract class Piece implements DiceObserver {
     /**
      * Notifies all observers when the piece has moved to new position.
      */
-    private void notifyMoved(boolean shouldNotify) {
-        posObservers.forEach(o -> o.afterMove(this, shouldNotify));
+    private void notifyMoved() {
+        posObservers.forEach(o -> o.afterMove(this));
     }
 
     /**

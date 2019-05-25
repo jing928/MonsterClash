@@ -107,10 +107,10 @@ public class CellLabel extends JLabel implements PiecePositionObserver {
     }
 
     @Override
-    public void afterMove(Piece pieceLocated, boolean shouldNotify) {
+    public void afterMove(Piece pieceLocated) {
         setBackground(currentColor);
         canPlaced = false;
-        if (cell.equals(pieceLocated.getPosition()) && shouldNotify) {
+        if (cell.equals(pieceLocated.getPosition())) {
             if (listener.affect(cell, pieceLocated)) {
                 IconFlyweight icon = IconFactory.getInstance().getIcon(TRAP_CELL);
                 setIcon(icon.getResizedIcon(getWidth(), getHeight()));
