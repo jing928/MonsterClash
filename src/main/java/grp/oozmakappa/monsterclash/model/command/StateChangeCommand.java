@@ -2,8 +2,6 @@ package grp.oozmakappa.monsterclash.model.command;
 
 import grp.oozmakappa.monsterclash.controller.PieceListener;
 import grp.oozmakappa.monsterclash.controller.states.PieceButtonState;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class StateChangeCommand extends AbstractCommand {
     private final PieceListener pieceListener;
@@ -25,15 +23,15 @@ public class StateChangeCommand extends AbstractCommand {
     @Override
     public void execute() {
         pieceListener.setState(newState);
-        Logger log = LogManager.getLogger();
-        log.info("Executed: State Change Command");
+
+        LOG.info("Executed: State Change Command");
     }
 
     @Override
     public void undo() {
         pieceListener.undoState(prevState);
-        Logger log = LogManager.getLogger();
-        log.info("Undid: State Change Command");
+
+        LOG.info("Undid: State Change Command");
     }
 
 }

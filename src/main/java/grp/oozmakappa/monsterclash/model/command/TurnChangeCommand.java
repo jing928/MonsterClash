@@ -3,8 +3,6 @@ package grp.oozmakappa.monsterclash.model.command;
 import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.Dice;
 import grp.oozmakappa.monsterclash.model.Team;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class TurnChangeCommand extends AbstractCommand {
     private final Constraints constraints;
@@ -24,9 +22,9 @@ public class TurnChangeCommand extends AbstractCommand {
     @Override
     public void execute() {
         constraints.changeTurn();
-        Logger log = LogManager.getLogger();
-        log.info("Executed: Turn Change Command");
-        log.info("Current turn: " + constraints.getCurrentTeam());
+
+        LOG.info("Executed: Turn Change Command");
+        LOG.info("Current turn: " + constraints.getCurrentTeam());
     }
 
     @Override
@@ -35,9 +33,9 @@ public class TurnChangeCommand extends AbstractCommand {
         constraints.setCanMove(false);
         Dice.getInstance().setCanRoll(true);
         constraints.setActivePiece(null);
-        Logger log = LogManager.getLogger();
-        log.info("Undid: Turn Change Command");
-        log.info("Current turn: " + constraints.getCurrentTeam());
+
+        LOG.info("Undid: Turn Change Command");
+        LOG.info("Current turn: " + constraints.getCurrentTeam());
     }
 
 }

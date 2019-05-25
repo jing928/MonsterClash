@@ -88,7 +88,8 @@ public class CommandManager {
         Queue cmdList = new LinkedList<Command>();
         boolean turnStartFound = false;
         while (!turnStartFound) {
-            if (history.size() == 1 || turnChangeCounter == 3) {
+            // the first `TurnChangeCommand` and `DiceCommand` cannot be undone.
+            if (history.size() == 2 || turnChangeCounter == 3) {
                 turnStartFound = true;
             } else if (history.peekLast() instanceof TurnChangeCommand) {
                 if (++turnChangeCounter < 3) {
