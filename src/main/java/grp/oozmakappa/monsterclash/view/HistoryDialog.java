@@ -30,6 +30,7 @@ public class HistoryDialog extends JDialog {
     private final Deque<ImmutableHistory> universes;
     private final HistoryListener listener;
     private List<DefaultMutableTreeNode> forest;
+    private final JScrollPane scrollPane = new JScrollPane();
     private JTree tree;
     private JButton start;
 
@@ -68,7 +69,10 @@ public class HistoryDialog extends JDialog {
         // expand tree for easy selection
         for (int i = 0; i < tree.getRowCount(); i++)
             tree.expandRow(i);
-        add(tree, BorderLayout.CENTER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setViewportView(tree);
         addButtons();
     }
 
