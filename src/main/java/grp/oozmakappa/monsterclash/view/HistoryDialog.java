@@ -71,7 +71,7 @@ public class HistoryDialog extends JDialog {
             tree.expandRow(i);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        add(scrollPane);
+        add(scrollPane, BorderLayout.CENTER);
         scrollPane.setViewportView(tree);
         addButtons();
     }
