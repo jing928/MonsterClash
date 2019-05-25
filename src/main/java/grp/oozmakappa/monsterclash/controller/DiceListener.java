@@ -1,6 +1,7 @@
 package grp.oozmakappa.monsterclash.controller;
 
 import grp.oozmakappa.monsterclash.model.Dice;
+import grp.oozmakappa.monsterclash.model.command.DiceCommand;
 import grp.oozmakappa.monsterclash.view.DiceButton;
 
 import javax.swing.*;
@@ -22,7 +23,7 @@ public class DiceListener implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         Dice dice = Dice.getInstance();
         if (dice.canRoll()) {
-            diceButton.updateIcon(dice.roll());
+            DiceCommand.roll();
         } else {
             JOptionPane.showMessageDialog(diceButton, "You cannot roll dice until next turn.");
         }
