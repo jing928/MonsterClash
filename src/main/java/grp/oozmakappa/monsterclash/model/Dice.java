@@ -7,12 +7,14 @@ import java.util.List;
 
 /**
  * @author Chenglong Ma
+ * @Invariant NumberUtil.between(value, 1, 6)
  */
 public final class Dice {
     private static final int MAX_DICE = 6;
-    private final List<DiceObserver> observers = new ArrayList<>();
     private static Dice dice;
+    private final List<DiceObserver> observers = new ArrayList<>();
     private boolean canRoll = true;
+    private int value;
 
     private Dice() {
         // cannot be instantiated
@@ -32,14 +34,12 @@ public final class Dice {
     /**
      * Generates next dice value randomly.
      *
-     * @return the new dice value
-     * @Ensures NumberUtil.between(value, 0, 5)
+     * @Ensures NumberUtil.between(value, 1, 6)
      */
-    public int roll() {
+    public void roll() {
         int value = (int) (Math.random() * MAX_DICE) + 1;
-        observers.forEach(o -> o.valueChanged(value));
+        setValue(value);
         canRoll = false;
-        return value;
     }
 
     public boolean canRoll() {
@@ -48,5 +48,18 @@ public final class Dice {
 
     public void setCanRoll(boolean canRoll) {
         this.canRoll = canRoll;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    /**
+     * @param value
+     * @Requires NumberUtil.between(value, 1, 6)
+     */
+    public void setValue(final int value) {
+        this.value = value;
+        observers.forEach(o -> o.valueChanged(value));
     }
 }

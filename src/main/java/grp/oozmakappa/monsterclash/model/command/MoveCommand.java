@@ -2,8 +2,6 @@ package grp.oozmakappa.monsterclash.model.command;
 
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * @author Chenglong Ma
@@ -27,15 +25,15 @@ public class MoveCommand extends AbstractCommand {
     @Override
     public void execute() {
         piece.setPosition(nextPosition);
-        Logger log = LogManager.getLogger();
-        log.info("Executed: Move Command");
+
+        LOG.info("Executed: Move Command");
     }
 
     @Override
     public void undo() {
         piece.setPosition(prevPosition, false);
 //        button.move(prevPosition, prevLocation, false);
-        Logger log = LogManager.getLogger();
-        log.info("Undid: Move Command");
+
+        LOG.info("Undid: Move Command");
     }
 }

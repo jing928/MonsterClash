@@ -2,8 +2,6 @@ package grp.oozmakappa.monsterclash.model.command;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.strategies.modes.Mode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class ModeChangeCommand extends AbstractCommand {
     private final Piece piece;
@@ -23,15 +21,13 @@ public class ModeChangeCommand extends AbstractCommand {
     @Override
     public void execute() {
         piece.setMode(newMode);
-        Logger log = LogManager.getLogger();
-        log.info("Executed: Mode Change Command");
+        LOG.info("Executed: Mode Change Command");
     }
 
     @Override
     public void undo() {
         piece.setMode();
-        Logger log = LogManager.getLogger();
-        log.info("Undid: Mode Change Command");
+        LOG.info("Undid: Mode Change Command");
     }
 
 }

@@ -1,8 +1,6 @@
 package grp.oozmakappa.monsterclash.model.command;
 
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class HealthChangeCommand extends AbstractCommand {
     private final Piece piece;
@@ -28,14 +26,12 @@ public class HealthChangeCommand extends AbstractCommand {
         } else {
             piece.increaseHealth(healthChange);
         }
-        Logger log = LogManager.getLogger();
-        log.info("Executed: Health Change Command");
+        LOG.info("Executed: Health Change Command");
     }
 
     @Override
     public void undo() {
         piece.setHealth(prevHealth);
-        Logger log = LogManager.getLogger();
-        log.info("Undid: Health Change Command");
+        LOG.info("Undid: Health Change Command");
     }
 }
