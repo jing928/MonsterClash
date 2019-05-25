@@ -38,12 +38,13 @@ public class HistoryListener implements ActionListener, TreeSelectionListener {
                 CommandManager cmdManager = CommandManager.getInstance();
                 int verNum = selectedNode.getVersionNum();
                 Command cmd = selectedNode.getCommand();
+                dialog.dispose();
                 cmdManager.timeTravel(verNum, cmd);
                 break;
             case HistoryDialog.CANCEL:
+                dialog.dispose();
                 break;
         }
-        dialog.dispose();
     }
 
     @Override
