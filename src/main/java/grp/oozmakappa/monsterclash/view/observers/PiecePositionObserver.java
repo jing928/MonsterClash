@@ -19,6 +19,6 @@ public interface PiecePositionObserver {
      *
      * @param pieceLocated
      */
-    void afterMove(Piece pieceLocated, boolean shouldNotify);
+    void afterMove(Piece pieceLocated);
 
 }
