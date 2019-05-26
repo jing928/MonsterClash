@@ -2,6 +2,7 @@ package grp.oozmakappa.monsterclash.controller.states;
 
 import grp.oozmakappa.monsterclash.controller.PieceListener;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.AbilityChangeCommand;
 import grp.oozmakappa.monsterclash.view.AbilityDialog;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 
@@ -76,7 +77,7 @@ public class ActionState implements PieceButtonState {
     private void reset(PieceListener ctrl) {
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
-        piece.setCurrentAbility(null);
+        AbilityChangeCommand.setAbility(piece, null);
         button.removeMouseMotionListener(ctrl);
         button.setLocation(initPieceLocation);
     }
