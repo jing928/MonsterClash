@@ -32,6 +32,7 @@ public class HistoryListener implements ActionListener, TreeSelectionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        dialog.dispose();
         String action = e.getActionCommand();
         switch (action) {
             case HistoryDialog.TIME_TRAVEL:
@@ -43,7 +44,6 @@ public class HistoryListener implements ActionListener, TreeSelectionListener {
             case HistoryDialog.CANCEL:
                 break;
         }
-        dialog.dispose();
     }
 
     @Override
