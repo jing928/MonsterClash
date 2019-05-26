@@ -6,7 +6,6 @@ import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.model.command.MoveCommand;
 import grp.oozmakappa.monsterclash.model.command.StateChangeCommand;
-import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +19,7 @@ import java.awt.*;
  */
 public class MoveState implements PieceButtonState {
     private static final Logger LOG = LogManager.getLogger();
+    private static final Constraints CONSTRAINTS = Constraints.getInstance();
     private static MoveState instance;
     private Point initPieceLocation;
     private Thread timeOutThread;
@@ -39,6 +39,20 @@ public class MoveState implements PieceButtonState {
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
         piece.notifyMoving();
+        if (timeOutThread == null || !timeOutThread.isAlive()) {
+            timeOutThread = new Thread(() -> {
+                try {
+                    Thread.sleep(CONSTRAINTS.getTimeOut());
+                    LOG.info("Time out for this turn");
+                    piece.setPosition(piece.getPosition());
+                    PieceButtonState.cleanup(ctrl);
+                    JOptionPane.showMessageDialog(button, "Time out for your turn.");
+                } catch (InterruptedException ex) {
+                    LOG.info(ex.getMessage());
+                }
+            });
+            timeOutThread.start();
+        }
     }
 
     @Override
@@ -48,18 +62,6 @@ public class MoveState implements PieceButtonState {
         Piece piece = button.getPiece();
         initPieceLocation = button.getLocation();
         piece.notifyMoving();
-        timeOutThread = new Thread(() -> {
-            try {
-                Thread.sleep(Constraints.getInstance().getTimeOut());
-                LOG.info("Time out for this turn");
-                button.setLocation(initPieceLocation);
-                TurnChangeCommand.changeTurn();
-                JOptionPane.showMessageDialog(button, "Time out for your turn.");
-            } catch (InterruptedException ex) {
-                LOG.info(ex.getMessage());
-            }
-        });
-        timeOutThread.start();
     }
 
     @Override

@@ -1,16 +1,13 @@
 package grp.oozmakappa.monsterclash.controller.states;
 
 import grp.oozmakappa.monsterclash.controller.PieceListener;
-import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.command.StateChangeCommand;
 import grp.oozmakappa.monsterclash.view.AbilityDialog;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static grp.oozmakappa.monsterclash.model.command.TurnChangeCommand.changeTurn;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 
 /**
@@ -58,7 +55,7 @@ public class ActionState implements PieceButtonState {
                 reset(ctrl);
                 return;
             }
-            cleanup(ctrl);
+            PieceButtonState.cleanup(ctrl);
         }
     }
 
@@ -70,7 +67,7 @@ public class ActionState implements PieceButtonState {
         if (targetButton != null) {
             Piece target = targetButton.getPiece();
             piece.act(target);
-            cleanup(ctrl);
+            PieceButtonState.cleanup(ctrl);
         }
         piece.notifyActed();
         reset(ctrl);
@@ -82,13 +79,6 @@ public class ActionState implements PieceButtonState {
         piece.setCurrentAbility(null);
         button.removeMouseMotionListener(ctrl);
         button.setLocation(initPieceLocation);
-    }
-
-    private void cleanup(PieceListener ctrl) {
-        changeTurn();
-        PieceButtonState nextState = ModeSelectionState.getInstance();
-        StateChangeCommand.setState(ctrl, nextState);
-        Constraints.getInstance().setActivePiece(null);
     }
 
     private boolean askContinue(Component component) {
