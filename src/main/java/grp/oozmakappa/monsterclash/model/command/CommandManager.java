@@ -41,6 +41,11 @@ public class CommandManager {
         cmd.execute();
     }
 
+    public void storeAndRedo(Command cmd) {
+        this.history.add(cmd);
+        cmd.redo();
+    }
+
     public void undoTurns(int number) {
         saveUniverse();
         for (int i = 0; i < number; i++) {
@@ -68,7 +73,7 @@ public class CommandManager {
         undoAll();
         LinkedList<Command> targetHistory = history.getVersion(historyVersionNum).getHistory();
         for (Command cmd : targetHistory) {
-            storeAndExecute(cmd);
+            storeAndRedo(cmd);
             if (cmd == destCommand) {
                 return;
             }

@@ -40,7 +40,7 @@ public class PieceListener extends MouseAdapter {
         state.todo(this);
     }
 
-    public void undoState(PieceButtonState prevState) {
+    public void resetState(PieceButtonState prevState) {
         this.state = prevState;
     }
 

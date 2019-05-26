@@ -23,14 +23,17 @@ public class StateChangeCommand extends AbstractCommand {
     @Override
     public void execute() {
         pieceListener.setState(newState);
-
         LOG.info("Executed: State Change Command");
     }
 
     @Override
-    public void undo() {
-        pieceListener.undoState(prevState);
+    public void redo() {
+        pieceListener.resetState(newState);
+    }
 
+    @Override
+    public void undo() {
+        pieceListener.resetState(prevState);
         LOG.info("Undid: State Change Command");
     }
 
