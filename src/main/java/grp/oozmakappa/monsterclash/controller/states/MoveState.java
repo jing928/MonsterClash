@@ -70,20 +70,16 @@ public class MoveState implements PieceButtonState {
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
         CellLabel cellLabel = ctrl.getClosestCell(button);
-        PieceButtonState nextState;
         if (cellLabel != null) {
             newCell = cellLabel.getCell();
             timeOutThread.interrupt();
-            nextState = ActionState.getInstance();
             MoveCommand.move(piece, newCell);
+            StateChangeCommand.setState(ctrl, ActionState.getInstance());
             LOG.info("Piece has moved.");
         } else {
-            // stay put
-            nextState = this;
             button.setLocation(initPieceLocation);
             LOG.info("Piece did not move.");
         }
         button.removeMouseMotionListener(ctrl);
-        StateChangeCommand.setState(ctrl, nextState);
     }
 }
