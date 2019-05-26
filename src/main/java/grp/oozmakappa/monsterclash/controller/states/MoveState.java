@@ -58,7 +58,7 @@ public class MoveState implements PieceButtonState {
     @Override
     public void doing(PieceListener ctrl) {
         PieceButton button = ctrl.getButton();
-        button.addMouseMotionListener(ctrl);
+        ctrl.enableDrag(button);
         Piece piece = button.getPiece();
         initPieceLocation = button.getLocation();
         piece.notifyMoving();

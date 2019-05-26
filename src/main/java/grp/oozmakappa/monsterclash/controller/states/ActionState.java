@@ -49,7 +49,7 @@ public class ActionState implements PieceButtonState {
             return;
         }
         piece.notifyActing();
-        button.addMouseMotionListener(ctrl);
+        ctrl.enableDrag(button);
         if (!ctrl.hasReachablePiece()) {
             if (askContinue(button)) {
                 reset(ctrl);

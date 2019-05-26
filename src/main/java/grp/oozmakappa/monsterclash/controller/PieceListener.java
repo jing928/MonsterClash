@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 /**
  * @author Chenglong Ma
@@ -29,6 +30,12 @@ public class PieceListener extends MouseAdapter {
     public PieceListener(BoardPanel boardPanel) {
         this.boardPanel = boardPanel;
         state = ModeSelectionState.getInstance();
+    }
+
+    public void enableDrag(Component component) {
+        if (!Arrays.asList(component.getMouseMotionListeners()).contains(this)) {
+            component.addMouseMotionListener(this);
+        }
     }
 
     public PieceButtonState getState() {
