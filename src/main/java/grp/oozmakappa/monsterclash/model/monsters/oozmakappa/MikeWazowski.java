@@ -22,7 +22,7 @@ public class MikeWazowski extends Piece {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);
         setIcon(IconFactory.MIKE_WAZOWSKI);
         addSpecialAbility(Ability.SPECIAL_HEALING);
-        addSpecialAbility(Ability.SPECIAL_MOVE);
+//        addSpecialAbility(Ability.SPECIAL_MOVE);
     }
 
 }

@@ -22,7 +22,7 @@ public class JohnnyWorthington extends Piece {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);
         setIcon(IconFactory.JOHNNY_WORTHINGTON);
         addSpecialAbility(Ability.SPECIAL_HEALING);
-        addSpecialAbility(Ability.SPECIAL_MOVE);
+//        addSpecialAbility(Ability.SPECIAL_MOVE);
     }
 
 }

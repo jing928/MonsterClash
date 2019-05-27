@@ -22,7 +22,7 @@ public class ChetAlexander extends Piece {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);
         setIcon(IconFactory.CHET_ALEXANDER);
         addSpecialAbility(Ability.SPECIAL_ATTACK);
-        addSpecialAbility(Ability.SPECIAL_MOVE);
+//        addSpecialAbility(Ability.SPECIAL_MOVE);
     }
 
 }
