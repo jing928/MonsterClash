@@ -1,16 +1,14 @@
 package grp.oozmakappa.monsterclash.controller.states;
 
 import grp.oozmakappa.monsterclash.controller.PieceListener;
-import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.command.StateChangeCommand;
+import grp.oozmakappa.monsterclash.model.command.AbilityChangeCommand;
 import grp.oozmakappa.monsterclash.view.AbilityDialog;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static grp.oozmakappa.monsterclash.model.command.TurnChangeCommand.changeTurn;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 
 /**
@@ -52,13 +50,13 @@ public class ActionState implements PieceButtonState {
             return;
         }
         piece.notifyActing();
-        button.addMouseMotionListener(ctrl);
+        ctrl.enableDrag(button);
         if (!ctrl.hasReachablePiece()) {
             if (askContinue(button)) {
                 reset(ctrl);
                 return;
             }
-            cleanup(ctrl);
+            PieceButtonState.cleanup(ctrl);
         }
     }
 
@@ -70,7 +68,7 @@ public class ActionState implements PieceButtonState {
         if (targetButton != null) {
             Piece target = targetButton.getPiece();
             piece.act(target);
-            cleanup(ctrl);
+            PieceButtonState.cleanup(ctrl);
         }
         piece.notifyActed();
         reset(ctrl);
@@ -79,16 +77,9 @@ public class ActionState implements PieceButtonState {
     private void reset(PieceListener ctrl) {
         PieceButton button = ctrl.getButton();
         Piece piece = button.getPiece();
-        piece.setCurrentAbility(null);
+        AbilityChangeCommand.setAbility(piece, null);
         button.removeMouseMotionListener(ctrl);
         button.setLocation(initPieceLocation);
-    }
-
-    private void cleanup(PieceListener ctrl) {
-        changeTurn();
-        PieceButtonState nextState = ModeSelectionState.getInstance();
-        StateChangeCommand.setState(ctrl, nextState);
-        Constraints.getInstance().setActivePiece(null);
     }
 
     private boolean askContinue(Component component) {

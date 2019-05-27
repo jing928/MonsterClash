@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 /**
  * @author Chenglong Ma
@@ -31,6 +32,12 @@ public class PieceListener extends MouseAdapter {
         state = ModeSelectionState.getInstance();
     }
 
+    public void enableDrag(Component component) {
+        if (!Arrays.asList(component.getMouseMotionListeners()).contains(this)) {
+            component.addMouseMotionListener(this);
+        }
+    }
+
     public PieceButtonState getState() {
         return state;
     }
@@ -40,7 +47,7 @@ public class PieceListener extends MouseAdapter {
         state.todo(this);
     }
 
-    public void undoState(PieceButtonState prevState) {
+    public void resetState(PieceButtonState prevState) {
         this.state = prevState;
     }
 

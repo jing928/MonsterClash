@@ -2,6 +2,7 @@ package grp.oozmakappa.monsterclash.controller;
 
 import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.AbilityChangeCommand;
 import grp.oozmakappa.monsterclash.view.AbstractDialog;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +28,7 @@ public class AbilityListener implements ActionListener {
         String cmd = e.getActionCommand();
         Ability ability = Ability.parse(cmd);
         LOG.info("Selected Ability: " + ability);
-        piece.setCurrentAbility(ability);
+        AbilityChangeCommand.setAbility(piece, ability);
         dialog.close();
     }
 }

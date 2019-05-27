@@ -6,5 +6,7 @@ package grp.oozmakappa.monsterclash.model.command;
 public interface Command {
     void execute();
 
+    void redo();
+
     void undo();
 }

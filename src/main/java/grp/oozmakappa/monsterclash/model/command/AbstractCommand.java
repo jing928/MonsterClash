@@ -15,6 +15,11 @@ public abstract class AbstractCommand implements Command {
     }
 
     @Override
+    public void redo() {
+        execute();
+    }
+
+    @Override
     public String toString() {
         return name;
     }
