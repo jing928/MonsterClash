@@ -89,7 +89,7 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     }
 
     @Override
-    public void healthChanged(double currValue, double deltaHealth) {
+    public void healthChanged(double currValue, double deltaHealth, double prevValue) {
         setEnabled(piece.getHealth() > 0);
     }
 

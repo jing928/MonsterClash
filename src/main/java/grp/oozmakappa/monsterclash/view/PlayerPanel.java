@@ -64,14 +64,14 @@ public class PlayerPanel extends JPanel implements PiecePropertyObserver, Action
     }
 
     @Override
-    public void healthChanged(double currValue, double deltaHealth) {
+    public void healthChanged(double currValue, double deltaHealth, double prevValue) {
         // for normal progress
         if (numOfDeadPieces < totalPieces && currValue <= 0) {
             numOfDeadPieces++;
         }
 
         // for `undo` operation
-        if (numOfDeadPieces >= totalPieces && currValue > 0) {
+        if (prevValue <= 0 && currValue > 0) {
             numOfDeadPieces--;
         }
         if (numOfDeadPieces >= totalPieces) {
