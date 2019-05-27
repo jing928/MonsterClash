@@ -15,9 +15,9 @@ public interface PieceButtonState {
     Logger LOG = LogManager.getLogger();
 
     static void cleanup(PieceListener ctrl) {
-        changeTurn();
         PieceButtonState nextState = ModeSelectionState.getInstance();
         StateChangeCommand.setState(ctrl, nextState);
+        changeTurn();
         Constraints.getInstance().setActivePiece(null);
     }
 
