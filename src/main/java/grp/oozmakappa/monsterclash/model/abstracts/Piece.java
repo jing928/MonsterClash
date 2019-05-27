@@ -109,16 +109,23 @@ public abstract class Piece implements DiceObserver {
      * @Requires abilities.contains(ability)
      */
     public void setCurrentAbility(Ability ability) {
+        resetCurrentAbility(ability);
+        notifyAbilityChanged();
+    }
+
+    public void resetCurrentAbility(Ability ability) {
         if (!abilities.contains(ability)) {
             this.currAbility = null;
         } else {
             this.currAbility = ability;
-            notifyAbilityChanged(ability);
         }
     }
 
-    private void notifyAbilityChanged(Ability ability) {
-        switch (ability) {
+    private void notifyAbilityChanged() {
+        if (currAbility == null) {
+            return;
+        }
+        switch (currAbility) {
 
             case PLAIN_ATTACK:
             case SPECIAL_ATTACK:
