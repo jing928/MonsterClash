@@ -110,7 +110,7 @@ public abstract class Piece implements DiceObserver {
      */
     public void setCurrentAbility(Ability ability) {
         resetCurrentAbility(ability);
-        notifyAbilityChanged();
+//        notifyAbilityChanged();
         double deltaPower = getCurrentAttackPower() - getOriginalAttackPower();
         notifyPowerChanged(deltaPower);
         int deltaRange = getCurrentReachableRange() - getOriginalRange();
@@ -283,7 +283,7 @@ public abstract class Piece implements DiceObserver {
         posObservers.add(observer);
     }
 
-    public void removeObserver(PiecePositionObserver observer) {
+    public void removePositionObserver(PiecePositionObserver observer) {
         posObservers.remove(observer);
     }
 
@@ -295,8 +295,12 @@ public abstract class Piece implements DiceObserver {
         actObservers.add(observer);
     }
 
-    public void removeObserver(PiecePropertyObserver observer) {
+    public void removePropertyObserver(PiecePropertyObserver observer) {
         pptObservers.remove(observer);
+    }
+
+    public void removeActionObserver(PieceActionObserver observer) {
+        actObservers.remove(observer);
     }
 
     /**

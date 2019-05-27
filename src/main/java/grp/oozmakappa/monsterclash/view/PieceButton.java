@@ -2,9 +2,7 @@ package grp.oozmakappa.monsterclash.view;
 
 import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
-import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.rules.AbstractRuleFactory;
 import grp.oozmakappa.monsterclash.utils.flyweights.IconFlyweight;
 import grp.oozmakappa.monsterclash.view.observers.PieceActionObserver;
 import grp.oozmakappa.monsterclash.view.observers.PiecePositionObserver;
@@ -35,7 +33,6 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     public PieceButton(Piece piece) {
         this.piece = piece;
         piece.addPropertyObserver(this);
-        piece.addActionObserver(this);
         piece.addPositionObserver(this);
         setOpaque(false);
         setContentAreaFilled(false);
@@ -119,9 +116,6 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
         boolean canReach = piece.distance(pieceToAct) <= pieceToAct.getCurrentReachableRange();
         // the button would be lightened if the distance between the button and
         // the piece equals the attack range of the piece.
-        String rule = Constraints.getInstance().getCurrentRule();
-        boolean self = rule.equals(AbstractRuleFactory.RULE_A);
-        canReach &= self == (piece.distance(pieceToAct) == 0);
         if (notifyTeammate && canReach) {
             canPlaced = true;
             changeBackground(notifiedColor);
