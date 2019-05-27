@@ -172,9 +172,10 @@ public abstract class Piece implements DiceObserver {
      * @Requires health >= 0
      */
     public void setHealth(double health) {
+        double prevHealth = this.health;
         double delta = health - this.health;
         this.health = health;
-        notifyHealthChanged(delta);
+        notifyHealthChanged(delta, prevHealth);
     }
 
     /**
@@ -183,8 +184,9 @@ public abstract class Piece implements DiceObserver {
      */
     public void increaseHealth(double healthGained) {
         assert healthGained > 0;
+        double prevHealth = health;
         this.health += healthGained;
-        notifyHealthChanged(healthGained);
+        notifyHealthChanged(healthGained, prevHealth);
     }
 
     /**
@@ -192,9 +194,10 @@ public abstract class Piece implements DiceObserver {
      * @Requires damage > 0
      */
     public void decreaseHealth(double damage) {
+        double prevHealth = health;
         double trueDamage = damage - getArmor();
         health = Math.max(health - trueDamage, 0);
-        notifyHealthChanged(-damage);
+        notifyHealthChanged(-damage, prevHealth);
     }
 
     public int getX() {
@@ -310,11 +313,11 @@ public abstract class Piece implements DiceObserver {
     /**
      * @Requires deltaHealth != 0
      */
-    private void notifyHealthChanged(double deltaHealth) {
+    private void notifyHealthChanged(double deltaHealth, double prevHealth) {
         if (deltaHealth == 0) {
             return;
         }
-        pptObservers.forEach(o -> o.healthChanged(getHealth(), deltaHealth));
+        pptObservers.forEach(o -> o.healthChanged(getHealth(), deltaHealth, prevHealth));
     }
 
     /**
