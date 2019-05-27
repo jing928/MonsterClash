@@ -82,6 +82,9 @@ public class ActionState implements PieceButtonState {
     private void notify(PieceButton button) {
         Piece piece = button.getPiece();
         Ability currAbility = piece.getCurrAbility();
+        if (currAbility == null) {
+            return;
+        }
         if (currAbility == Ability.SPECIAL_HEALING && CONSTRAINTS.getCurrentRule().equals(RULE_A)) {
             piece.addActionObserver(button);
         } else {

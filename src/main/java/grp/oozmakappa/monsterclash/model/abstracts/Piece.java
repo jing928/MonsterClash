@@ -110,8 +110,7 @@ public abstract class Piece implements DiceObserver {
      */
     public void setCurrentAbility(Ability ability) {
         resetCurrentAbility(ability);
-//        notifyAbilityChanged();
-        double deltaPower = getCurrentAttackPower() - getOriginalAttackPower();
+        double deltaPower = getCurrentAttackPower() - mode.getAttackPower(attackPower);
         notifyPowerChanged(deltaPower);
         int deltaRange = getCurrentReachableRange() - getOriginalRange();
         notifyRangeChanged(deltaRange);
@@ -122,23 +121,6 @@ public abstract class Piece implements DiceObserver {
             this.currAbility = null;
         } else {
             this.currAbility = ability;
-        }
-    }
-
-    private void notifyAbilityChanged() {
-        if (currAbility == null) {
-            return;
-        }
-        switch (currAbility) {
-
-            case PLAIN_ATTACK:
-            case SPECIAL_ATTACK:
-            case SPECIAL_HEALING:
-                notifyActing();
-                break;
-            case SPECIAL_MOVE:
-                notifyMoving();
-                break;
         }
     }
 
@@ -335,34 +317,15 @@ public abstract class Piece implements DiceObserver {
         pptObservers.forEach(o -> o.healthChanged(getHealth(), deltaHealth, prevHealth));
     }
 
-    /**
-     * @Requires deltaPower != 0
-     */
     private void notifyPowerChanged(double deltaPower) {
-        if (deltaPower == 0) {
-            return;
-        }
         pptObservers.forEach(o -> o.powerChanged(getCurrentAttackPower(), deltaPower));
     }
 
-    /**
-     * @param deltaArmor
-     * @Requires deltaArmor != 0
-     */
     private void notifyArmorChanged(double deltaArmor) {
-        if (deltaArmor == 0) {
-            return;
-        }
         pptObservers.forEach(o -> o.armorChanged(getCurrentArmor(), deltaArmor));
     }
 
-    /**
-     * @Requires deltaRange != 0
-     */
     private void notifyRangeChanged(int deltaRange) {
-        if (deltaRange == 0) {
-            return;
-        }
         pptObservers.forEach(o -> o.rangeChanged(getCurrentReachableRange(), deltaRange));
     }
 
