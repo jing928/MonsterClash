@@ -38,6 +38,8 @@ public abstract class AbstractDecorator implements CellEffect {
         decorators.add(new MoveDebuff(toDecorated));
         decorators.add(new MoveDebuff(toDecorated));
         decorators.add(new MoveDebuff(toDecorated));
+        decorators.add(new MoveDebuff(toDecorated));
+        decorators.add(new MoveDebuff(toDecorated));
         // TODO: add more
         int size = decorators.size();
         return decorators.get((int) (size * Math.random()));
