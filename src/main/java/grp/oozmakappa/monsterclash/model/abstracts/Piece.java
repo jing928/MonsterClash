@@ -111,6 +111,10 @@ public abstract class Piece implements DiceObserver {
     public void setCurrentAbility(Ability ability) {
         resetCurrentAbility(ability);
         notifyAbilityChanged();
+        double deltaPower = getCurrentAttackPower() - getOriginalAttackPower();
+        notifyPowerChanged(deltaPower);
+        int deltaRange = getCurrentReachableRange() - getOriginalRange();
+        notifyRangeChanged(deltaRange);
     }
 
     public void resetCurrentAbility(Ability ability) {

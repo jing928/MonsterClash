@@ -8,7 +8,7 @@ import grp.oozmakappa.monsterclash.model.interfaces.CellEffect;
  * @author Chenglong Ma
  */
 public class RangeDebuff extends DebuffDecorator {
-    private static final int MAX_LOSS = -10;
+    private static final int MAX_LOSS = -2;
     private final int loss;
 
     RangeDebuff(CellEffect toDecorated) {

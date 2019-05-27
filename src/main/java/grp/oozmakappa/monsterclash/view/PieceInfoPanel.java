@@ -67,15 +67,16 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
      */
     private Thread animation(final JLabel label, Number newValue, Number deltaValue) {
         final String origText = label.getText();
-        final String operation = deltaValue.doubleValue() > 0 ? " + " : " - ";
+        final String operation = deltaValue.doubleValue() > 0 ? " ↑ " : " ↓ ";
+        final Color color = deltaValue.doubleValue() > 0 ? Color.GREEN : Color.RED;
         final String newText = FORMAT.format(newValue);
         return new Thread(() -> {
             try {
-                label.setForeground(Color.RED);
-                label.setFont(label.getFont().deriveFont(20f));
-                String deltaString = FORMAT.format(Math.abs(deltaValue.doubleValue()));
-                label.setText(origText + operation + deltaString);
-                Thread.sleep(1000);
+                label.setForeground(color);
+                label.setFont(label.getFont().deriveFont(24f));
+//                String deltaString = FORMAT.format(Math.abs(deltaValue.doubleValue()));
+                label.setText(origText + operation);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 // ignore
             } finally {
