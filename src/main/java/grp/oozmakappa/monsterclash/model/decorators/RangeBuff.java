@@ -8,7 +8,7 @@ public class RangeBuff extends BuffDecorator {
     private static final int MAX_GAIN = 10;
     private final int rangeGained;
 
-    protected RangeBuff(CellEffect toDecorated) {
+    RangeBuff(CellEffect toDecorated) {
         super(toDecorated);
         rangeGained = (int) (MAX_GAIN * Math.random()) + 1;
     }

@@ -14,6 +14,11 @@ import static grp.oozmakappa.monsterclash.model.command.TurnChangeCommand.change
 public interface PieceButtonState {
     Logger LOG = LogManager.getLogger();
 
+    /**
+     * Resets the state of {@link PieceListener} and whole game.
+     *
+     * @param ctrl
+     */
     static void cleanup(PieceListener ctrl) {
         PieceButtonState nextState = ModeSelectionState.getInstance();
         StateChangeCommand.setState(ctrl, nextState);
@@ -21,9 +26,24 @@ public interface PieceButtonState {
         Constraints.getInstance().setActivePiece(null);
     }
 
+    /**
+     * Executes before clicked.
+     *
+     * @param ctrl
+     */
     void todo(PieceListener ctrl);
 
+    /**
+     * Executes when clicked
+     *
+     * @param ctrl
+     */
     void doing(PieceListener ctrl);
 
+    /**
+     * Executes when releasing mouse.
+     *
+     * @param ctrl
+     */
     void done(PieceListener ctrl);
 }

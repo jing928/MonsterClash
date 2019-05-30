@@ -20,16 +20,4 @@ public final class Transformer {
         return new LinkedList<>(input);
     }
 
-    public static void main(String[] args) {
-        // TODO: remove this test method
-        LinkedList<String> in = new LinkedList<>();
-        in.add("a");
-        in.add("b");
-        System.out.println(in);
-//        LinkedList<String> out = add(in, "c");
-        LinkedList<String> out = removeLast(in);
-        System.out.println(in);
-        System.out.println(out);
-    }
-
 }

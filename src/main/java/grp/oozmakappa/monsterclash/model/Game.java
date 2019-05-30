@@ -18,6 +18,7 @@ import java.util.List;
  * The main model
  *
  * @author Chenglong Ma
+ * @Invariant pieces.size() == 2 || pieces.size() == 4 || pieces.size() == 6
  */
 public class Game {
     private static final Constraints CONSTRAINTS = Constraints.getInstance();

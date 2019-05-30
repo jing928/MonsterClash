@@ -7,12 +7,10 @@ import javax.swing.*;
 
 public class UndoButton extends JButton {
     private final Team team;
-    private boolean undoUsed;
 
     public UndoButton(Team team) {
         super("Undo");
         this.team = team;
-        this.undoUsed = false;
         addActionListener(new UndoListener());
     }
 
@@ -21,7 +19,6 @@ public class UndoButton extends JButton {
     }
 
     public void setUndoUsed() {
-        this.undoUsed = true;
         setEnabled(false);
     }
 

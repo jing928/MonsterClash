@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * @author Chenglong Ma
@@ -95,7 +94,7 @@ public class CommandManager {
         }
         int turnChangeCounter = 0;
         // A list of commands to undo
-        Queue cmdList = new LinkedList<Command>();
+        LinkedList<Command> cmdList = new LinkedList<>();
         boolean turnStartFound = false;
         while (!turnStartFound) {
             // the first `TurnChangeCommand` and `DiceCommand` cannot be undone.

@@ -1,8 +1,10 @@
 package grp.oozmakappa.monsterclash.controller;
 
+import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
 import grp.oozmakappa.monsterclash.view.CellLabel;
+import grp.oozmakappa.monsterclash.view.GameFrame;
 import grp.oozmakappa.monsterclash.view.PieceButton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +23,10 @@ public class BoardController extends MouseAdapter {
         updateCellsLocation();
     }
 
+    /**
+     * Updates {@link Cell}s location
+     * This can be only called after {@link GameFrame#pack()}
+     */
     private void updateCellsLocation() {
         boardPanel.getCellLabels().forEach(c -> c.getCell().setLocation(c.getLocation()));
     }

@@ -4,6 +4,7 @@ import grp.oozmakappa.monsterclash.controller.states.ModeSelectionState;
 import grp.oozmakappa.monsterclash.controller.states.PieceButtonState;
 import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
+import grp.oozmakappa.monsterclash.model.command.Command;
 import grp.oozmakappa.monsterclash.view.BoardPanel;
 import grp.oozmakappa.monsterclash.view.CellLabel;
 import grp.oozmakappa.monsterclash.view.PieceButton;
@@ -32,6 +33,11 @@ public class PieceListener extends MouseAdapter {
         state = ModeSelectionState.getInstance();
     }
 
+    /**
+     * Enables `drag` feature
+     *
+     * @param component
+     */
     public void enableDrag(Component component) {
         if (!Arrays.asList(component.getMouseMotionListeners()).contains(this)) {
             component.addMouseMotionListener(this);
@@ -47,10 +53,20 @@ public class PieceListener extends MouseAdapter {
         state.todo(this);
     }
 
+    /**
+     * Used for {@link Command#redo()} and {@link Command#undo()}
+     *
+     * @param prevState
+     */
     public void resetState(PieceButtonState prevState) {
         this.state = prevState;
     }
 
+    /**
+     * Returns the {@link PieceButton} processed.
+     *
+     * @return
+     */
     public PieceButton getButton() {
         return currButton;
     }
