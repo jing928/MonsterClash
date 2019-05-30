@@ -1,5 +1,6 @@
 package grp.oozmakappa.monsterclash.view;
 
+import grp.oozmakappa.monsterclash.controller.UndoListener;
 import grp.oozmakappa.monsterclash.model.Team;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ public class UndoButton extends JButton {
         super("Undo");
         this.team = team;
         this.undoUsed = false;
+        addActionListener(new UndoListener());
     }
 
     public Team getTeam() {

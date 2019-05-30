@@ -1,23 +1,19 @@
 package grp.oozmakappa.monsterclash.view;
 
-import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.abstracts.Piece;
-import grp.oozmakappa.monsterclash.model.command.CommandManager;
 import grp.oozmakappa.monsterclash.view.observers.PiecePropertyObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
  * @author Chenglong Ma
  */
-public class PlayerPanel extends JPanel implements PiecePropertyObserver, ActionListener {
+public class PlayerPanel extends JPanel implements PiecePropertyObserver {
     private static final Logger LOG = LogManager.getLogger();
     private final Team team;
     private final int totalPieces;
@@ -42,25 +38,6 @@ public class PlayerPanel extends JPanel implements PiecePropertyObserver, Action
         totalPieces = total;
         JButton undoBtn = new UndoButton(team);
         add(undoBtn);
-        undoBtn.addActionListener(this);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        UndoButton button = (UndoButton) e.getSource();
-        Team currTeam = Constraints.getInstance().getCurrentTeam();
-        if (button.getTeam() != currTeam) {
-            JOptionPane.showMessageDialog(this, "Not your turn!", "Oops...",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        int numOfUndos = button.getChoice();
-        if (numOfUndos == 0) {
-            return;
-        }
-        CommandManager cmdManager = CommandManager.getInstance();
-        cmdManager.undoTurns(numOfUndos);
-        button.setUndoUsed();
     }
 
     @Override
