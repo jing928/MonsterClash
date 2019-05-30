@@ -58,33 +58,35 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
     }
 
     /**
-     * Creates 1s animation for value changing
+     * Creates 2s animation for value changing
      *
      * @param label      the {@link JLabel} with animation
      * @param newValue   the updated value
      * @param deltaValue the delta value
-     * @return the animation {@link Thread}
      */
-    private Thread animation(final JLabel label, Number newValue, Number deltaValue) {
-        final String origText = label.getText();
-        final String operation = deltaValue.doubleValue() > 0 ? " + " : " - ";
+    private void animation(final JLabel label, Number newValue, Number deltaValue) {
         final String newText = FORMAT.format(newValue);
-        return new Thread(() -> {
+        if (deltaValue.doubleValue() == 0) {
+            label.setText(newText);
+            return;
+        }
+        final String origText = label.getText();
+        final String operation = deltaValue.doubleValue() > 0 ? " ↑ " : " ↓ ";
+        final Color color = deltaValue.doubleValue() > 0 ? Color.GREEN : Color.RED;
+        new Thread(() -> {
             try {
-                label.setForeground(Color.RED);
-                label.setFont(label.getFont().deriveFont(20f));
-                String deltaString = FORMAT.format(Math.abs(deltaValue.doubleValue()));
-                label.setText(origText + operation + deltaString);
-                Thread.sleep(1000);
+                label.setForeground(color);
+                label.setFont(label.getFont().deriveFont(24f));
+                label.setText(origText + operation);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 // ignore
             } finally {
                 label.setText(newText);
                 label.setForeground(Color.WHITE);
                 label.setFont(label.getFont().deriveFont(14f));
-
             }
-        });
+        }).start();
     }
 
     @Override
@@ -93,21 +95,21 @@ public class PieceInfoPanel extends JPanel implements PiecePropertyObserver {
             deltaHealth += piece.getCurrentArmor();
             deltaHealth = Math.min(0, deltaHealth);
         }
-        animation(health, currValue, deltaHealth).start();
+        animation(health, currValue, deltaHealth);
     }
 
     @Override
     public void powerChanged(double currValue, double deltaPower) {
-        animation(power, currValue, deltaPower).start();
+        animation(power, currValue, deltaPower);
     }
 
     @Override
     public void armorChanged(double currValue, double deltaArmor) {
-        animation(armor, currValue, deltaArmor).start();
+        animation(armor, currValue, deltaArmor);
     }
 
     @Override
     public void rangeChanged(int currValue, int deltaRange) {
-        animation(range, currValue, deltaRange).start();
+        animation(range, currValue, deltaRange);
     }
 }

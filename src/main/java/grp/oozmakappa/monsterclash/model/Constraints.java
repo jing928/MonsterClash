@@ -14,8 +14,6 @@ public class Constraints implements DiceObserver {
     public static final int MAX_Y = 6;
     public static final int CORNER_X = 4;
     public static final int CORNER_Y = 4;
-    public static final int BOARD_WIDTH = 800;
-    public static final int BOARD_HEIGHT = 800;
     public static final int CELL_LENGTH = 60;
     public static final int PIECE_DIAMETER = 100;
     public static final int TIME_OUT = 30000;

@@ -10,11 +10,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import static grp.oozmakappa.monsterclash.utils.FileUtil.getSubFiles;
 import static java.awt.Image.SCALE_SMOOTH;
 import static java.awt.RenderingHints.KEY_INTERPOLATION;
 import static java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR;
@@ -41,7 +38,7 @@ public class IconFactory {
      * }
      */
     public static final String ABILITIES_DIR = "img/abilities/";
-    public static final String MODE_DIR = "img/mode/";
+    private static final String MODE_DIR = "img/mode/";
     //region For trap cell
     public static final String TRAP_CELL = "img/cell/trap.png";
 
@@ -73,17 +70,6 @@ public class IconFactory {
             instance = new IconFactory();
         }
         return instance;
-    }
-
-    /**
-     * Returns {@link Icon} set under specified dir.
-     *
-     * @param dir
-     * @return The {@link Icon}s under specified dir.
-     */
-    public static List<Icon> getIcons(String dir) {
-        return getSubFiles(dir).stream()
-                .map(ImageIcon::new).collect(Collectors.toList());
     }
 
     /**

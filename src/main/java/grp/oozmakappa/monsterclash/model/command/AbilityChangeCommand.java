@@ -30,7 +30,12 @@ public class AbilityChangeCommand extends AbstractCommand {
 
     @Override
     public void undo() {
-        piece.setCurrentAbility(prevAbility);
+        piece.resetCurrentAbility(prevAbility);
         LOG.info("Undid: Ability Command");
+    }
+
+    @Override
+    public void redo() {
+        piece.resetCurrentAbility(prevAbility);
     }
 }

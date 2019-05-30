@@ -62,4 +62,8 @@ public final class Dice {
         this.value = value;
         observers.forEach(o -> o.valueChanged(value));
     }
+
+    public void removeObserver(DiceObserver observer) {
+        observers.remove(observer);
+    }
 }

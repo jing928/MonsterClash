@@ -42,7 +42,7 @@ public class HistoryDialog extends JDialog {
         setLayout(new BorderLayout(2, 2));
 
         initView();
-        setPreferredSize(new Dimension(1000, 800));
+        setPreferredSize(new Dimension(1400, 1000));
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();

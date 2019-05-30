@@ -22,6 +22,6 @@ public class JamesPSullivan extends Piece {
         super(TEAM, startingPos, DEFAULTHEALTH, DEFAULTATTACKPOWER, DEFAULT_ARMOR, DEFAULTATTACKRANGE);
         setIcon(IconFactory.JAMES_P_SULLIVAN);
         addSpecialAbility(Ability.SPECIAL_ATTACK);
-        addSpecialAbility(Ability.SPECIAL_MOVE);
+//        addSpecialAbility(Ability.SPECIAL_MOVE);
     }
 }

@@ -13,7 +13,6 @@ import static grp.oozmakappa.monsterclash.utils.Distance.manhattanDistance;
 
 /**
  * The element of {@link grp.oozmakappa.monsterclash.model.Board}
- * NB: the concrete classes inherit from this must be Immutable.
  *
  * @author Chenglong Ma
  */

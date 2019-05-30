@@ -33,7 +33,6 @@ public class PieceButton extends JButton implements PieceActionObserver, PiecePr
     public PieceButton(Piece piece) {
         this.piece = piece;
         piece.addPropertyObserver(this);
-        piece.addActionObserver(this);
         piece.addPositionObserver(this);
         setOpaque(false);
         setContentAreaFilled(false);

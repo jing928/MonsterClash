@@ -8,7 +8,7 @@ public class PowerDebuff extends DebuffDecorator {
     private static final double MAX_LOSS = -10;
     private final double powerLost;
 
-    protected PowerDebuff(CellEffect toDecorated) {
+    PowerDebuff(CellEffect toDecorated) {
         super(toDecorated);
         powerLost = MAX_LOSS * Math.random() - 1;
     }

@@ -34,7 +34,9 @@ public class DiceCommand extends AbstractCommand {
     public void undo() {
         CONSTRAINTS.setCanMove(canMove);
         DICE.setCanRoll(canRoll);
+        DICE.removeObserver(CONSTRAINTS);
         DICE.setValue(prevValue);
+        DICE.addObserver(CONSTRAINTS);
         LOG.info("Undid: Dice Command");
     }
 }

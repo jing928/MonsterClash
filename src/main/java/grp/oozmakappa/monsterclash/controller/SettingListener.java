@@ -4,6 +4,7 @@ import grp.oozmakappa.monsterclash.model.Constraints;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.command.TurnChangeCommand;
 import grp.oozmakappa.monsterclash.utils.NumberUtil;
+import grp.oozmakappa.monsterclash.view.HistoryDialog;
 import grp.oozmakappa.monsterclash.view.MenuDialog;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,6 +71,9 @@ public class SettingListener implements ItemListener, ActionListener {
         }
     }
 
+    /**
+     * Loads settings from {@link HistoryDialog}
+     */
     private void loadSetting() {
         int numOfPieces = constraints.getNumOfPieces();
         int maxX = dialog.getMaxX();

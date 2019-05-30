@@ -4,6 +4,7 @@ import grp.oozmakappa.monsterclash.model.Ability;
 import grp.oozmakappa.monsterclash.model.Cell;
 import grp.oozmakappa.monsterclash.model.Team;
 import grp.oozmakappa.monsterclash.model.command.AttackCommand;
+import grp.oozmakappa.monsterclash.model.command.Command;
 import grp.oozmakappa.monsterclash.model.interfaces.DiceObserver;
 import grp.oozmakappa.monsterclash.model.rules.AbstractRuleFactory;
 import grp.oozmakappa.monsterclash.model.strategies.modes.DefaultMode;
@@ -70,6 +71,11 @@ public abstract class Piece implements DiceObserver {
         return attackPower;
     }
 
+    /**
+     * Sets new {@link Mode} and notifies changes.
+     *
+     * @param mode
+     */
     public void setMode(Mode mode) {
         this.mode = mode;
         double delta = mode.getAttackPower(attackPower) - attackPower;
@@ -78,6 +84,9 @@ public abstract class Piece implements DiceObserver {
         notifyArmorChanged(delta);
     }
 
+    /**
+     * Resets mode to {@link DefaultMode} and notifies changes.
+     */
     public void setMode() {
         double deltaPower = attackPower - mode.getAttackPower(attackPower);
         double deltaArmor = armor - mode.getArmor(armor);
@@ -105,29 +114,30 @@ public abstract class Piece implements DiceObserver {
     }
 
     /**
+     * Sets {@link Ability} and notify
+     *
      * @param ability
      * @Requires abilities.contains(ability)
      */
     public void setCurrentAbility(Ability ability) {
+        resetCurrentAbility(ability);
+        double deltaPower = getCurrentAttackPower() - mode.getAttackPower(attackPower);
+        notifyPowerChanged(deltaPower);
+        int deltaRange = getCurrentReachableRange() - getOriginalRange();
+        notifyRangeChanged(deltaRange);
+    }
+
+    /**
+     * Sets {@link Ability} without notifying
+     * Used for {@link Command#redo()} and {@link Command#undo()}
+     *
+     * @param ability
+     */
+    public void resetCurrentAbility(Ability ability) {
         if (!abilities.contains(ability)) {
             this.currAbility = null;
         } else {
             this.currAbility = ability;
-            notifyAbilityChanged(ability);
-        }
-    }
-
-    private void notifyAbilityChanged(Ability ability) {
-        switch (ability) {
-
-            case PLAIN_ATTACK:
-            case SPECIAL_ATTACK:
-            case SPECIAL_HEALING:
-                notifyActing();
-                break;
-            case SPECIAL_MOVE:
-                notifyMoving();
-                break;
         }
     }
 
@@ -144,20 +154,12 @@ public abstract class Piece implements DiceObserver {
     }
 
     public void attack(Piece target) {
-        double distance = getTargetDistance(target);
+        double distance = distance(target);
         if (getCurrentReachableRange() >= distance) {
             double damage = getCurrentAttackPower();
             target.decreaseHealth(damage);
             notifyActed();
         }
-    }
-
-    public int getTargetDistance(Piece target) {
-        return getTargetDistance(target.position);
-    }
-
-    public int getTargetDistance(Cell targetPosition) {
-        return position.distance(targetPosition);
     }
 
     public Team getTeam() {
@@ -195,19 +197,16 @@ public abstract class Piece implements DiceObserver {
      */
     public void decreaseHealth(double damage) {
         double prevHealth = health;
-        double trueDamage = damage - getArmor();
+        double trueDamage = damage - getCurrentArmor();
         health = Math.max(health - trueDamage, 0);
         notifyHealthChanged(-damage, prevHealth);
     }
 
-    public int getX() {
-        return position.getX();
-    }
-
-    public int getY() {
-        return position.getY();
-    }
-
+    /**
+     * @return buffed {@link #attackPower} by {@link Mode} and {@link Ability}
+     * @see #getCurrentReachableRange()
+     * @see #getCurrentArmor()
+     */
     public double getCurrentAttackPower() {
         double currPower = mode.getAttackPower(attackPower);
         if (currAbility == null || currAbility == Ability.PLAIN_ATTACK) {
@@ -225,6 +224,11 @@ public abstract class Piece implements DiceObserver {
         notifyPowerChanged(delta);
     }
 
+    /**
+     * @return buffed {@link #reachableRange} by {@link Ability}
+     * @see #getCurrentAttackPower()
+     * @see #getCurrentArmor()
+     */
     public int getCurrentReachableRange() {
         if (currAbility == null) {
             return reachableRange;
@@ -272,7 +276,7 @@ public abstract class Piece implements DiceObserver {
         posObservers.add(observer);
     }
 
-    public void removeObserver(PiecePositionObserver observer) {
+    public void removePositionObserver(PiecePositionObserver observer) {
         posObservers.remove(observer);
     }
 
@@ -284,8 +288,12 @@ public abstract class Piece implements DiceObserver {
         actObservers.add(observer);
     }
 
-    public void removeObserver(PiecePropertyObserver observer) {
+    public void removePropertyObserver(PiecePropertyObserver observer) {
         pptObservers.remove(observer);
+    }
+
+    public void removeActionObserver(PieceActionObserver observer) {
+        actObservers.remove(observer);
     }
 
     /**
@@ -320,34 +328,15 @@ public abstract class Piece implements DiceObserver {
         pptObservers.forEach(o -> o.healthChanged(getHealth(), deltaHealth, prevHealth));
     }
 
-    /**
-     * @Requires deltaPower != 0
-     */
     private void notifyPowerChanged(double deltaPower) {
-        if (deltaPower == 0) {
-            return;
-        }
         pptObservers.forEach(o -> o.powerChanged(getCurrentAttackPower(), deltaPower));
     }
 
-    /**
-     * @param deltaArmor
-     * @Requires deltaArmor != 0
-     */
     private void notifyArmorChanged(double deltaArmor) {
-        if (deltaArmor == 0) {
-            return;
-        }
         pptObservers.forEach(o -> o.armorChanged(getCurrentArmor(), deltaArmor));
     }
 
-    /**
-     * @Requires deltaRange != 0
-     */
     private void notifyRangeChanged(int deltaRange) {
-        if (deltaRange == 0) {
-            return;
-        }
         pptObservers.forEach(o -> o.rangeChanged(getCurrentReachableRange(), deltaRange));
     }
 
@@ -358,10 +347,6 @@ public abstract class Piece implements DiceObserver {
     @Override
     public void valueChanged(int value) {
         this.nextMove = value;
-    }
-
-    public double getArmor() {
-        return mode.getArmor(armor);
     }
 
     /**
